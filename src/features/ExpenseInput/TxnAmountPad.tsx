@@ -1,12 +1,12 @@
-import { Icon } from "@/components/Icon";
-import { PadButtonCard } from "@/features/expenseList/PadButtonCard";
+import { Icon } from "@components";
+import { PadButtonCard } from "./PadButtonCard";
 import type {
   CalculatorDecimalKey,
   CalculatorDigitKey,
   CalculatorFunc,
   CalculatorOpKey,
   CalculatorStatus,
-} from "@/hooks/useCalculator";
+} from "@hooks/useCalculator";
 import { twMerge } from "tailwind-merge";
 
 const operatorIcons: Record<CalculatorOpKey, string> = {

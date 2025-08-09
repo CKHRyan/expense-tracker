@@ -1,8 +1,7 @@
-import { Icon } from "@/components/Icon";
-import { Text } from "@/components/Text";
-import { PadButtonCard } from "@/features/expenseList/PadButtonCard";
-import { TxnAmountPad } from "@/features/expenseList/TxnAmountPad";
-import { useCalculator } from "@/hooks/useCalculator";
+import { Icon, Text } from "@components";
+import { PadButtonCard } from "@features/ExpenseInput/PadButtonCard";
+import { TxnAmountPad } from "@features/ExpenseInput/TxnAmountPad";
+import { useCalculator } from "@hooks/useCalculator";
 import { useCallback, useRef } from "react";
 import { Sheet, type SheetRef } from "react-modal-sheet";
 

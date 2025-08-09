@@ -1,5 +1,5 @@
-import { Text } from "@/components/Text";
-import type { ExpenseRecord } from "@/utils/googleSheet/types";
+import { Text } from "@components";
+import type { ExpenseRecord } from "@utils/googleSheet/types";
 import moment from "moment";
 
 type Props = { record: ExpenseRecord };

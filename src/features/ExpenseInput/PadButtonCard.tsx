@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { Button } from "@components";
 import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 

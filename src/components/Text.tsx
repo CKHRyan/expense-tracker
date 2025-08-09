@@ -1,11 +1,11 @@
 import { twMerge } from "tailwind-merge";
 
-type Props = {
-  children: string | string[];
+export type TextProps = {
+  children: string | string[] | number;
   className?: string;
 };
 
-export const Text = ({ children, className }: Props) => (
+export const Text = ({ children, className }: TextProps) => (
   <h3 className={twMerge("text-base tracking-tight text-white", className)}>
     {children}
   </h3>

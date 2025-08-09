@@ -1,5 +1,4 @@
-import { useAuthStore } from "@stores/authStore";
-import { useSheetStore } from "@stores/sheetStore";
+import { useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useMemo } from "react";
 

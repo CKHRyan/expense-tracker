@@ -5,9 +5,8 @@ import {
   isValidExpenseRecord,
 } from "../helpers";
 import type { ExpenseRecord } from "../types";
-import { useSheetStore } from "@/stores/sheetStore";
 import { isAxiosError } from "axios";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore, useSheetStore } from "@stores";
 
 type Params = {
   sheet?: GoogleSpreadsheetWorksheet;

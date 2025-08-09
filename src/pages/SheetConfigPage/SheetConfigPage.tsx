@@ -1,11 +1,9 @@
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { Title } from "@components/Title";
-import { useSheetStore } from "@stores/sheetStore";
+import { Button, Input, Title } from "@components";
+import { useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useCallback, useState } from "react";
 
-export const SheetConfig = () => {
+export const SheetConfigPage = () => {
   const [_sheetId, _setSheetId] = useState("");
   const [_sheetIndex, _setSheetIndex] = useState<number>();
   const { setSheetId, setSheetIndex } = useSheetStore();

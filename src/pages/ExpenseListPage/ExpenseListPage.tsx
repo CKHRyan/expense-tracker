@@ -1,22 +1,20 @@
 import { useGoogleSheet } from "@utils/googleSheet/hooks/useGoogleSheet";
 import { useMemo, useState } from "react";
 
-import { useAuthStore } from "@stores/authStore";
-import { useSheetStore } from "@stores/sheetStore";
-import { useGoogleSheetDoc } from "@/utils/googleSheet/hooks/useGoogleSheetDoc";
-import { useGoogleSheetQuery } from "@/utils/googleSheet/hooks/useGoogleSheetQuery";
-import { Text } from "@/components/Text";
-import { TransactionCard } from "@/features/expenseList/TransactionCard";
+import { useAuthStore, useSheetStore } from "@stores";
+import { useGoogleSheetDoc } from "@utils/googleSheet/hooks/useGoogleSheetDoc";
+import { useGoogleSheetQuery } from "@utils/googleSheet/hooks/useGoogleSheetQuery";
+import { Text, Fab, ValueCard } from "@components";
 import { groupBy } from "lodash";
 import moment from "moment";
 import {
   displayDateFormat,
   serverDateFormat,
-} from "@/utils/googleSheet/constants";
-import { Button } from "@/components/Button";
-import { ExpenseInputModal } from "@/features/expenseList/ExpenseInputModal";
+} from "@utils/googleSheet/constants";
+import { ExpenseInputModal } from "@features/ExpenseInput";
+import { TransactionCard } from "@features/ExpenseList";
 
-export const ExpenseList = () => {
+export const ExpenseListPage = () => {
   const { token = "" } = useAuthStore();
   const { sheetId = "", sheetIndex } = useSheetStore();
   const googleSheetDocOptions = useMemo(
@@ -53,12 +51,11 @@ export const ExpenseList = () => {
   return (
     <>
       <div className="p-8 w-full h-full flex flex-col gap-4">
-        <div className="bg-[#FF4433] p-4 rounded-md">
-          <Text>Cumulative Expense</Text>
-          <Text className="text-lg font-extrabold">
-            ${totalExpense.toLocaleString()}
-          </Text>
-        </div>
+        <ValueCard
+          title="Cumulative Expense"
+          value={`$${totalExpense.toLocaleString()}`}
+          bgColor="#FF4433"
+        />
 
         <div className="flex flex-col gap-4 pb-26">
           <Text className="text-xl font-bold">Transaction Records</Text>
@@ -78,14 +75,8 @@ export const ExpenseList = () => {
         </div>
       </div>
 
-      <div className="fixed z-90 bottom-6 inset-x-0 flex items-center justify-center">
-        <Button
-          onClick={() => setIsOpenExpenseInputModal(true)}
-          className="bg-zinc-700 hover:bg-zinc-600 py-3 px-10 text-lg rounded-full duration-100 cursor-pointer"
-        >
-          Add
-        </Button>
-      </div>
+      <Fab onClick={() => setIsOpenExpenseInputModal(true)}>Add</Fab>
+
       <ExpenseInputModal
         isOpen={isOpenExpenseInputModal}
         onClose={() => setIsOpenExpenseInputModal(false)}

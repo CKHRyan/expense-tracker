@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@stores";
 import { isAxiosError } from "axios";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { useState, useEffect } from "react";

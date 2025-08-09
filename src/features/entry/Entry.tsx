@@ -1,4 +1,4 @@
-import { useAuthStore } from "@stores/authStore";
+import { useAuthStore } from "@stores";
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleButton from "react-google-button";
 
