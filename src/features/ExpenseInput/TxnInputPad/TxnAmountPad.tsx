@@ -6,7 +6,7 @@ import type {
   CalculatorFunc,
   CalculatorOpKey,
   CalculatorStatus,
-} from "@hooks/useCalculator";
+} from "@features/ExpenseInput/hooks";
 import { twMerge } from "tailwind-merge";
 
 const operatorIcons: Record<CalculatorOpKey, string> = {

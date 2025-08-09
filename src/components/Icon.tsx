@@ -7,5 +7,5 @@ type Props = { name: string } & DetailedHTMLProps<
 >;
 
 export const Icon = ({ name, className, ...spanProps }: Props) => (
-  <span className={twMerge(name, className)} {...spanProps}></span>
+  <span className={twMerge("-mb-[2px]", name, className)} {...spanProps}></span>
 );

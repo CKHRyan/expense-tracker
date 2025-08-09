@@ -1,1 +1,1 @@
-export { ExpenseInputModal } from "./ExpenseInputModal";
+export { ExpenseInputSheet as ExpenseInputModal } from "./ExpenseInputSheet";

@@ -61,7 +61,10 @@ export const ExpenseListPage = () => {
           <Text className="text-xl font-bold">Transaction Records</Text>
           <div className="flex flex-col gap-4">
             {transactionDates.map((date) => (
-              <div className="flex flex-col gap-4">
+              <div
+                key={`transaction-on-${date}`}
+                className="flex flex-col gap-4"
+              >
                 <Text>{date}</Text>
                 {recordsByDay[date].map((record, index) => (
                   <TransactionCard

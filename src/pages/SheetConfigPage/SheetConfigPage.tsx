@@ -1,4 +1,4 @@
-import { Button, Input, Title } from "@components";
+import { Button, FormInput, Title } from "@components";
 import { useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useCallback, useState } from "react";
@@ -24,14 +24,14 @@ export const SheetConfigPage = () => {
     <div className="p-8 flex flex-col gap-10">
       <Title>Sheet Parameters</Title>
       <div className="flex flex-col gap-6">
-        <Input
+        <FormInput
           id="sheetId"
           label="Spreadsheet Id"
           required
           value={_sheetId}
           onChange={(e) => _setSheetId(e.target.value)}
         />
-        <Input
+        <FormInput
           id="sheetId"
           label="Main sheet Index"
           type="number"

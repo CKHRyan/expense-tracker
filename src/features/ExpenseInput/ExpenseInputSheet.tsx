@@ -1,5 +1,8 @@
 import { TxnInputPad } from "@features/ExpenseInput/TxnInputPad";
-import { useCalculator } from "@hooks/useCalculator";
+import {
+  useCalculator,
+  useTransactionInput,
+} from "@features/ExpenseInput/hooks";
 import { useCallback, useRef } from "react";
 import { Sheet, type SheetRef } from "react-modal-sheet";
 
@@ -11,7 +14,7 @@ type Props = {
   isEdit?: boolean;
 };
 
-export const ExpenseInputModal = ({
+export const ExpenseInputSheet = ({
   isOpen,
   isEdit = false,
   onClose,
@@ -19,11 +22,13 @@ export const ExpenseInputModal = ({
   const ref = useRef<SheetRef>(null);
 
   const calculatorInterface = useCalculator();
+  const transactionInputInterface = useTransactionInput();
 
   const _onClose = useCallback(() => {
     calculatorInterface.clear();
+    transactionInputInterface.clear();
     onClose();
-  }, [calculatorInterface, onClose]);
+  }, [calculatorInterface, onClose, transactionInputInterface]);
 
   return (
     <Sheet
@@ -38,7 +43,11 @@ export const ExpenseInputModal = ({
         <Sheet.Content>
           <div className="flex-1" />
 
-          <TxnInputPad isEdit={isEdit} calculatorProps={calculatorInterface} />
+          <TxnInputPad
+            isEdit={isEdit}
+            calculatorProps={calculatorInterface}
+            transactionInputProps={transactionInputInterface}
+          />
         </Sheet.Content>
       </Sheet.Container>
       <Sheet.Backdrop onTap={_onClose} />

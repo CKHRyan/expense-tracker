@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 export type TextProps = {
-  children: string | string[] | number;
+  children: ReactNode;
   className?: string;
 };
 

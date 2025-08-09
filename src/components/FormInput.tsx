@@ -1,13 +1,10 @@
-import type { DetailedHTMLProps } from "react";
+import type { DetailedHTMLProps, InputHTMLAttributes } from "react";
 
 type Props = {
   label?: string;
-} & DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
+} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
-export const Input = ({ label, className, ...inputProps }: Props) => (
+export const FormInput = ({ label, className, ...inputProps }: Props) => (
   <div className={className}>
     {label && (
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

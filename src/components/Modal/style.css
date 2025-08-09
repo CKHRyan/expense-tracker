@@ -1,0 +1,47 @@
+:root {
+  --transition: 200ms;
+  --content-bg-color: rgba(0, 0, 0, 0.4);
+  --overlay-bg-color: #242424;
+  --content-width: 90%;
+}
+
+.overlay-base {
+  z-index: 10000;
+  position: fixed;
+  inset: 0;
+  background-color: var(--content-bg-color);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.overlay-after {
+  opacity: 1;
+}
+
+.overlay-before {
+  opacity: 0;
+}
+
+.content-base {
+  z-index: 10001;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: var(--content-width);
+  position: absolute;
+  border-radius: 12px;
+  background-color: var(--overlay-bg-color);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.content-after {
+  opacity: 1;
+}
+
+.content-before {
+  opacity: 0;
+}
