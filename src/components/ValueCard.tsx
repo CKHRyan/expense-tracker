@@ -18,7 +18,10 @@ export const ValueCard = ({
   valueClassName,
   bgColor = "#2c2c2c",
 }: Props) => (
-  <div className={twMerge(`bg-[${bgColor}] p-4 rounded-md`, className)}>
+  <div
+    className={twMerge("p-4 rounded-md", className)}
+    style={{ backgroundColor: bgColor }}
+  >
     <Text className={titleClassName}>{title}</Text>
     <Text className={twMerge("text-lg font-extrabold", valueClassName)}>
       {value}

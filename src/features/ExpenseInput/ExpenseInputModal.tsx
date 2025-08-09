@@ -1,6 +1,4 @@
-import { Icon, Text } from "@components";
-import { PadButtonCard } from "@features/ExpenseInput/PadButtonCard";
-import { TxnAmountPad } from "@features/ExpenseInput/TxnAmountPad";
+import { TxnInputPad } from "@features/ExpenseInput/TxnInputPad";
 import { useCalculator } from "@hooks/useCalculator";
 import { useCallback, useRef } from "react";
 import { Sheet, type SheetRef } from "react-modal-sheet";
@@ -21,17 +19,11 @@ export const ExpenseInputModal = ({
   const ref = useRef<SheetRef>(null);
 
   const calculatorInterface = useCalculator();
-  const {
-    displayValue: amount,
-    clear: resetCalculator,
-    calculate,
-    isCalculable,
-  } = calculatorInterface;
 
   const _onClose = useCallback(() => {
-    resetCalculator();
+    calculatorInterface.clear();
     onClose();
-  }, [resetCalculator, onClose]);
+  }, [calculatorInterface, onClose]);
 
   return (
     <Sheet
@@ -44,45 +36,9 @@ export const ExpenseInputModal = ({
     >
       <Sheet.Container className="bg-[#242424]!">
         <Sheet.Content>
-          <div className="flex-1"></div>
-          <div className="bg-zinc-800 p-4 flex flex-col gap-4">
-            <Text className="font-bold text-xl">
-              $ {amount.toLocaleString()}
-            </Text>
-            <div className="flex gap-2">
-              <TxnAmountPad {...calculatorInterface} className="flex-1" />
-              <div className="flex flex-col gap-2 min-w-[70px]">
-                {isEdit ? (
-                  <PadButtonCard className="bg-red-500">Remove</PadButtonCard>
-                ) : (
-                  <div className="flex items-center justify-center flex-1">
-                    <Icon
-                      name="icon-[streamline-stickies-color--money-briefcase]"
-                      className="text-5xl"
-                    />
-                  </div>
-                )}
-                <PadButtonCard className="bg-green-600">
-                  <Icon
-                    name="icon-[solar--calendar-bold]"
-                    className="text-3xl"
-                  />
-                </PadButtonCard>
-                {isCalculable ? (
-                  <PadButtonCard className="bg-blue-500" onClick={calculate}>
-                    <Icon name="icon-[fa7-solid--equals]" />
-                  </PadButtonCard>
-                ) : (
-                  <PadButtonCard className="bg-blue-500">
-                    <Icon
-                      name="icon-[icon-park-solid--transaction]"
-                      className="text-3xl"
-                    />
-                  </PadButtonCard>
-                )}
-              </div>
-            </div>
-          </div>
+          <div className="flex-1" />
+
+          <TxnInputPad isEdit={isEdit} calculatorProps={calculatorInterface} />
         </Sheet.Content>
       </Sheet.Container>
       <Sheet.Backdrop onTap={_onClose} />

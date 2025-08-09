@@ -1,5 +1,5 @@
 import { Icon } from "@components";
-import { PadButtonCard } from "./PadButtonCard";
+import { PadButtonCard } from "../PadButtonCard";
 import type {
   CalculatorDecimalKey,
   CalculatorDigitKey,
