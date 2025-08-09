@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type CalculatorDigitKey =
   | "0"
@@ -14,7 +14,7 @@ export type CalculatorDigitKey =
 
 export type CalculatorDecimalKey = ".";
 
-export type CalculatorOpKey = "×" | "+" | "-";
+export type CalculatorOpKey = "×" | "+" | "÷";
 
 type CalculatorKey =
   | CalculatorDigitKey
@@ -51,7 +51,7 @@ const getLastChar = (str: string) => str.charAt(str.length - 1);
 
 const delLastChar = (str: string) => str.slice(0, -1);
 
-const operatorRegex = /([×+-])/;
+const operatorRegex = /([×+÷])/;
 
 const isOperatorExist = (str: string) => operatorRegex.test(str);
 
@@ -66,6 +66,16 @@ const getDecimalPlaces = (value: string) => {
   const isDecimal = decimalSymbolIndex >= 0;
   const decimalPlaces = isDecimal ? value.length - 1 - decimalSymbolIndex : 0;
   return decimalPlaces;
+};
+
+const roundTo = (n: number, digits: number) => {
+  if (digits === undefined) {
+    digits = 0;
+  }
+  const multiplicator = Math.pow(10, digits);
+  n = parseFloat((n * multiplicator).toFixed(11));
+  const test = Math.round(n) / multiplicator;
+  return +test.toFixed(digits);
 };
 
 const replaceSubValue = (str: string, updatedSubValue: string) => {
@@ -135,8 +145,8 @@ export const useCalculator = (): CalculatorInterface => {
       case "+":
         resultValue = Number(mainValue) + Number(focusValue);
         break;
-      case "-":
-        resultValue = Number(mainValue) - Number(focusValue);
+      case "÷":
+        resultValue = roundTo(Number(mainValue) / Number(focusValue), 2);
         break;
       case "×":
         resultValue = Number(mainValue) * Number(focusValue);
@@ -177,7 +187,7 @@ export const useCalculator = (): CalculatorInterface => {
   }, [focusValue]);
 
   const appendOperator = useCallback(
-    (op: "×" | "+" | "-") => {
+    (op: CalculatorOpKey) => {
       if (hasOperator) {
         calculate();
       }
@@ -214,13 +224,20 @@ export const useCalculator = (): CalculatorInterface => {
         case ".":
           return appendDecimal();
         case "+":
-        case "-":
+        case "÷":
         case "×":
           return appendOperator(key);
       }
     },
     [appendDecimal, appendDigit, disableInput, appendOperator]
   );
+
+  useEffect(() => {
+    // Always non-negative
+    if (value < 0) {
+      clear();
+    }
+  }, [clear, value]);
 
   return {
     input,

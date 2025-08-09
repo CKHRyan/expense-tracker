@@ -11,7 +11,7 @@ import { twMerge } from "tailwind-merge";
 
 const operatorIcons: Record<CalculatorOpKey, string> = {
   "+": "icon-[fa7-solid--plus]",
-  "-": "icon-[fa7-solid--minus]",
+  "÷": "icon-[fa7-solid--divide]",
   "×": "icon-[fa7-solid--times]",
 };
 
@@ -49,19 +49,19 @@ export const TxnAmountPad = ({
         <NumPadButtonCard padKey="1" />
         <NumPadButtonCard padKey="2" />
         <NumPadButtonCard padKey="3" />
-        <OpPadButtonCard padKey="×" />
+        <OpPadButtonCard padKey="÷" />
       </div>
       <div className="flex gap-2">
         <NumPadButtonCard padKey="4" />
         <NumPadButtonCard padKey="5" />
         <NumPadButtonCard padKey="6" />
-        <OpPadButtonCard padKey="+" />
+        <OpPadButtonCard padKey="×" />
       </div>
       <div className="flex gap-2">
         <NumPadButtonCard padKey="7" />
         <NumPadButtonCard padKey="8" />
         <NumPadButtonCard padKey="9" />
-        <OpPadButtonCard padKey="-" />
+        <OpPadButtonCard padKey="+" />
       </div>
       <div className="flex gap-2">
         <NumPadButtonCard padKey="." />

@@ -12,7 +12,12 @@ type Props = {
 } & CalculatorStatus &
   CalculatorFunc;
 
-export const TxnActionPad = ({ isEdit, calculate, isCalculable }: Props) => {
+export const TxnActionPad = ({
+  isEdit,
+  isError,
+  calculate,
+  isCalculable,
+}: Props) => {
   return (
     <div className="flex flex-col gap-2 min-w-[70px]">
       {isEdit ? (
@@ -29,7 +34,7 @@ export const TxnActionPad = ({ isEdit, calculate, isCalculable }: Props) => {
       {isCalculable ? (
         <CalcluatePadButtonCard onClick={calculate} />
       ) : (
-        <ConfirmPadButtonCard />
+        <ConfirmPadButtonCard disabled={isError} />
       )}
     </div>
   );
