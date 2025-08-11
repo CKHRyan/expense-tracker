@@ -1,0 +1,8 @@
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: #3b82f6; /* Tailwind's blue-600 */
+  transition: all 0.3s ease-in-out;
+  z-index: 10; /* Ensure indicator is above other elements */
+}

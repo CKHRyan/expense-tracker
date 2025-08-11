@@ -1,4 +1,4 @@
-export { Button, type ButtonProps } from "./Button";
+export * from "./Button";
 export { Fab } from "./Fab";
 export { Icon } from "./Icon";
 export { FormInput } from "./FormInput";
@@ -9,3 +9,4 @@ export { ValueCard } from "./ValueCard";
 export { Modal } from "./Modal";
 export { TimePicker } from "./TimePicker";
 export { Calendar } from "./Calendar";
+export * from "./Tabs";

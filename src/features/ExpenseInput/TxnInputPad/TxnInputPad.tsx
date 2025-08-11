@@ -6,23 +6,28 @@ import type {
   CalculatorInterface,
   TransactionInputInterface,
 } from "@features/ExpenseInput/hooks";
+import { twMerge } from "tailwind-merge";
+import { TxnCategoryPad } from "@features/ExpenseInput/TxnInputPad/TxnCategoryPad";
 
 type Props = {
   calculatorProps: CalculatorInterface;
   transactionInputProps: TransactionInputInterface;
   isEdit?: boolean;
+  className?: string;
 };
 
 export const TxnInputPad = ({
   isEdit,
   calculatorProps,
   transactionInputProps,
+  className,
 }: Props) => {
   const { displayValue: amount } = calculatorProps;
   const { description, setDescription, date, setDate } = transactionInputProps;
 
   return (
-    <div className="bg-zinc-800">
+    <div className={twMerge("flex flex-col", className)}>
+      <TxnCategoryPad categoryListClassName="shrink overflow-auto" />
       <TxnDescriptionPad
         description={description}
         setDescription={setDescription}

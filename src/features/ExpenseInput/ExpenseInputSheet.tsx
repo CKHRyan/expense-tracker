@@ -47,14 +47,13 @@ export const ExpenseInputSheet = ({
       snapPoints={snapPoints}
       tweenConfig={{ ease: "easeOut", duration: 0.4 }}
     >
-      <Sheet.Container className="bg-[#242424]!">
-        <Sheet.Content>
-          <div className="flex-1" />
-
+      <Sheet.Container className="overflow-hidden !rounded-tl-xl !rounded-tr-xl">
+        <Sheet.Content className="bg-zinc-800 pt-4 h-full">
           <TxnInputPad
             isEdit={isEdit}
             calculatorProps={calculatorInterface}
             transactionInputProps={transactionInputInterface}
+            className="h-full"
           />
         </Sheet.Content>
       </Sheet.Container>
