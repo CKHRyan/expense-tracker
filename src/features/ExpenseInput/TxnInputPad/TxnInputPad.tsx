@@ -19,7 +19,7 @@ export const TxnInputPad = ({
   transactionInputProps,
 }: Props) => {
   const { displayValue: amount } = calculatorProps;
-  const { description, setDescription } = transactionInputProps;
+  const { description, setDescription, date, setDate } = transactionInputProps;
 
   return (
     <div className="bg-zinc-800">
@@ -31,7 +31,12 @@ export const TxnInputPad = ({
         <Text className="font-bold text-xl">$ {amount.toLocaleString()}</Text>
         <div className="flex gap-2">
           <TxnAmountPad {...calculatorProps} className="flex-1" />
-          <TxnActionPad isEdit={isEdit} {...calculatorProps} />
+          <TxnActionPad
+            isEdit={isEdit}
+            {...calculatorProps}
+            date={date}
+            setDate={setDate}
+          />
         </div>
       </div>
     </div>

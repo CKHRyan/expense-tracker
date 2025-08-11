@@ -1,7 +1,7 @@
 import { useGoogleSheet } from "@utils/googleSheet/hooks/useGoogleSheet";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-import { useAuthStore, useSheetStore } from "@stores";
+import { useAppStore, useAuthStore, useSheetStore } from "@stores";
 import { useGoogleSheetDoc } from "@utils/googleSheet/hooks/useGoogleSheetDoc";
 import { useGoogleSheetQuery } from "@utils/googleSheet/hooks/useGoogleSheetQuery";
 import { Text, Fab, ValueCard } from "@components";
@@ -25,7 +25,7 @@ export const ExpenseListPage = () => {
   const { sheet } = useGoogleSheet({ doc, sheetIndex });
   const { data = [] } = useGoogleSheetQuery({ sheet });
 
-  const [isOpenExpenseInputModal, setIsOpenExpenseInputModal] = useState(false);
+  const { isOpenExpenseSheet, setIsOpenExpenseSheet } = useAppStore();
 
   const totalExpense = useMemo(
     () => data.reduce((sum, { amount }) => amount + sum, 0),
@@ -78,11 +78,11 @@ export const ExpenseListPage = () => {
         </div>
       </div>
 
-      <Fab onClick={() => setIsOpenExpenseInputModal(true)}>Add</Fab>
+      <Fab onClick={() => setIsOpenExpenseSheet(true)}>Add</Fab>
 
       <ExpenseInputModal
-        isOpen={isOpenExpenseInputModal}
-        onClose={() => setIsOpenExpenseInputModal(false)}
+        isOpen={isOpenExpenseSheet}
+        onClose={() => setIsOpenExpenseSheet(false)}
       />
     </>
   );

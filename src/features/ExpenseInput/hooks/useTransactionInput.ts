@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 
 export type TransactionInputInterface = {
   date: Moment | null;
-  setDate: (value: Moment) => void;
+  setDate: (value: Moment | null) => void;
   description: string;
   setDescription: (value: string) => void;
   clear: () => void;

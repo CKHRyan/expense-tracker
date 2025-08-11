@@ -3,7 +3,8 @@ import {
   useCalculator,
   useTransactionInput,
 } from "@features/ExpenseInput/hooks";
-import { useCallback, useRef } from "react";
+import moment from "moment";
+import { useCallback, useEffect, useRef } from "react";
 import { Sheet, type SheetRef } from "react-modal-sheet";
 
 const snapPoints = [1, 0];
@@ -23,6 +24,13 @@ export const ExpenseInputSheet = ({
 
   const calculatorInterface = useCalculator();
   const transactionInputInterface = useTransactionInput();
+
+  useEffect(() => {
+    if (isOpen) {
+      transactionInputInterface.setDate(moment());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const _onClose = useCallback(() => {
     calculatorInterface.clear();

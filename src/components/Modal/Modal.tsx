@@ -2,13 +2,11 @@ import ReactModal from "react-modal";
 import { twMerge } from "tailwind-merge";
 import "./style.css";
 
-type Props = { contentContainerClassname?: string } & ReactModal.Props;
+ReactModal.setAppElement("#root");
 
-export const Modal = ({
-  children,
-  contentContainerClassname,
-  ...otherProps
-}: Props) => (
+type Props = { contentClassname?: string } & ReactModal.Props;
+
+export const Modal = ({ contentClassname, ...otherProps }: Props) => (
   <ReactModal
     overlayClassName={{
       base: "overlay-base",
@@ -16,15 +14,12 @@ export const Modal = ({
       beforeClose: "overlay-before",
     }}
     className={{
-      base: "content-base",
+      base: twMerge("content-base p-4 flex flex-col", contentClassname),
       afterOpen: "content-after",
       beforeClose: "content-before",
     }}
     closeTimeoutMS={200}
+    ariaHideApp={false}
     {...otherProps}
-  >
-    <div className={twMerge("p-4 flex flex-col", contentContainerClassname)}>
-      {children}
-    </div>
-  </ReactModal>
+  />
 );

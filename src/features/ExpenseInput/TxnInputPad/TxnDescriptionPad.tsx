@@ -7,7 +7,7 @@ type Props = Pick<TransactionInputInterface, "description" | "setDescription">;
 
 export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
   const [openDescModal, toggleDescModal] = useToggle(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(description ?? "");
 
   const onDescriptionConfirm = useCallback(() => {
     setDescription(value);
@@ -38,7 +38,7 @@ export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
       <Modal
         isOpen={openDescModal}
         onRequestClose={toggleDescModal}
-        contentContainerClassname="pt-4 pb-6 gap-6 items-center"
+        contentClassname="pt-4 pb-6 gap-6 items-center"
       >
         <Text className="text-lg font-semibold">Remarks</Text>
         <FormTextArea
