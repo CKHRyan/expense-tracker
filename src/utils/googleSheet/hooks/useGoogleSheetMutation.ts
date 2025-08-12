@@ -1,10 +1,10 @@
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { useState, useCallback } from "react";
 import {
-  facadeExpenseRowToSheetRecord,
-  isValidExpenseRecord,
+  facadeRawExpenseRowToSheetRecord,
+  isValidRawExpenseRecord,
 } from "../helpers";
-import type { ExpenseRecord } from "../types";
+import type { RawExpenseRecord } from "../types";
 import { isAxiosError } from "axios";
 import { useAuthStore, useSheetStore } from "@stores";
 
@@ -15,68 +15,73 @@ type Params = {
 export const useGoogleSheetMutation = ({ sheet }: Params) => {
   const { setToken } = useAuthStore();
   const { triggerMutationCounter } = useSheetStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCreateLoading, setIsCreateLoading] = useState(false);
+  const [isUpdateLoading, setIsUpdateLoading] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
-  const onError = (err: any) => {
-    console.error(err);
-    if (isAxiosError(err) && err.status === 401) {
-      setToken(undefined);
-    }
-  };
+  const onError = useCallback(
+    (err: any) => {
+      console.error(err);
+      if (isAxiosError(err) && err.status === 401) {
+        setToken(undefined);
+      }
+    },
+    [setToken]
+  );
 
   const createExpenseRecord = useCallback(
-    async (record: ExpenseRecord) => {
+    async (record: RawExpenseRecord) => {
       try {
-        setIsLoading(true);
+        setIsCreateLoading(true);
         if (!sheet) {
           throw new Error("Missing focused sheet");
         }
-        if (!isValidExpenseRecord(record)) {
+        if (!isValidRawExpenseRecord(record)) {
           throw new Error("Invalid expense record");
         }
-        await sheet.addRow(facadeExpenseRowToSheetRecord(record));
+        await sheet.addRow(facadeRawExpenseRowToSheetRecord(record));
         triggerMutationCounter();
       } catch (err) {
         onError(err);
         throw err;
       } finally {
-        setIsLoading(false);
+        setIsCreateLoading(false);
       }
     },
-    [sheet, triggerMutationCounter]
+    [onError, sheet, triggerMutationCounter]
   );
 
   const updateExpenseRecord = useCallback(
-    async (index: number, record: ExpenseRecord) => {
+    async (index: number, record: RawExpenseRecord) => {
       try {
-        setIsLoading(true);
+        setIsUpdateLoading(true);
         if (!sheet) {
           throw new Error("Missing focused sheet");
         }
-        if (!isValidExpenseRecord(record)) {
+        if (!isValidRawExpenseRecord(record)) {
           throw new Error("Invalid expense record");
         }
         const rows = await sheet.getRows();
         if (index < 0 || index >= rows.length) {
           throw new Error("Invalid row index");
         }
-        rows[index].assign(facadeExpenseRowToSheetRecord(record));
+        rows[index].assign(facadeRawExpenseRowToSheetRecord(record));
         await rows[index].save();
         triggerMutationCounter();
       } catch (err) {
         onError(err);
         throw err;
       } finally {
-        setIsLoading(false);
+        setIsUpdateLoading(false);
       }
     },
-    [sheet, triggerMutationCounter]
+    [onError, sheet, triggerMutationCounter]
   );
 
   const deleteExpenseRecord = useCallback(
     async (index: number) => {
       try {
-        setIsLoading(true);
+        setIsDeleteLoading(true);
         if (!sheet) {
           throw new Error("Missing focused sheet");
         }
@@ -90,16 +95,18 @@ export const useGoogleSheetMutation = ({ sheet }: Params) => {
         onError(err);
         throw err;
       } finally {
-        setIsLoading(false);
+        setIsDeleteLoading(false);
       }
     },
-    [sheet, triggerMutationCounter]
+    [onError, sheet, triggerMutationCounter]
   );
 
   return {
     createExpenseRecord,
+    isCreateLoading,
     updateExpenseRecord,
+    isUpdateLoading,
     deleteExpenseRecord,
-    isLoading,
+    isDeleteLoading,
   };
 };

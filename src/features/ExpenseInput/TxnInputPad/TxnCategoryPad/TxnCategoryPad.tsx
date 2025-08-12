@@ -3,7 +3,7 @@ import { CategoryPadButtonCard } from "@features/ExpenseInput/PadButtonCard/Cate
 import { useMemo, useState } from "react";
 import { categoryOptions, categoryGroupOptions } from "./constants";
 import { twMerge } from "tailwind-merge";
-import { categoryGroupMap } from "src/constants/expense";
+import { categoryAttributes, categoryGroupMap } from "src/constants/expense";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
 
 type Props = {
@@ -53,14 +53,14 @@ export const TxnCategoryPad = ({
 
       <div className={twMerge("shrink", categoryListClassName)}>
         <div className={"grid grid-cols-4 gap-4 p-4"}>
-          {filteredcategoryOptions.map(({ category, title, icon }) => (
+          {filteredcategoryOptions.map(({ category }) => (
             <CategoryPadButtonCard
               key={`category-${category}`}
-              icon={icon}
+              icon={categoryAttributes[category].icon}
               isSelected={selectedCategory === category}
               onClick={() => setCategory(category)}
             >
-              {title}
+              {categoryAttributes[category].title}
             </CategoryPadButtonCard>
           ))}
         </div>

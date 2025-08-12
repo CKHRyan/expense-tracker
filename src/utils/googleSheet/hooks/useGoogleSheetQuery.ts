@@ -1,14 +1,14 @@
 import { useAuthStore, useSheetStore } from "@stores";
 import {
   facadeSheetExpenseRow,
-  facadeRawExpenseRecord,
+  facadeSheetRawExpenseRecord,
 } from "@utils/googleSheet/helpers";
 import { isAxiosError } from "axios";
 import {
   GoogleSpreadsheetRow,
   GoogleSpreadsheetWorksheet,
 } from "google-spreadsheet";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 type Params = {
   sheet?: GoogleSpreadsheetWorksheet;
@@ -20,15 +20,18 @@ export const useGoogleSheetQuery = ({ sheet }: Params) => {
   const [rows, setRows] =
     useState<GoogleSpreadsheetRow<Record<string, any>>[]>();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<unknown>();
+  const [error, setError] = useState<any>();
 
-  const onError = (err: any) => {
-    console.error(err);
-    setError(err);
-    if (isAxiosError(err) && err.status === 401) {
-      setToken(undefined);
-    }
-  };
+  const onError = useCallback(
+    (err: any) => {
+      console.error(err);
+      setError(err);
+      if (isAxiosError(err) && err.status === 401) {
+        setToken(undefined);
+      }
+    },
+    [setToken]
+  );
 
   // Init doc
   useEffect(() => {
@@ -46,13 +49,13 @@ export const useGoogleSheetQuery = ({ sheet }: Params) => {
       }
     };
     setup();
-  }, [sheet, mutationCounter]);
+  }, [sheet, mutationCounter, onError]);
 
   const data = useMemo(
     () =>
       rows?.map((row) => {
         const rawRecord = facadeSheetExpenseRow(row);
-        const record = facadeRawExpenseRecord(rawRecord);
+        const record = facadeSheetRawExpenseRecord(rawRecord);
         return record;
       }),
     [rows]

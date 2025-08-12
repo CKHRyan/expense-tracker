@@ -1,10 +1,7 @@
-import { useGoogleSheet } from "@utils/googleSheet/hooks/useGoogleSheet";
 import { useMemo } from "react";
 
-import { useAppStore, useAuthStore, useSheetStore } from "@stores";
-import { useGoogleSheetDoc } from "@utils/googleSheet/hooks/useGoogleSheetDoc";
-import { useGoogleSheetQuery } from "@utils/googleSheet/hooks/useGoogleSheetQuery";
-import { Text, Fab, ValueCard } from "@components";
+import { useAppStore } from "@stores";
+import { Text, Fab, ValueCard, Loading } from "@components";
 import { groupBy } from "lodash";
 import moment from "moment";
 import {
@@ -13,17 +10,12 @@ import {
 } from "@utils/googleSheet/constants";
 import { ExpenseInputModal } from "@features/ExpenseInput";
 import { TransactionCard } from "@features/ExpenseList";
+import { useExpenseQuery } from "@hooks/useExpenseQuery";
 
 export const ExpenseListPage = () => {
-  const { token = "" } = useAuthStore();
-  const { sheetId = "", sheetIndex } = useSheetStore();
-  const googleSheetDocOptions = useMemo(
-    () => ({ token, sheetId, sheetIndex }),
-    [sheetId, sheetIndex, token]
-  );
-  const { doc } = useGoogleSheetDoc(googleSheetDocOptions);
-  const { sheet } = useGoogleSheet({ doc, sheetIndex });
-  const { data = [] } = useGoogleSheetQuery({ sheet });
+  const { data = [], isLoading } = useExpenseQuery();
+
+  console.log("jjj", isLoading);
 
   const { isOpenExpenseSheet, setIsOpenExpenseSheet } = useAppStore();
 
@@ -47,6 +39,8 @@ export const ExpenseListPage = () => {
       ),
     [recordsByDay]
   );
+
+  if (isLoading) return <Loading isFullScreen />;
 
   return (
     <>

@@ -1,14 +1,16 @@
 import { useGoogleSheet } from "@utils/googleSheet/hooks/useGoogleSheet";
 import { useMemo } from "react";
-import type { ExpenseRecord } from "@utils/googleSheet/types";
-
+import type { RawExpenseRecord } from "@utils/googleSheet/types";
 import moment from "moment";
 import { useAuthStore, useSheetStore } from "@stores";
 import { serverDatetimeFormat } from "@utils/googleSheet/constants";
-import { useGoogleSheetDoc } from "@utils/googleSheet/hooks/useGoogleSheetDoc";
-import { useGoogleSheetQuery } from "@utils/googleSheet/hooks/useGoogleSheetQuery";
-import { useGoogleSheetMutation } from "@utils/googleSheet/hooks/useGoogleSheetMutation";
 import { Button } from "@components";
+import {
+  useGoogleSheetDoc,
+  useGoogleSheetQuery,
+  useGoogleSheetMutation,
+} from "@utils/googleSheet/hooks";
+import { CATEGORY, CATEGORY_GROUP } from "src/constants/expense";
 
 export const ExpenseListPoCPage = () => {
   const { token = "" } = useAuthStore();
@@ -25,10 +27,10 @@ export const ExpenseListPoCPage = () => {
     useGoogleSheetMutation({ sheet });
 
   const create = async () => {
-    const record: ExpenseRecord = {
+    const record: RawExpenseRecord = {
       date: moment().format(serverDatetimeFormat),
-      category: "food",
-      item: "lunch",
+      category: CATEGORY_GROUP.Dining,
+      item: CATEGORY.Lunch,
       amount: 342,
       remark: "remark",
     };
@@ -36,10 +38,10 @@ export const ExpenseListPoCPage = () => {
   };
 
   const update = async () => {
-    const record: ExpenseRecord = {
+    const record: RawExpenseRecord = {
       date: moment().format(serverDatetimeFormat),
-      category: "food",
-      item: "dinner",
+      category: CATEGORY_GROUP.Dining,
+      item: CATEGORY.Dinner,
       amount: 342,
       remark: "remark",
     };

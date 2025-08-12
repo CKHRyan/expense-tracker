@@ -1,11 +1,13 @@
+import { useExpenseMutation } from "@hooks/useExpenseMutation";
+import { useAppStore } from "@stores";
 import { isNil } from "lodash";
 import type { Moment } from "moment";
 import { useCallback, useState } from "react";
-import { category } from "src/constants/expense";
+import { CATEGORY, categoryGroupMap } from "src/constants/expense";
 import type { Category } from "src/types/expense";
 
 const initialAmount = 0;
-const initialCategory = category.Other;
+const initialCategory = CATEGORY.Other;
 const initialDate = null;
 const initialDescription = "";
 
@@ -24,6 +26,9 @@ export type TransactionInputInterface = {
 };
 
 export const useTransactionInput = (): TransactionInputInterface => {
+  const { createExpense } = useExpenseMutation();
+  const { setIsOpenExpenseSheet } = useAppStore();
+
   const [amount, setAmount] = useState<number>(initialAmount);
   const [category, setCategory] = useState<Category>(initialCategory);
   const [date, setDate] = useState<Moment | null>(initialDate);
@@ -38,9 +43,31 @@ export const useTransactionInput = (): TransactionInputInterface => {
     setDescription(initialDescription);
   }, []);
 
-  const submit = useCallback(() => {
-    console.log(amount, category, date, description);
-  }, [amount, category, date, description]);
+  const submit = useCallback(async () => {
+    try {
+      if (disabledSubmit) throw new Error("Invalid input");
+
+      await createExpense({
+        date,
+        category: categoryGroupMap[category],
+        item: category,
+        amount,
+        remark: description,
+      });
+      setIsOpenExpenseSheet(false);
+    } catch (err: any) {
+      console.error(err);
+      alert("Failed to create expense. Please try again.");
+    }
+  }, [
+    amount,
+    category,
+    createExpense,
+    date,
+    description,
+    disabledSubmit,
+    setIsOpenExpenseSheet,
+  ]);
 
   return {
     amount,

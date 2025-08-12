@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment, { type Moment } from "moment";
 import type { Entries } from "../types";
 import {
   serverDatetimeFormat,
@@ -8,7 +8,7 @@ import {
 import type {
   ExpenseAttributeLabel,
   ExpenseAttributeValue,
-  ExpenseRecord,
+  RawExpenseRecord,
 } from "./types";
 import type { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { isObject } from "lodash";
@@ -24,10 +24,10 @@ export const facadeSheetExpenseRow = (
     {} as Record<ExpenseAttributeValue, string>
   );
 
-export const facadeExpenseRowToSheetRecord = (
-  record: ExpenseRecord
+export const facadeRawExpenseRowToSheetRecord = (
+  record: RawExpenseRecord
 ): Record<ExpenseAttributeLabel, string> =>
-  (Object.entries(record) as Entries<ExpenseRecord>).reduce(
+  (Object.entries(record) as Entries<RawExpenseRecord>).reduce(
     (record, [key, value]) => ({
       ...record,
       [ExpenseSchema[key].label]: value.toString(),
@@ -35,9 +35,9 @@ export const facadeExpenseRowToSheetRecord = (
     {} as Record<ExpenseAttributeLabel, string>
   );
 
-export const facadeRawExpenseRecord = (
+export const facadeSheetRawExpenseRecord = (
   rawRecord: Record<ExpenseAttributeValue, string>
-): ExpenseRecord =>
+): RawExpenseRecord =>
   (
     Object.entries(rawRecord) as Entries<Record<ExpenseAttributeValue, string>>
   ).reduce((record, [key, value]) => {
@@ -46,9 +46,13 @@ export const facadeRawExpenseRecord = (
       [key]: value,
     });
     const { type } = ExpenseSchema[key];
+    let dateMoment: Moment;
     switch (type) {
       case ExpenseDataType.Date:
-        return mergedRecord(moment(value).format(serverDatetimeFormat));
+        dateMoment = moment(value);
+        return dateMoment.isValid()
+          ? mergedRecord(dateMoment.format(serverDatetimeFormat))
+          : record;
       case ExpenseDataType.Number: {
         const _value = Number(value.replace("$", ""));
         return mergedRecord(!isNaN(_value) ? _value : -999);
@@ -57,12 +61,14 @@ export const facadeRawExpenseRecord = (
       default:
         return mergedRecord(value);
     }
-  }, {} as ExpenseRecord);
+  }, {} as RawExpenseRecord);
 
 const isExpenseSchemaKey = (key: string): key is keyof typeof ExpenseSchema =>
   key in ExpenseSchema;
 
-export const isValidExpenseRecord = (record: any): record is ExpenseRecord => {
+export const isValidRawExpenseRecord = (
+  record: any
+): record is RawExpenseRecord => {
   if (!isObject(record)) return false;
   return Object.entries(record).every(([key, value]) => {
     if (!isExpenseSchemaKey(key)) return false;

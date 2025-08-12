@@ -1,5 +1,15 @@
-import type { category, categoryGroup } from "src/constants/expense";
+import type { Moment } from "moment";
+import type { CATEGORY, CATEGORY_GROUP } from "src/constants/expense";
 
-export type CategoryGroup = (typeof categoryGroup)[keyof typeof categoryGroup];
+export type ExpenseRecord = {
+  date: Moment;
+  category: CategoryGroup;
+  item: Category;
+  amount: number;
+  remark: string;
+};
 
-export type Category = (typeof category)[keyof typeof category];
+export type CategoryGroup =
+  (typeof CATEGORY_GROUP)[keyof typeof CATEGORY_GROUP];
+
+export type Category = (typeof CATEGORY)[keyof typeof CATEGORY];

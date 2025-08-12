@@ -2,7 +2,7 @@ import "@ncdai/react-wheel-picker/style.css";
 
 import * as WheelPickerPrimitive from "@ncdai/react-wheel-picker";
 
-import { cn } from "@utils/cnHelper";
+import { cn } from "src/helpers/cn";
 import { twMerge } from "tailwind-merge";
 
 export type WheelPickerOption = WheelPickerPrimitive.WheelPickerOption;
