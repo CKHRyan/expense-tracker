@@ -70,7 +70,11 @@ export const TxnDatePad = ({ date, setDate }: Props) => {
           onChange={onTimeChange}
           className="w-full"
         />
-        <Calendar value={value?.toDate()} onChange={onDateChange} />
+        <Calendar
+          value={value?.toDate()}
+          onChange={onDateChange}
+          className="w-full"
+        />
         <Button onClick={onDateConfirm} className="w-full font-semibold">
           Confirm
         </Button>

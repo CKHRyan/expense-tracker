@@ -61,9 +61,14 @@ const categoryGroups: CategoryGroup[] = [
   "Other",
 ];
 
-type Props = { tabbarClassName?: string; categoryListClassName?: string };
+type Props = {
+  className?: string;
+  tabbarClassName?: string;
+  categoryListClassName?: string;
+};
 
 export const TxnCategoryPad = ({
+  className,
   tabbarClassName,
   categoryListClassName,
 }: Props) => {
@@ -78,7 +83,7 @@ export const TxnCategoryPad = ({
   );
 
   return (
-    <>
+    <div className={twMerge("flex flex-col overflow-hidden", className)}>
       <Tabs
         items={categoryGroups.map((group) => ({
           title: group,
@@ -89,18 +94,15 @@ export const TxnCategoryPad = ({
         className={twMerge("px-4", tabbarClassName)}
       />
 
-      <div
-        // TODO: Fix drag scroll event propagation
-        className={twMerge("grid grid-cols-4 gap-4 p-4", categoryListClassName)}
-      >
-        {filteredCategories.map(({ title, icon }) => (
-          <CategoryPadButtonCard key={`category-${title}`} icon={icon}>
-            {title}
-          </CategoryPadButtonCard>
-        ))}
+      <div className={twMerge("shrink", categoryListClassName)}>
+        <div className={"grid grid-cols-4 gap-4 p-4"}>
+          {filteredCategories.map(({ title, icon }) => (
+            <CategoryPadButtonCard key={`category-${title}`} icon={icon}>
+              {title}
+            </CategoryPadButtonCard>
+          ))}
+        </div>
       </div>
-
-      <div className="flex-1" />
-    </>
+    </div>
   );
 };

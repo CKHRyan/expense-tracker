@@ -1,3 +1,4 @@
+import { Text } from "@components";
 import { TxnInputPad } from "@features/ExpenseInput/TxnInputPad";
 import {
   useCalculator,
@@ -48,12 +49,13 @@ export const ExpenseInputSheet = ({
       tweenConfig={{ ease: "easeOut", duration: 0.4 }}
     >
       <Sheet.Container className="overflow-hidden !rounded-tl-xl !rounded-tr-xl">
-        <Sheet.Content className="bg-zinc-800 pt-4 h-full">
+        <Sheet.Content className="bg-zinc-800 pt-4 h-full gap-1">
+          <Text className="text-center font-semibold">Add Transaction</Text>
           <TxnInputPad
             isEdit={isEdit}
             calculatorProps={calculatorInterface}
             transactionInputProps={transactionInputInterface}
-            className="h-full"
+            className="flex-1"
           />
         </Sheet.Content>
       </Sheet.Container>

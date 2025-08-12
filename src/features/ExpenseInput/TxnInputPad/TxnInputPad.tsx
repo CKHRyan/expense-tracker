@@ -26,8 +26,11 @@ export const TxnInputPad = ({
   const { description, setDescription, date, setDate } = transactionInputProps;
 
   return (
-    <div className={twMerge("flex flex-col", className)}>
-      <TxnCategoryPad categoryListClassName="shrink overflow-auto" />
+    <div className={twMerge("flex flex-col overflow-hidden", className)}>
+      <TxnCategoryPad
+        className="flex-1"
+        categoryListClassName="overflow-auto"
+      />
       <TxnDescriptionPad
         description={description}
         setDescription={setDescription}

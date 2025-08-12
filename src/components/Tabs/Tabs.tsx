@@ -52,7 +52,7 @@ export const Tabs = <T extends string | number>({
       <button
         ref={tabRef}
         className={twMerge(
-          "relative px-4 py-2 font-semibold text-sm transition-colors duration-200 ease-in-out whitespace-nowrap",
+          "relative px-4 py-2 font-semibold transition-colors duration-200 ease-in-out whitespace-nowrap",
           isSelected ? "text-blue-500" : "text-gray-500 hover:text-blue-500"
         )}
         onClick={() => onChange(value)}
