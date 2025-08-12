@@ -1,93 +1,33 @@
+import type {
+  CalculatorInterface,
+  CalculatorOpKey,
+  CalculatorKey,
+} from "./types";
+import { defaultInitialValue, operatorRegex } from "./constants";
+import {
+  sanitize,
+  isOperatorExist,
+  isEndWithOperator,
+  isEndWithDecimal,
+  delLastChar,
+  isDecimal,
+  replaceSubValue,
+  roundTo,
+  getDecimalPlaces,
+} from "./helpers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export type CalculatorDigitKey =
-  | "0"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9";
-
-export type CalculatorDecimalKey = ".";
-
-export type CalculatorOpKey = "×" | "+" | "÷";
-
-type CalculatorKey =
-  | CalculatorDigitKey
-  | CalculatorDecimalKey
-  | CalculatorOpKey;
-
-export type CalculatorValue = {
-  value: number;
-  displayValue: string;
+type Params = {
+  initialValue?: number;
+  onChange?: (value: number) => void;
 };
 
-export type CalculatorStatus = {
-  isError: boolean;
-  isCalculable: boolean;
-  disableInput: boolean;
-};
-
-export type CalculatorFunc = {
-  input: (key: CalculatorKey) => void;
-  clear: () => void;
-  del: () => void;
-  calculate: () => void;
-};
-
-export type CalculatorInterface = CalculatorValue &
-  CalculatorStatus &
-  CalculatorFunc;
-
-const initializedValue = 0;
-
-const sanitize = (value: string) => value.replaceAll(",", "");
-
-const getLastChar = (str: string) => str.charAt(str.length - 1);
-
-const delLastChar = (str: string) => str.slice(0, -1);
-
-const operatorRegex = /([×+÷])/;
-
-const isOperatorExist = (str: string) => operatorRegex.test(str);
-
-const isEndWithOperator = (str: string) => isOperatorExist(getLastChar(str));
-
-const isEndWithDecimal = (str: string) => getLastChar(str) === ".";
-
-const isDecimal = (value: string) => value.includes(".");
-
-const getDecimalPlaces = (value: string) => {
-  const decimalSymbolIndex = value.indexOf(".");
-  const isDecimal = decimalSymbolIndex >= 0;
-  const decimalPlaces = isDecimal ? value.length - 1 - decimalSymbolIndex : 0;
-  return decimalPlaces;
-};
-
-const roundTo = (n: number, digits: number) => {
-  if (digits === undefined) {
-    digits = 0;
-  }
-  const multiplicator = Math.pow(10, digits);
-  n = parseFloat((n * multiplicator).toFixed(11));
-  const test = Math.round(n) / multiplicator;
-  return +test.toFixed(digits);
-};
-
-const replaceSubValue = (str: string, updatedSubValue: string) => {
-  if (!isOperatorExist(str)) throw new Error("Sub value doesnot exist.");
-
-  const prefix = str.slice(0, str.search(operatorRegex) + 1);
-  return `${prefix}${updatedSubValue}`;
-};
-
-export const useCalculator = (): CalculatorInterface => {
+export const useCalculator = ({
+  initialValue,
+  onChange,
+}: Params): CalculatorInterface => {
   const [displayValue, setDisplayValue] = useState(
-    initializedValue.toLocaleString()
+    (initialValue ?? defaultInitialValue).toLocaleString()
   );
 
   const [mainValue, focusValue, operator] = useMemo(() => {
@@ -129,7 +69,7 @@ export const useCalculator = (): CalculatorInterface => {
         if (hasOperator)
           return replaceSubValue(_displayValue, updatedFocusValue);
 
-        return updatedFocusValue || initializedValue.toLocaleString();
+        return updatedFocusValue || defaultInitialValue.toLocaleString();
       }),
     [focusValue, hasOperator]
   );
@@ -238,6 +178,10 @@ export const useCalculator = (): CalculatorInterface => {
       clear();
     }
   }, [clear, value]);
+
+  useEffect(() => {
+    onChange?.(value);
+  }, [value, onChange]);
 
   return {
     input,

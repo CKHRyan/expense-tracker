@@ -23,11 +23,14 @@ export const TxnInputPad = ({
   className,
 }: Props) => {
   const { displayValue: amount } = calculatorProps;
-  const { description, setDescription, date, setDate } = transactionInputProps;
+  const { category, setCategory, description, setDescription } =
+    transactionInputProps;
 
   return (
     <div className={twMerge("flex flex-col overflow-hidden", className)}>
       <TxnCategoryPad
+        category={category}
+        setCategory={setCategory}
         className="flex-1"
         categoryListClassName="overflow-auto"
       />
@@ -42,8 +45,7 @@ export const TxnInputPad = ({
           <TxnActionPad
             isEdit={isEdit}
             {...calculatorProps}
-            date={date}
-            setDate={setDate}
+            {...transactionInputProps}
           />
         </div>
       </div>

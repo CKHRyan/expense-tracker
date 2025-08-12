@@ -23,8 +23,11 @@ export const ExpenseInputSheet = ({
 }: Props) => {
   const ref = useRef<SheetRef>(null);
 
-  const calculatorInterface = useCalculator();
   const transactionInputInterface = useTransactionInput();
+  const calculatorInterface = useCalculator({
+    initialValue: transactionInputInterface.amount,
+    onChange: transactionInputInterface.setAmount,
+  });
 
   useEffect(() => {
     if (isOpen) {

@@ -6,10 +6,24 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   icon?: IconProps["name"];
-} & Pick<ComponentProps<typeof Button>, "children" | "className">;
+  isSelected?: boolean;
+} & ComponentProps<typeof Button>;
 
-export const CategoryPadButtonCard = ({ icon, children, className }: Props) => (
-  <PadButtonCard className={twMerge("px-0 text-sm font-semibold", className)}>
+export const CategoryPadButtonCard = ({
+  icon,
+  isSelected = false,
+  children,
+  className,
+  ...otherProps
+}: Props) => (
+  <PadButtonCard
+    className={twMerge(
+      "px-0 text-sm font-semibold box-border border-2 border-transparent",
+      isSelected && "border-blue-500",
+      className
+    )}
+    {...otherProps}
+  >
     {icon && (
       <>
         <Icon name={icon} className="text-2xl mb-1" />

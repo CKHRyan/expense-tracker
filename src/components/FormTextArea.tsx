@@ -23,7 +23,7 @@ export const FormTextArea = ({
     )}
     <textarea
       className={twMerge(
-        "bg-[#2c2c2c] text-white rounded-lg block w-full p-2.5",
+        "bg-[#2c2c2c] text-white rounded-lg block w-full p-2.5 placeholder:text-gray-500",
         textAreaClassname
       )}
       {...textareaProps}
