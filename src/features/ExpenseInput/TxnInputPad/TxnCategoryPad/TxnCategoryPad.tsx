@@ -1,6 +1,6 @@
 import { Tabs } from "@components";
 import { CategoryPadButtonCard } from "@features/ExpenseInput/PadButtonCard/CategoryPadButtonCard";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { categoryOptions, categoryGroupOptions } from "./constants";
 import { twMerge } from "tailwind-merge";
 import { categoryAttributes, categoryGroupMap } from "src/constants/expense";
@@ -38,6 +38,18 @@ export const TxnCategoryPad = ({
         );
     }
   }, [currentTab]);
+
+  useEffect(() => {
+    if (!selectedCategory) return;
+    if (
+      filteredcategoryOptions.every(
+        ({ category }) => category !== selectedCategory
+      )
+    ) {
+      setCurrentTab(categoryGroupMap[selectedCategory]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
 
   return (
     <div className={twMerge("flex flex-col overflow-hidden", className)}>

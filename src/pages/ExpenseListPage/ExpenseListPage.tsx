@@ -15,9 +15,12 @@ import { useExpenseQuery } from "@hooks/useExpenseQuery";
 export const ExpenseListPage = () => {
   const { data = [], isLoading } = useExpenseQuery();
 
-  console.log("jjj", isLoading);
-
-  const { isOpenExpenseSheet, setIsOpenExpenseSheet } = useAppStore();
+  const {
+    expenseSheetParams,
+    openNewExpenseSheet,
+    openEditExpenseSheet,
+    closeExpenseInputSheet,
+  } = useAppStore();
 
   const totalExpense = useMemo(
     () => data.reduce((sum, { amount }) => amount + sum, 0),
@@ -64,6 +67,7 @@ export const ExpenseListPage = () => {
                   <TransactionCard
                     key={`transaction-${index}`}
                     record={record}
+                    onClick={openEditExpenseSheet}
                   />
                 ))}
               </div>
@@ -72,11 +76,11 @@ export const ExpenseListPage = () => {
         </div>
       </div>
 
-      <Fab onClick={() => setIsOpenExpenseSheet(true)}>Add</Fab>
+      <Fab onClick={openNewExpenseSheet}>Add</Fab>
 
       <ExpenseInputModal
-        isOpen={isOpenExpenseSheet}
-        onClose={() => setIsOpenExpenseSheet(false)}
+        {...expenseSheetParams}
+        onClose={closeExpenseInputSheet}
       />
     </>
   );

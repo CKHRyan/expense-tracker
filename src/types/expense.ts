@@ -9,6 +9,8 @@ export type ExpenseRecord = {
   remark: string;
 };
 
+export type ExpenseRecordWithIndex = { index: number } & ExpenseRecord;
+
 export type CategoryGroup =
   (typeof CATEGORY_GROUP)[keyof typeof CATEGORY_GROUP];
 

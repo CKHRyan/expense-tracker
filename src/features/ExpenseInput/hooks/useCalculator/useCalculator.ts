@@ -18,16 +18,12 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Params = {
-  initialValue?: number;
   onChange?: (value: number) => void;
 };
 
-export const useCalculator = ({
-  initialValue,
-  onChange,
-}: Params): CalculatorInterface => {
+export const useCalculator = ({ onChange }: Params): CalculatorInterface => {
   const [displayValue, setDisplayValue] = useState(
-    (initialValue ?? defaultInitialValue).toLocaleString()
+    defaultInitialValue.toLocaleString()
   );
 
   const [mainValue, focusValue, operator] = useMemo(() => {
@@ -77,7 +73,6 @@ export const useCalculator = ({
   const clear = useCallback(() => setDisplayValue("0"), []);
 
   const calculate = useCallback(() => {
-    console.log(operator);
     if (!operator) return;
     if (!focusValue) return setDisplayValue(Number(mainValue).toLocaleString());
     let resultValue: number;
@@ -172,6 +167,11 @@ export const useCalculator = ({
     [appendDecimal, appendDigit, disableInput, appendOperator]
   );
 
+  const setCalculatorValue = useCallback(
+    (value: number) => setDisplayValue(value.toLocaleString()),
+    []
+  );
+
   useEffect(() => {
     // Always non-negative
     if (value < 0) {
@@ -188,6 +188,7 @@ export const useCalculator = ({
     clear,
     del,
     calculate,
+    setCalculatorValue,
     value,
     displayValue,
     isError,

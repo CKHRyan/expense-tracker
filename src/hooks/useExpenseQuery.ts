@@ -6,11 +6,14 @@ import {
 } from "@utils/googleSheet/hooks";
 
 import { useMemo } from "react";
-import { facadeRawExpenseRecord, isValidExpense } from "src/helpers/expense";
-import type { ExpenseRecord } from "src/types/expense";
+import {
+  facadeRawExpenseRecordWithIndex,
+  isValidExpenseWithIndex,
+} from "src/helpers/expense";
+import type { ExpenseRecordWithIndex } from "src/types/expense";
 
 type ExpenseQueryResult = {
-  data?: ExpenseRecord[];
+  data?: ExpenseRecordWithIndex[];
   isLoading: boolean;
   error: any;
 };
@@ -41,7 +44,10 @@ export const useExpenseQuery = (): ExpenseQueryResult => {
   } = useGoogleSheetQuery({ sheet });
 
   const data = useMemo(
-    () => rawData?.map(facadeRawExpenseRecord).filter(isValidExpense),
+    () =>
+      rawData
+        ?.map(facadeRawExpenseRecordWithIndex)
+        .filter(isValidExpenseWithIndex),
     [rawData]
   );
 

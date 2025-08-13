@@ -35,6 +35,7 @@ export type CalculatorFunc = {
   clear: () => void;
   del: () => void;
   calculate: () => void;
+  setCalculatorValue: (value: number) => void;
 };
 
 export type CalculatorInterface = CalculatorValue &

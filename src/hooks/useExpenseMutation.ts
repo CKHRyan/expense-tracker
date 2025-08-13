@@ -24,7 +24,7 @@ export const useExpenseMutation = () => {
 
   const {
     createExpenseRecord,
-    updateExpenseRecord: updateExpense,
+    updateExpenseRecord,
     deleteExpenseRecord: deleteExpense,
   } = useGoogleSheetMutation({
     sheet,
@@ -32,6 +32,9 @@ export const useExpenseMutation = () => {
 
   const createExpense = (record: ExpenseRecord) =>
     createExpenseRecord(facadeExpenseRecordToRaw(record));
+
+  const updateExpense = (index: number, record: ExpenseRecord) =>
+    updateExpenseRecord(index, facadeExpenseRecordToRaw(record));
 
   return { createExpense, updateExpense, deleteExpense };
 };

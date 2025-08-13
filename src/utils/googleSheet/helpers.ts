@@ -39,27 +39,30 @@ export const facadeSheetRawExpenseRecord = (
   rawRecord: Record<ExpenseAttributeValue, string>
 ): RawExpenseRecord =>
   (
-    Object.entries(rawRecord) as Entries<Record<ExpenseAttributeValue, string>>
+    Object.entries(rawRecord) as Entries<
+      Record<ExpenseAttributeValue, string | undefined>
+    >
   ).reduce((record, [key, value]) => {
     const mergedRecord = (value: any) => ({
       ...record,
       [key]: value,
     });
+    const valStr = value ?? "";
     const { type } = ExpenseSchema[key];
     let dateMoment: Moment;
     switch (type) {
       case ExpenseDataType.Date:
-        dateMoment = moment(value);
+        dateMoment = moment(valStr);
         return dateMoment.isValid()
           ? mergedRecord(dateMoment.format(serverDatetimeFormat))
           : record;
       case ExpenseDataType.Number: {
-        const _value = Number(value.replace("$", ""));
+        const _value = Number(valStr.replace("$", ""));
         return mergedRecord(!isNaN(_value) ? _value : -999);
       }
       case ExpenseDataType.String:
       default:
-        return mergedRecord(value);
+        return mergedRecord(valStr);
     }
   }, {} as RawExpenseRecord);
 
@@ -71,7 +74,7 @@ export const isValidRawExpenseRecord = (
 ): record is RawExpenseRecord => {
   if (!isObject(record)) return false;
   return Object.entries(record).every(([key, value]) => {
-    if (!isExpenseSchemaKey(key)) return false;
+    if (!isExpenseSchemaKey(key)) return true;
     const { type } = ExpenseSchema[key];
     switch (type) {
       case ExpenseDataType.Date:

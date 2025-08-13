@@ -1,14 +1,19 @@
 import { serverDatetimeFormat } from "@utils/googleSheet/constants";
 import type { RawExpenseRecord } from "@utils/googleSheet/types";
 import type { Optional } from "@utils/types";
-import { isObject } from "lodash";
+import { isNaN, isObject } from "lodash";
 import moment from "moment";
 import {
   CATEGORY,
   CATEGORY_GROUP,
   categoryGroupMap,
 } from "src/constants/expense";
-import type { Category, CategoryGroup, ExpenseRecord } from "src/types/expense";
+import type {
+  Category,
+  CategoryGroup,
+  ExpenseRecord,
+  ExpenseRecordWithIndex,
+} from "src/types/expense";
 
 export const isValidCategory = (value: string): value is Category =>
   value in CATEGORY;
@@ -24,9 +29,15 @@ export const isValidExpense = (
   isValidCategoryGroup(value.category) &&
   moment(value.date).isValid();
 
-export const facadeRawExpenseRecord = (
-  record: RawExpenseRecord
-): Optional<ExpenseRecord, "date"> => {
+export const isValidExpenseWithIndex = (
+  value: Partial<Record<keyof ExpenseRecordWithIndex, any>>
+): value is ExpenseRecordWithIndex =>
+  !isNaN(value.index) && isValidExpense(value);
+
+export const facadeRawExpenseRecordWithIndex = (
+  record: RawExpenseRecord,
+  index: number
+): Optional<ExpenseRecordWithIndex, "date"> => {
   const dateMoment = moment(record.date);
   const category = isValidCategory(record.item) ? record.item : CATEGORY.Other;
   return {
@@ -34,6 +45,7 @@ export const facadeRawExpenseRecord = (
     category: categoryGroupMap[category],
     item: category,
     date: dateMoment.isValid() ? dateMoment : undefined,
+    index,
   };
 };
 

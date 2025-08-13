@@ -1,5 +1,4 @@
 import { useExpenseMutation } from "@hooks/useExpenseMutation";
-import { useAppStore } from "@stores";
 import { isNil } from "lodash";
 import type { Moment } from "moment";
 import { useCallback, useState } from "react";
@@ -11,6 +10,11 @@ const initialCategory = CATEGORY.Other;
 const initialDate = null;
 const initialDescription = "";
 
+type Params = {
+  editIndex?: number;
+  onSubmit?: () => void;
+};
+
 export type TransactionInputInterface = {
   amount: number;
   setAmount: (value: number) => void;
@@ -21,13 +25,16 @@ export type TransactionInputInterface = {
   description: string;
   setDescription: (value: string) => void;
   clear: () => void;
-  submit: () => void;
+  create: () => void;
+  edit: () => void;
   disabledSubmit: boolean;
 };
 
-export const useTransactionInput = (): TransactionInputInterface => {
-  const { createExpense } = useExpenseMutation();
-  const { setIsOpenExpenseSheet } = useAppStore();
+export const useTransactionInput = ({
+  editIndex,
+  onSubmit,
+}: Params): TransactionInputInterface => {
+  const { createExpense, updateExpense } = useExpenseMutation();
 
   const [amount, setAmount] = useState<number>(initialAmount);
   const [category, setCategory] = useState<Category>(initialCategory);
@@ -43,7 +50,7 @@ export const useTransactionInput = (): TransactionInputInterface => {
     setDescription(initialDescription);
   }, []);
 
-  const submit = useCallback(async () => {
+  const create = useCallback(async () => {
     try {
       if (disabledSubmit) throw new Error("Invalid input");
 
@@ -54,7 +61,7 @@ export const useTransactionInput = (): TransactionInputInterface => {
         amount,
         remark: description,
       });
-      setIsOpenExpenseSheet(false);
+      onSubmit?.();
     } catch (err: any) {
       console.error(err);
       alert("Failed to create expense. Please try again.");
@@ -66,7 +73,34 @@ export const useTransactionInput = (): TransactionInputInterface => {
     date,
     description,
     disabledSubmit,
-    setIsOpenExpenseSheet,
+    onSubmit,
+  ]);
+
+  const edit = useCallback(async () => {
+    try {
+      if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
+
+      await updateExpense(editIndex, {
+        date,
+        category: categoryGroupMap[category],
+        item: category,
+        amount,
+        remark: description,
+      });
+      onSubmit?.();
+    } catch (err: any) {
+      console.error(err);
+      alert("Failed to edit expense. Please try again.");
+    }
+  }, [
+    amount,
+    category,
+    date,
+    description,
+    disabledSubmit,
+    editIndex,
+    onSubmit,
+    updateExpense,
   ]);
 
   return {
@@ -79,7 +113,8 @@ export const useTransactionInput = (): TransactionInputInterface => {
     setDate,
     setDescription,
     clear,
-    submit,
+    create,
+    edit,
     disabledSubmit,
   };
 };

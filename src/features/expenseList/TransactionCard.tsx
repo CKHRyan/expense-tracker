@@ -1,14 +1,20 @@
 import { Icon, Text } from "@components";
 import moment from "moment";
 import { categoryAttributes } from "src/constants/expense";
-import type { ExpenseRecord } from "src/types/expense";
+import type { ExpenseRecordWithIndex } from "src/types/expense";
 
-type Props = { record: ExpenseRecord };
+type Props = {
+  record: ExpenseRecordWithIndex;
+  onClick?: (record: ExpenseRecordWithIndex) => void;
+};
 
-export const TransactionCard = ({ record }: Props) => {
+export const TransactionCard = ({ record, onClick }: Props) => {
   const { date, category, item, amount, remark } = record;
   return (
-    <div className="px-3 py-2 bg-[#2c2c2c] flex gap-4 rounded-md items-center">
+    <div
+      onClick={() => onClick?.(record)}
+      className="px-3 py-2 bg-[#2c2c2c] flex gap-4 rounded-md items-center"
+    >
       <Icon name={categoryAttributes[item].icon} className="text-xl" />
       <div className="flex-1 overflow-hidden">
         <Text>{item}</Text>
