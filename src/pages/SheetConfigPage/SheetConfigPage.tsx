@@ -4,9 +4,11 @@ import { isNil } from "lodash";
 import { useCallback, useState } from "react";
 
 export const SheetConfigPage = () => {
-  const [_sheetId, _setSheetId] = useState("");
-  const [_sheetIndex, _setSheetIndex] = useState<number>();
-  const { setSheetId, setSheetIndex } = useSheetStore();
+  const { sheetId, sheetIndex, setSheetId, setSheetIndex } = useSheetStore();
+  const [_sheetId, _setSheetId] = useState(sheetId ?? "");
+  const [_sheetIndex, _setSheetIndex] = useState<number | undefined>(
+    sheetIndex
+  );
 
   const onLoad = useCallback(() => {
     try {

@@ -2016,6 +2016,11 @@ convert-source-map@^2.0.0:
   resolved "https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
+cookie@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-1.0.2.tgz#27360701532116bd3f1f9416929d176afe1e4610"
+  integrity sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==
+
 core-js-compat@^3.43.0:
   version "3.45.0"
   resolved "https://registry.npmjs.org/core-js-compat/-/core-js-compat-3.45.0.tgz"
@@ -3628,6 +3633,14 @@ react-modal@^3.16.3:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
+react-router@^7.8.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.8.0.tgz#2bc07e0a9ff74d88ee38c2f27897e968b8f59170"
+  integrity sha512-r15M3+LHKgM4SOapNmsH3smAizWds1vJ0Z9C4mWaKnT9/wD7+d/0jYcj6LmOvonkrO4Rgdyp4KQ/29gWN2i1eg==
+  dependencies:
+    cookie "^1.0.1"
+    set-cookie-parser "^2.6.0"
+
 react@^19.1.0:
   version "19.1.0"
   resolved "https://registry.npmjs.org/react/-/react-19.1.0.tgz"
@@ -3816,6 +3829,11 @@ serialize-javascript@^6.0.1:
   integrity sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==
   dependencies:
     randombytes "^2.1.0"
+
+set-cookie-parser@^2.6.0:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.7.1.tgz#3016f150072202dfbe90fadee053573cc89d2943"
+  integrity sha512-IOc8uWeOZgnb3ptbCURJWNjWUPcO3ZnTTdzsurqERrP6nPyv+paC55vJM0LpOlT2ne+Ix+9+CRG1MNLlyZ4GjQ==
 
 set-function-length@^1.2.2:
   version "1.2.2"

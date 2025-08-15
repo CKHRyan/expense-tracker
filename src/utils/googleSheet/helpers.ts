@@ -52,7 +52,7 @@ export const facadeSheetRawExpenseRecord = (
     let dateMoment: Moment;
     switch (type) {
       case ExpenseDataType.Date:
-        dateMoment = moment(valStr);
+        dateMoment = moment(valStr, serverDatetimeFormat);
         return dateMoment.isValid()
           ? mergedRecord(dateMoment.format(serverDatetimeFormat))
           : record;
@@ -78,7 +78,7 @@ export const isValidRawExpenseRecord = (
     const { type } = ExpenseSchema[key];
     switch (type) {
       case ExpenseDataType.Date:
-        return moment(value).isValid();
+        return moment(value, serverDatetimeFormat).isValid();
       case ExpenseDataType.Number:
         return typeof value === "number";
       case ExpenseDataType.String:

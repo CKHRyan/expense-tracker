@@ -15,7 +15,7 @@ type Props = { isEdit?: boolean } & CalculatorStatus &
   CalculatorFunc &
   Pick<
     TransactionInputInterface,
-    "date" | "setDate" | "create" | "edit" | "disabledSubmit"
+    "date" | "setDate" | "create" | "edit" | "remove" | "disabledSubmit"
   >;
 
 export const TxnActionPad = ({
@@ -27,11 +27,12 @@ export const TxnActionPad = ({
   setDate,
   create,
   edit,
+  remove,
   disabledSubmit,
 }: Props) => (
   <div className="flex flex-col gap-2 min-w-[70px]">
     {isEdit ? (
-      <RemovePadButtonCard />
+      <RemovePadButtonCard onClick={remove} />
     ) : (
       <div className="flex items-center justify-center flex-1">
         <Icon

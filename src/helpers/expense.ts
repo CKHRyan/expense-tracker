@@ -38,7 +38,7 @@ export const facadeRawExpenseRecordWithIndex = (
   record: RawExpenseRecord,
   index: number
 ): Optional<ExpenseRecordWithIndex, "date"> => {
-  const dateMoment = moment(record.date);
+  const dateMoment = moment(record.date, serverDatetimeFormat);
   const category = isValidCategory(record.item) ? record.item : CATEGORY.Other;
   return {
     ...record,

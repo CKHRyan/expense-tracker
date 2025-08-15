@@ -26,6 +26,7 @@ export type TransactionInputInterface = {
   setDescription: (value: string) => void;
   clear: () => void;
   create: () => void;
+  remove: () => void;
   edit: () => void;
   disabledSubmit: boolean;
 };
@@ -34,7 +35,7 @@ export const useTransactionInput = ({
   editIndex,
   onSubmit,
 }: Params): TransactionInputInterface => {
-  const { createExpense, updateExpense } = useExpenseMutation();
+  const { createExpense, updateExpense, deleteExpense } = useExpenseMutation();
 
   const [amount, setAmount] = useState<number>(initialAmount);
   const [category, setCategory] = useState<Category>(initialCategory);
@@ -103,6 +104,18 @@ export const useTransactionInput = ({
     updateExpense,
   ]);
 
+  const remove = useCallback(async () => {
+    try {
+      if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
+
+      await deleteExpense(editIndex);
+      onSubmit?.();
+    } catch (err: any) {
+      console.error(err);
+      alert("Failed to remove expense. Please try again.");
+    }
+  }, [deleteExpense, disabledSubmit, editIndex, onSubmit]);
+
   return {
     amount,
     setAmount,
@@ -115,6 +128,7 @@ export const useTransactionInput = ({
     clear,
     create,
     edit,
+    remove,
     disabledSubmit,
   };
 };
