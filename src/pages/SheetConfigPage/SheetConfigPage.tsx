@@ -1,7 +1,11 @@
 import { Button, FormInput, Title } from "@components";
+import { useAuth } from "@hooks/useAuth";
+import { useCanGoBack } from "@hooks/useCanGoBack";
 import { useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router";
+import { path } from "src/routes/constants/path";
 
 export const SheetConfigPage = () => {
   const { sheetId, sheetIndex, setSheetId, setSheetIndex } = useSheetStore();
@@ -9,6 +13,14 @@ export const SheetConfigPage = () => {
   const [_sheetIndex, _setSheetIndex] = useState<number | undefined>(
     sheetIndex
   );
+
+  const navigate = useNavigate();
+  const canGoBack = useCanGoBack();
+  const { isAuth } = useAuth();
+  const isConfiguredBefore = !!sheetId && !isNil(sheetIndex);
+  const isGoBackShown = isAuth && isConfiguredBefore;
+
+  const isDirty = sheetId !== _sheetId || sheetIndex !== _sheetIndex;
 
   const onLoad = useCallback(() => {
     try {
@@ -21,6 +33,14 @@ export const SheetConfigPage = () => {
       alert(e);
     }
   }, [_sheetId, _sheetIndex, setSheetId, setSheetIndex]);
+
+  const onBackClick = useCallback(() => {
+    if (canGoBack) {
+      navigate(-1);
+    } else {
+      navigate(path.root);
+    }
+  }, [canGoBack, navigate]);
 
   return (
     <div className="p-8 flex flex-col gap-10">
@@ -43,7 +63,10 @@ export const SheetConfigPage = () => {
           onChange={(e) => _setSheetIndex(Number(e.target.value))}
         />
       </div>
-      <Button onClick={onLoad}>LOAD RECORDS</Button>
+      <Button onClick={onLoad} disabled={!isDirty}>
+        LOAD RECORDS
+      </Button>
+      {isGoBackShown && <Button onClick={onBackClick}>GO BACK</Button>}
     </div>
   );
 };

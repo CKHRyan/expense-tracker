@@ -70,7 +70,7 @@ export const Tabs = <T extends string | number>({
     <div className={className}>
       <div
         ref={tabsContainerRef}
-        className="flex relative overflow-x-scroll no-scrollbar"
+        className="flex relative overflow-x-auto no-scrollbar"
       >
         {items.map((item) => (
           <Tab key={`tab-${item.value}`} {...item} />

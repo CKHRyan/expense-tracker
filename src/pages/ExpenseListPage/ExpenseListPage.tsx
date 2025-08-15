@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { useAppStore } from "@stores";
-import { Text, Fab, ValueCard, Loading } from "@components";
+import { Text, ValueCard, Loading } from "@components";
 import { groupBy } from "lodash";
 import moment from "moment";
 import {
@@ -11,6 +11,7 @@ import {
 import { ExpenseInputModal } from "@features/ExpenseInput";
 import { TransactionCard } from "@features/ExpenseList";
 import { useExpenseQuery } from "@hooks/useExpenseQuery";
+import { OverlayFab } from "@components/Fab";
 
 export const ExpenseListPage = () => {
   const { data = [], isLoading } = useExpenseQuery();
@@ -47,7 +48,7 @@ export const ExpenseListPage = () => {
 
   return (
     <>
-      <div className="p-8 w-full h-full flex flex-col gap-4">
+      <div className="p-6 w-full h-full flex flex-col gap-4">
         <ValueCard
           title="Cumulative Expense"
           value={`$${totalExpense.toLocaleString()}`}
@@ -76,7 +77,7 @@ export const ExpenseListPage = () => {
         </div>
       </div>
 
-      <Fab onClick={openNewExpenseSheet}>Add</Fab>
+      <OverlayFab onClick={openNewExpenseSheet}>Add</OverlayFab>
 
       <ExpenseInputModal
         {...expenseSheetParams}

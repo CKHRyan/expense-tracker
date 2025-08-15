@@ -11,3 +11,4 @@ export { TimePicker } from "./TimePicker";
 export { Calendar } from "./Calendar";
 export * from "./Tabs";
 export { Loading } from "./Loading";
+export { BottomNavTabs } from "./BottomNavTabs";
