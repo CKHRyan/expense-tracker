@@ -1,15 +1,15 @@
 import moment, { type Moment } from "moment";
-import type { Entries } from "../types";
+import type { Entries } from "../../types";
 import {
   serverDatetimeFormat,
   ExpenseDataType,
   ExpenseSchema,
-} from "./constants";
+} from "../constants";
 import type {
   ExpenseAttributeLabel,
   ExpenseAttributeValue,
-  RawExpenseRecord,
-} from "./types";
+  BaseExpenseRecord,
+} from "../types";
 import type { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { isObject } from "lodash";
 
@@ -25,19 +25,23 @@ export const facadeSheetExpenseRow = (
   );
 
 export const facadeRawExpenseRowToSheetRecord = (
-  record: RawExpenseRecord
+  record: BaseExpenseRecord
 ): Record<ExpenseAttributeLabel, string> =>
-  (Object.entries(record) as Entries<RawExpenseRecord>).reduce(
-    (record, [key, value]) => ({
-      ...record,
-      [ExpenseSchema[key].label]: value.toString(),
-    }),
+  (Object.entries(record) as Entries<BaseExpenseRecord>).reduce(
+    (record, [key, value]) => {
+      return key in ExpenseSchema
+        ? {
+            ...record,
+            [ExpenseSchema[key].label]: value.toString(),
+          }
+        : record;
+    },
     {} as Record<ExpenseAttributeLabel, string>
   );
 
-export const facadeSheetRawExpenseRecord = (
+export const facadeSheetBaseExpenseRecord = (
   rawRecord: Record<ExpenseAttributeValue, string>
-): RawExpenseRecord =>
+): BaseExpenseRecord =>
   (
     Object.entries(rawRecord) as Entries<
       Record<ExpenseAttributeValue, string | undefined>
@@ -64,14 +68,14 @@ export const facadeSheetRawExpenseRecord = (
       default:
         return mergedRecord(valStr);
     }
-  }, {} as RawExpenseRecord);
+  }, {} as BaseExpenseRecord);
 
 const isExpenseSchemaKey = (key: string): key is keyof typeof ExpenseSchema =>
   key in ExpenseSchema;
 
-export const isValidRawExpenseRecord = (
+export const isValidBaseExpenseRecord = (
   record: any
-): record is RawExpenseRecord => {
+): record is BaseExpenseRecord => {
   if (!isObject(record)) return false;
   return Object.entries(record).every(([key, value]) => {
     if (!isExpenseSchemaKey(key)) return true;

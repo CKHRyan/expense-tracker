@@ -1,4 +1,6 @@
-import { useExpenseMutation } from "@hooks/useExpenseMutation";
+import { useCreateExpense } from "src/queries/hooks/useCreateExpense";
+import { useDeleteExpense } from "src/queries/hooks/useDeleteExpense";
+import { useUpdateExpense } from "src/queries/hooks/useUpdateExpense";
 import { isNil } from "lodash";
 import type { Moment } from "moment";
 import { useCallback, useState } from "react";
@@ -35,7 +37,9 @@ export const useTransactionInput = ({
   editIndex,
   onSubmit,
 }: Params): TransactionInputInterface => {
-  const { createExpense, updateExpense, deleteExpense } = useExpenseMutation();
+  const { mutate: createExpense } = useCreateExpense();
+  const { mutate: updateExpense } = useUpdateExpense();
+  const { mutate: deleteExpense } = useDeleteExpense();
 
   const [amount, setAmount] = useState<number>(initialAmount);
   const [category, setCategory] = useState<Category>(initialCategory);
@@ -62,6 +66,7 @@ export const useTransactionInput = ({
         amount,
         remark: description,
       });
+      console.log("onsubmit");
       onSubmit?.();
     } catch (err: any) {
       console.error(err);
@@ -81,7 +86,8 @@ export const useTransactionInput = ({
     try {
       if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
 
-      await updateExpense(editIndex, {
+      await updateExpense({
+        index: editIndex,
         date,
         category: categoryGroupMap[category],
         item: category,

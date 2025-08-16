@@ -2,12 +2,12 @@ import { useAppStore } from "@stores";
 import { Text, ValueCard, Loading } from "@components";
 import { ExpenseInputModal } from "@features/ExpenseInput";
 import { ExpenseList } from "@features/ExpenseList";
-import { useExpenseQuery } from "@hooks/useExpenseQuery";
 import { OverlayFab } from "@components/Fab";
 import { useExpenseData } from "@features/ExpenseList/hooks";
+import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
 
 export const ExpenseListPage = () => {
-  const { data = [], isLoading } = useExpenseQuery();
+  const { data = [], isLoading } = useGetExpenses();
 
   const { totalExpense } = useExpenseData(data);
 

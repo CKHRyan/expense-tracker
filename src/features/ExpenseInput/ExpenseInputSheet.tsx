@@ -6,7 +6,7 @@ import {
 } from "@features/ExpenseInput/hooks";
 import type { ExpenseSheetParams } from "@stores/appStore";
 import moment from "moment";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Sheet, type SheetRef } from "react-modal-sheet";
 
 const snapPoints = [1, 0];
@@ -51,21 +51,18 @@ export const ExpenseInputSheet = ({
       } else {
         setDate(moment());
       }
+    } else {
+      clearCalculator();
+      clearTransactionInput();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
-
-  const _onClose = useCallback(() => {
-    clearCalculator();
-    clearTransactionInput();
-    onClose();
-  }, [clearCalculator, clearTransactionInput, onClose]);
 
   return (
     <Sheet
       ref={ref}
       isOpen={isOpen}
-      onClose={_onClose}
+      onClose={onClose}
       initialSnap={0}
       snapPoints={snapPoints}
       tweenConfig={{ ease: "easeOut", duration: 0.4 }}
@@ -83,7 +80,7 @@ export const ExpenseInputSheet = ({
           />
         </Sheet.Content>
       </Sheet.Container>
-      <Sheet.Backdrop onTap={_onClose} />
+      <Sheet.Backdrop onTap={onClose} />
     </Sheet>
   );
 };

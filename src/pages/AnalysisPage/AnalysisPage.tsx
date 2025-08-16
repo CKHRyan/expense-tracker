@@ -1,10 +1,10 @@
 import { Loading, Title, ValueCard } from "@components";
 import { CategoryExpenseList } from "@features/ExpenseList";
 import { useExpenseData } from "@features/ExpenseList/hooks";
-import { useExpenseQuery } from "@hooks/useExpenseQuery";
+import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
 
 export const AnalysisPage = () => {
-  const { data = [], isLoading } = useExpenseQuery();
+  const { data = [], isLoading } = useGetExpenses();
 
   const { totalExpense } = useExpenseData(data);
 

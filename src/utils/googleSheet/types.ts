@@ -18,7 +18,7 @@ export type ExpenseDataTypeMap = {
 type ExpenseAttributeDataType<T extends ExpenseAttributeValue> =
   ExpenseDataTypeMap[(typeof ExpenseSchema)[T]["type"]];
 
-export type RawExpenseRecord = {
+export type BaseExpenseRecord = {
   [ExpenseAttribute.date]: ExpenseAttributeDataType<
     typeof ExpenseAttribute.date
   >;

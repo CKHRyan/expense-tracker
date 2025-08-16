@@ -9,13 +9,18 @@ import { CATEGORY_GROUP } from "src/constants/expense";
 import type { CategoryGroup, ExpenseRecordWithIndex } from "src/types/expense";
 
 export const useExpenseData = (data: ExpenseRecordWithIndex[]) => {
-  const recordsByDay = useMemo(
-    () =>
-      groupBy(data, (result) =>
-        moment(result.date, serverDateFormat).format(displayDateFormat)
-      ),
-    [data]
-  );
+  const recordsByDay = useMemo(() => {
+    const recordGrops = groupBy(data, (result) =>
+      moment(result.date, serverDateFormat).format(displayDateFormat)
+    );
+    return Object.entries(recordGrops).reduce(
+      (obj, [key, value]) => ({
+        ...obj,
+        [key]: value.sort((a, b) => (a.date.isBefore(b.date) ? 1 : -1)),
+      }),
+      {} as Record<string, ExpenseRecordWithIndex[]>
+    );
+  }, [data]);
 
   const transactionDates = useMemo(
     () =>

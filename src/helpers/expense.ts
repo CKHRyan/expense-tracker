@@ -1,5 +1,5 @@
 import { serverDatetimeFormat } from "@utils/googleSheet/constants";
-import type { RawExpenseRecord } from "@utils/googleSheet/types";
+import type { BaseExpenseRecord } from "@utils/googleSheet/types";
 import type { Optional } from "@utils/types";
 import { isNaN, isObject } from "lodash";
 import moment from "moment";
@@ -34,8 +34,8 @@ export const isValidExpenseWithIndex = (
 ): value is ExpenseRecordWithIndex =>
   !isNaN(value.index) && isValidExpense(value);
 
-export const facadeRawExpenseRecordWithIndex = (
-  record: RawExpenseRecord,
+export const facadeBaseExpenseRecordWithIndex = (
+  record: BaseExpenseRecord,
   index: number
 ): Optional<ExpenseRecordWithIndex, "date"> => {
   const dateMoment = moment(record.date, serverDatetimeFormat);
@@ -49,9 +49,9 @@ export const facadeRawExpenseRecordWithIndex = (
   };
 };
 
-export const facadeExpenseRecordToRaw = (
+export const facadeExpenseRecordToBase = (
   record: ExpenseRecord
-): RawExpenseRecord => ({
+): BaseExpenseRecord => ({
   ...record,
   date: record.date.format(serverDatetimeFormat),
 });
