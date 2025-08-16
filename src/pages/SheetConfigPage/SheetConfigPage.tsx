@@ -24,15 +24,25 @@ export const SheetConfigPage = () => {
 
   const onLoad = useCallback(() => {
     try {
-      if (!_setSheetId || isNil(_sheetIndex)) {
+      if (!_sheetId || isNil(_sheetIndex)) {
         throw new Error("Missing required sheet data");
       }
       setSheetId(_sheetId);
       setSheetIndex(_sheetIndex);
+      if (!isConfiguredBefore) {
+        navigate(path.expenseList);
+      }
     } catch (e) {
       alert(e);
     }
-  }, [_sheetId, _sheetIndex, setSheetId, setSheetIndex]);
+  }, [
+    _sheetId,
+    _sheetIndex,
+    isConfiguredBefore,
+    navigate,
+    setSheetId,
+    setSheetIndex,
+  ]);
 
   const onBackClick = useCallback(() => {
     if (canGoBack) {

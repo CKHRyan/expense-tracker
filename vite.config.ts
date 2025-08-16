@@ -19,8 +19,10 @@ export default defineConfig({
         description: "Track daily expenses",
         theme_color: "#242424",
         icons: [
-          { src: "expense-64x64.png", sizes: "64x64", type: "image/png" },
-          { src: "expense-512x512.png", sizes: "512x512", type: "image/png" },
+          { src: "icon-64.png", sizes: "64x64", type: "image/png" },
+          { src: "icon-128.png", sizes: "128x128", type: "image/png" },
+          { src: "icon-256.png", sizes: "256x256", type: "image/png" },
+          { src: "icon-512.png", sizes: "512x512", type: "image/png" },
         ],
       },
     }),
