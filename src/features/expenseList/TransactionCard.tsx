@@ -1,4 +1,5 @@
 import { Icon, Text } from "@components";
+import { ListItemCard } from "@components/ListItemCard";
 import moment from "moment";
 import { categoryAttributes } from "src/constants/expense";
 import type { ExpenseRecordWithIndex } from "src/types/expense";
@@ -11,10 +12,7 @@ type Props = {
 export const TransactionCard = ({ record, onClick }: Props) => {
   const { date, category, item, amount, remark } = record;
   return (
-    <div
-      onClick={() => onClick?.(record)}
-      className="px-3 py-2 bg-[#2c2c2c] flex gap-4 rounded-md items-center"
-    >
+    <ListItemCard onClick={() => onClick?.(record)}>
       <Icon name={categoryAttributes[item].icon} className="text-xl" />
       <div className="flex-1 overflow-hidden">
         <Text>{item}</Text>
@@ -23,6 +21,6 @@ export const TransactionCard = ({ record, onClick }: Props) => {
         </Text>
       </div>
       <Text>-${amount.toLocaleString()}</Text>
-    </div>
+    </ListItemCard>
   );
 };

@@ -1,7 +1,11 @@
 import { Tabs } from "@components";
 import { CategoryPadButtonCard } from "@features/ExpenseInput/PadButtonCard/CategoryPadButtonCard";
 import { useEffect, useMemo, useState } from "react";
-import { categoryOptions, categoryGroupOptions } from "./constants";
+import {
+  categoryOptions,
+  categoryGroupOptions,
+  categoryGroupOptionItems,
+} from "./constants";
 import { twMerge } from "tailwind-merge";
 import { categoryAttributes, categoryGroupMap } from "src/constants/expense";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
@@ -54,10 +58,7 @@ export const TxnCategoryPad = ({
   return (
     <div className={twMerge("flex flex-col overflow-hidden", className)}>
       <Tabs
-        items={categoryGroupOptions.map((option) => ({
-          title: option,
-          value: option,
-        }))}
+        items={categoryGroupOptionItems}
         value={currentTab}
         onChange={setCurrentTab}
         className={twMerge("px-4", tabbarClassName)}

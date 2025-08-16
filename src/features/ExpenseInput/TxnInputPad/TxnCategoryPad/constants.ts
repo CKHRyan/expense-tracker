@@ -1,10 +1,23 @@
-import { CATEGORY_GROUP, CATEGORY } from "src/constants/expense";
+import {
+  CATEGORY_GROUP,
+  CATEGORY,
+  categoryGroupAttributes,
+} from "src/constants/expense";
 import type { Category } from "src/types/expense";
 
 export const categoryGroupOptions = [
   "All",
   ...Object.values(CATEGORY_GROUP),
 ] as const;
+
+export const categoryGroupOptionItems = categoryGroupOptions.map((option) =>
+  option === "All"
+    ? ({ title: "All", value: "All" } as const)
+    : {
+        title: categoryGroupAttributes[option].title,
+        value: option,
+      }
+);
 
 export const categoryOptions: {
   category: Category;

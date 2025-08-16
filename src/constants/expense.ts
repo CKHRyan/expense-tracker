@@ -164,3 +164,33 @@ export const categoryAttributes: Record<
     icon: "icon-[openmoji--roasted-coffee-bean]",
   },
 };
+
+export const categoryGroupAttributes: Record<
+  CategoryGroup,
+  { title: string; icon: string }
+> = {
+  [CATEGORY_GROUP.Shopping]: {
+    title: "Shopping",
+    icon: "icon-[emojione--shopping-bags]",
+  },
+  [CATEGORY_GROUP.Dining]: {
+    title: "Dining",
+    icon: "icon-[twemoji--fork-and-knife-with-plate]",
+  },
+  [CATEGORY_GROUP.Life]: {
+    title: "Life",
+    icon: "icon-[noto--man-light-skin-tone-curly-hair]",
+  },
+  [CATEGORY_GROUP.Entertainment]: {
+    title: "Entertainment",
+    icon: "icon-[token-branded--joy]",
+  },
+  [CATEGORY_GROUP.Vacation]: {
+    title: "Vacation",
+    icon: "icon-[fxemoji--beachumbrella]",
+  },
+  [CATEGORY_GROUP.Other]: {
+    title: "Other",
+    icon: "icon-[emojione--shopping-cart]",
+  },
+};
