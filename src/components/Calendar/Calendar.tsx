@@ -1,5 +1,5 @@
 import ReactCalendar, { type CalendarProps } from "react-calendar";
-import "./style2.css";
+import "./style.css";
 import { useCallback } from "react";
 import type { Value } from "react-calendar/dist/shared/types.js";
 
