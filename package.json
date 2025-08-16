@@ -27,6 +27,7 @@
     "react-calendar": "^6.0.0",
     "react-dom": "^19.1.0",
     "react-google-button": "^0.8.0",
+    "react-google-drive-picker": "^1.2.2",
     "react-modal": "^3.16.3",
     "react-modal-sheet": "^4.4.0",
     "react-router": "^7.8.0",
