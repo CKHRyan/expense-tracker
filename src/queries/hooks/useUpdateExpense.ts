@@ -27,9 +27,7 @@ export const useUpdateExpense = () => {
         throw new Error("Invalid row index");
       }
       const baseExpenseRecord = facadeExpenseRecordToBase(record);
-      console.log(baseExpenseRecord, record);
       const rawRecord = facadeRawExpenseRowToSheetRecord(baseExpenseRecord);
-      console.log(baseExpenseRecord, rawRecord);
       sheetRows[record.index].assign(rawRecord);
       await sheetRows[record.index].save();
     },

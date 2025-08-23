@@ -66,7 +66,6 @@ export const useTransactionInput = ({
         amount,
         remark: description,
       });
-      console.log("onsubmit");
       onSubmit?.();
     } catch (err: any) {
       console.error(err);
