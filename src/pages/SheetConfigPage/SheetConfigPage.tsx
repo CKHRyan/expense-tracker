@@ -3,35 +3,52 @@ import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
 import { useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import useDrivePicker from "react-google-drive-picker";
 import type { PickerConfiguration } from "react-google-drive-picker/dist/typeDefs";
+import { useGetDoc } from "src/queries/hooks/useGetSheet";
+import { FormSelect } from "@components/FormSelect";
 
 export const SheetConfigPage = () => {
-  const { sheetId, sheetIndex, setSheetId, setSheetIndex } = useSheetStore();
-  const [_sheetId, _setSheetId] = useState(sheetId ?? "");
-  const [_sheetIndex, _setSheetIndex] = useState<number | undefined>(
-    sheetIndex
+  const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
+    useSheetStore();
+  const [_spreadsheetId, _setSpreadsheetId] = useState(spreadsheetId ?? "");
+  const [_sheetId, _setSheetId] = useState<number | undefined>(sheetId);
+
+  const { data: doc } = useGetDoc(_spreadsheetId ?? "", {
+    skip: !_spreadsheetId,
+  });
+  const sheetOptions = useMemo(
+    () =>
+      doc?.sheetsByIndex.map(({ a1SheetName, sheetId }, index) => ({
+        value: sheetId,
+        label: `${index + 1} - ${a1SheetName}`,
+      })) ?? [],
+    [doc?.sheetsByIndex]
   );
+  const selectedSheetOption = useMemo(() => {
+    if (isNil(_sheetId)) return undefined;
+    return sheetOptions.find(({ value }) => value === _sheetId);
+  }, [_sheetId, sheetOptions]);
 
   const navigate = useNavigate();
   const canGoBack = useCanGoBack();
   const { isAuth } = useAuth();
   const { token } = useAuthStore();
-  const isConfiguredBefore = !!sheetId && !isNil(sheetIndex);
+  const isConfiguredBefore = !!spreadsheetId && !isNil(sheetId);
   const isGoBackShown = isAuth && isConfiguredBefore;
 
-  const isDirty = sheetId !== _sheetId || sheetIndex !== _sheetIndex;
+  const isDirty = spreadsheetId !== _spreadsheetId || sheetId !== _sheetId;
 
   const onLoad = useCallback(() => {
     try {
-      if (!_sheetId || isNil(_sheetIndex)) {
+      if (!_spreadsheetId || isNil(_sheetId)) {
         throw new Error("Missing required sheet data");
       }
+      setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
-      setSheetIndex(_sheetIndex);
       if (!isConfiguredBefore) {
         navigate(path.expenseList);
       }
@@ -39,12 +56,12 @@ export const SheetConfigPage = () => {
       alert(e);
     }
   }, [
+    _spreadsheetId,
     _sheetId,
-    _sheetIndex,
+    setSpreadsheetId,
+    setSheetId,
     isConfiguredBefore,
     navigate,
-    setSheetId,
-    setSheetIndex,
   ]);
 
   const onBackClick = useCallback(() => {
@@ -67,40 +84,44 @@ export const SheetConfigPage = () => {
       showUploadFolders: true,
       supportDrives: true,
       callbackFunction: ({ action, docs }) => {
-        if (action === "cancel" || docs.length === 0) {
+        if (action === "cancel" || (docs && docs.length === 0)) {
           return;
         }
-        const sheetId = docs[0].id;
-        _setSheetId(sheetId);
+        const spreadsheetId = docs[0].id;
+        _setSpreadsheetId(spreadsheetId);
+        _setSheetId(undefined);
       },
     };
     openPicker(config);
   }, [openPicker, token]);
 
+  const onSelectSheet = ({ value }: { value: number }) => {
+    _setSheetId(value);
+  };
+
   return (
     <div className="p-8 flex flex-col gap-10">
       <Title>Sheet Parameters</Title>
       <div className="flex flex-col gap-6">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-end">
           <FormInput
-            id="sheetId"
-            label="Spreadsheet Id"
+            id="spreadsheet"
+            label="Spreadsheet"
             required
-            value={_sheetId}
+            value={doc?.title ?? ""}
             readOnly
-            onChange={(e) => _setSheetId(e.target.value)}
             className="flex-1"
           />
           <Button onClick={onSelectDoc}>Select</Button>
         </div>
-        <FormInput
-          id="sheetId"
-          label="Main sheet Index"
-          type="number"
+        <FormSelect
+          id="sheet"
+          label="Sheet tab"
           required
-          min={0}
-          value={_sheetIndex}
-          onChange={(e) => _setSheetIndex(Number(e.target.value))}
+          isDisabled={!_spreadsheetId}
+          options={sheetOptions}
+          value={selectedSheetOption}
+          onChange={onSelectSheet as any}
         />
       </div>
       <Button onClick={onLoad} disabled={!isDirty}>

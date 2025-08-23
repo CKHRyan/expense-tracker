@@ -29,7 +29,7 @@ export const ExpenseListPage = () => {
           bgColor="#FF4433"
         />
 
-        <div className="flex flex-col gap-4 pb-26">
+        <div className="flex flex-col gap-4 pb-26 flex-1">
           <Text className="text-xl font-bold">Transaction Records</Text>
           <ExpenseList data={data} onItemPress={openEditExpenseSheet} />
         </div>

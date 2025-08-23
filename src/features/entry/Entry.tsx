@@ -1,16 +1,9 @@
-import { useAuthStore } from "@stores";
-import { useGoogleLogin } from "@react-oauth/google";
 import GoogleButton from "react-google-button";
 import { Icon, Title } from "@components";
+import { useAuth } from "@hooks/useAuth";
 
 export const Entry = () => {
-  const { setToken } = useAuthStore();
-
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => setToken(tokenResponse.access_token),
-    onError: (err) => console.error(err),
-    scope: "https://www.googleapis.com/auth/spreadsheets",
-  });
+  const { login } = useAuth();
 
   return (
     <div className="p-8 w-full h-full flex flex-col items-center justify-center gap-16">

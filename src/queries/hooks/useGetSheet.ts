@@ -7,20 +7,21 @@ import {
   getSheetQueryKeys,
 } from "@utils/googleSheet/helpers/spreadsheet";
 import { isAxiosError } from "axios";
+import type { QueryOptions } from "src/queries/types";
 
 export const useGetSheetKey = ["sheet"];
 
 export const useGetSheet = () => {
   const { token = "" } = useAuthStore();
-  const { sheetId = "", sheetIndex } = useSheetStore();
+  const { spreadsheetId = "", sheetId } = useSheetStore();
   const { logout } = useAuth();
 
   return useQuery({
-    queryKey: [...useGetSheetKey, token, sheetId, sheetIndex],
+    queryKey: [...useGetSheetKey, token, spreadsheetId, sheetId],
     queryFn: async () => {
       try {
-        const doc = await getDoc({ token }, sheetId);
-        const sheet = await getSheet(doc, sheetIndex);
+        const doc = await getDoc({ token }, spreadsheetId);
+        const sheet = await getSheet(doc, sheetId);
         return sheet;
       } catch (err: unknown) {
         if (isAxiosError(err) && err.status === 401) {
@@ -54,4 +55,30 @@ export const useGetSheetRows = () => {
   });
 
   return { isLoading: isQueryLoading || isSheetLoading, ...queryResult };
+};
+
+export const useGetDocKey = ["doc"];
+
+export const useGetDoc = (
+  spreadsheetId: string,
+  { skip = false }: QueryOptions
+) => {
+  const { token = "" } = useAuthStore();
+  const { logout } = useAuth();
+
+  return useQuery({
+    queryKey: [...useGetSheetKey, token, spreadsheetId],
+    queryFn: async () => {
+      try {
+        const doc = await getDoc({ token }, spreadsheetId);
+        return doc;
+      } catch (err: unknown) {
+        if (isAxiosError(err) && err.status === 401) {
+          logout();
+        }
+        throw err;
+      }
+    },
+    enabled: !skip,
+  });
 };

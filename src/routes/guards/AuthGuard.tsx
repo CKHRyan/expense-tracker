@@ -6,11 +6,11 @@ import { path } from "src/routes/constants/path";
 
 export const AuthGuard = () => {
   const { pathname } = useLocation();
-  const { isAuth, isLoadingAuth, verify } = useAuth();
+  const { isAuth, isAuthLoading, verify } = useAuth();
 
   useEffect(() => void verify(), [verify]);
 
-  if (isLoadingAuth) return <Loading isFullScreen />;
+  if (isAuthLoading) return <Loading isFullScreen />;
 
   if (!isAuth && pathname !== path.login) {
     return <Navigate to={path.login} />;

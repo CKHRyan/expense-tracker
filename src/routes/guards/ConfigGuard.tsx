@@ -5,9 +5,9 @@ import { path } from "src/routes/constants/path";
 
 export const ConfigGuard = () => {
   const { pathname } = useLocation();
-  const { sheetId, sheetIndex } = useSheetStore();
+  const { spreadsheetId, sheetId } = useSheetStore();
 
-  const isConfigured = !!sheetId && !isNil(sheetIndex);
+  const isConfigured = !!spreadsheetId && !isNil(sheetId);
 
   if (!isConfigured && pathname !== path.config) {
     return <Navigate to={path.config} />;

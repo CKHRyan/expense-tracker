@@ -1,13 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useGetGoogleAuthKey = ["getGoogleAuth"];
+export const useCheckGoogleAuthKey = ["checkGoogleAuth"];
 
 const apiPath = "https://www.googleapis.com/oauth2/v1/tokeninfo";
-
-type Params = { token: string };
-
-type Options = { skip?: boolean; lazy?: boolean };
 
 type GoogleOauthTokenInfo = {
   issued_to: string;
@@ -20,17 +16,13 @@ type GoogleOauthTokenInfo = {
   access_type: string;
 };
 
-export const useGetGoogleAuth = (
-  { token }: Params,
-  { skip = false, lazy = false }: Options
-) =>
-  useQuery({
-    queryKey: [...useGetGoogleAuthKey, token],
-    queryFn: async () =>
+export const useCheckGoogleAuth = () =>
+  useMutation({
+    mutationKey: [...useCheckGoogleAuthKey],
+    mutationFn: async (token: string) =>
       (
         await axios.get<GoogleOauthTokenInfo>(apiPath, {
           params: { access_token: token },
         })
       ).data,
-    enabled: !skip && !lazy,
   });

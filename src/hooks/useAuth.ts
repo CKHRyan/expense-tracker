@@ -1,29 +1,40 @@
+import { useGoogleLogin } from "@react-oauth/google";
 import { useAuthStore } from "@stores";
 import { useCallback } from "react";
-import { useGetGoogleAuth } from "src/queries/hooks/useGetGoogleAuth";
+import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
+
+const googleOAuthScope = "https://www.googleapis.com/auth/spreadsheets";
 
 export const useAuth = () => {
   const { token, setToken } = useAuthStore();
-  const {
-    refetch,
-    isFetched,
-    isError,
-    isLoading: isLoadingAuth,
-  } = useGetGoogleAuth({ token: token ?? "" }, { skip: !token, lazy: true });
+  const { mutate: checkGoogleAuth, isIdle, isPending } = useCheckGoogleAuth();
 
-  const isAuth = !!token && isFetched && !isError;
+  const isAuthLoading = !!token && (isIdle || isPending);
 
-  const verify = useCallback(async () => {
-    try {
-      await refetch();
-      return true;
-    } catch (err) {
-      console.error(err);
-      return false;
-    }
-  }, [refetch]);
+  const isAuth = !!token;
+
+  const login = useGoogleLogin({
+    onSuccess: ({ access_token }) => {
+      setToken(access_token);
+      checkGoogleAuth(access_token);
+    },
+    onError: (err) => console.error(err),
+    scope: googleOAuthScope,
+  });
 
   const logout = useCallback(() => setToken(undefined), [setToken]);
 
-  return { isAuth, logout, verify, isLoadingAuth };
+  const verify = useCallback(async () => {
+    try {
+      if (!token) return false;
+      await checkGoogleAuth(token);
+      return true;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      logout();
+      return false;
+    }
+  }, [checkGoogleAuth, logout, token]);
+
+  return { token, isAuth, login, logout, verify, isAuthLoading };
 };

@@ -7,15 +7,15 @@ import { isNil } from "lodash";
 
 export const getDoc = async (
   { apiKey, token = "" }: { apiKey?: string; token?: string },
-  sheetId?: string
+  spreadsheetId?: string
 ) => {
   if (!apiKey && !token) {
     throw new Error("Missing apiKey or token for google authorization");
   }
-  if (!sheetId) {
-    throw new Error("Missing sheet Id");
+  if (!spreadsheetId) {
+    throw new Error("Missing spreadsheetId Id");
   }
-  const doc = new GoogleSpreadsheet(sheetId, {
+  const doc = new GoogleSpreadsheet(spreadsheetId, {
     apiKey,
     token,
   });
@@ -23,11 +23,11 @@ export const getDoc = async (
   return doc;
 };
 
-export const getSheet = async (doc: GoogleSpreadsheet, sheetIndex?: number) => {
-  if (isNil(sheetIndex)) {
+export const getSheet = async (doc: GoogleSpreadsheet, sheetId?: number) => {
+  if (isNil(sheetId)) {
     throw new Error("Missing sheet index");
   }
-  const sheet = doc.sheetsByIndex[sheetIndex];
+  const sheet = doc.sheetsById[sheetId];
   await sheet.loadHeaderRow();
   return sheet;
 };
@@ -35,9 +35,9 @@ export const getSheet = async (doc: GoogleSpreadsheet, sheetIndex?: number) => {
 export const getSheetQueryKeys = (sheet?: GoogleSpreadsheetWorksheet) => {
   if (!sheet) return [];
 
-  const sheetId = sheet._spreadsheet.spreadsheetId;
-  const sheetIndex = sheet.index;
-  return [sheetId, sheetIndex];
+  const spreadsheetId = sheet._spreadsheet.spreadsheetId;
+  const sheetId = sheet.sheetId;
+  return [spreadsheetId, sheetId];
 };
 
 export const getSheetRowsQueryKeys = (
