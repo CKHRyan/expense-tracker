@@ -42,10 +42,12 @@ export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
         onRequestClose={toggleDescModal}
         contentClassname="pt-4 pb-6 gap-6 items-center"
       >
-        <Text className="text-lg font-semibold">Remarks</Text>
+        <Text className="text-lg font-semibold">
+          {t("expenseInput.remarks")}
+        </Text>
         <FormTextArea
           rows={4}
-          placeholder="Spend on..."
+          placeholder={t("expenseInput.remarksPlaceHolder")}
           autoFocus
           className="w-full"
           textAreaClassname="font-medium"
@@ -53,7 +55,7 @@ export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
           onChange={(e) => setValue(e.target.value)}
         />
         <Button onClick={onDescriptionConfirm} className="w-full font-semibold">
-          Confirm
+          {t("expenseInput.confirm")}
         </Button>
       </Modal>
     </>

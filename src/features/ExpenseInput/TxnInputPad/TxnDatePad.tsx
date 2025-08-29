@@ -7,10 +7,12 @@ import { useToggle } from "@hooks/useToggle";
 import type { Moment } from "moment";
 import moment from "moment";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = Pick<TransactionInputInterface, "date" | "setDate">;
 
 export const TxnDatePad = ({ date, setDate }: Props) => {
+  const { t } = useTranslation();
   const { locale } = useLocale();
 
   const [openDateModal, toggleDateModal] = useToggle(false);
@@ -72,6 +74,7 @@ export const TxnDatePad = ({ date, setDate }: Props) => {
           value={timeValue}
           onChange={onTimeChange}
           className="w-full"
+          locale={locale}
         />
         <Calendar
           value={value?.toDate()}
@@ -80,7 +83,7 @@ export const TxnDatePad = ({ date, setDate }: Props) => {
           locale={locale}
         />
         <Button onClick={onDateConfirm} className="w-full font-semibold">
-          Confirm
+          {t("expenseInput.confirm")}
         </Button>
       </Modal>
     </>

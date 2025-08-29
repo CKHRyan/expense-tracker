@@ -10,6 +10,8 @@ import {
 } from "src/helpers/datetime";
 import { isNil } from "lodash";
 import { useCallback } from "react";
+import type { AppLocale } from "@utils/types";
+import { i18n } from "@utils/localization/i18n";
 
 const createArray = (length: number, add = 0): WheelPickerOption[] =>
   Array.from({ length }, (_, i) => {
@@ -22,9 +24,10 @@ const createArray = (length: number, add = 0): WheelPickerOption[] =>
 
 const hourOptions = createArray(12, 1);
 const minuteOptions = createArray(60);
-const meridiemOptions: WheelPickerOption[] = [
-  { label: "AM", value: "AM" },
-  { label: "PM", value: "PM" },
+
+const getMeridiemOptions = (locale: AppLocale): WheelPickerOption[] => [
+  { label: i18n.t("common.am", { lng: locale }), value: "AM" },
+  { label: i18n.t("common.pm", { lng: locale }), value: "PM" },
 ];
 
 export type PeriodValue = "AM" | "PM";
@@ -35,12 +38,20 @@ export type TimePickerProps = {
   value?: TimeValue;
   onChange?: (value: TimeValue) => void;
   className?: string;
+  locale?: AppLocale;
 };
 
-export const TimePicker = ({ value, onChange, className }: TimePickerProps) => {
+export const TimePicker = ({
+  value,
+  onChange,
+  className,
+  locale = "en",
+}: TimePickerProps) => {
   const { hour, minute, second } = value ?? { hour: 0, minute: 0, second: 0 };
   const hour12 = convertToHour12(hour);
   const period = getHour24Period(hour);
+
+  const meridiemOptions = getMeridiemOptions(locale);
 
   const _onChange = useCallback(
     ({

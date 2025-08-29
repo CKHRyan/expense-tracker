@@ -16,6 +16,8 @@ dev-dist
 .firebase
 .env
 
+todo.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

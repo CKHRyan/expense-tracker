@@ -1,6 +1,8 @@
 {
   "common": {
-    "selectPlaceHolder": "Select..."
+    "selectPlaceHolder": "Select...",
+    "am": "AM",
+    "pm": "PM"
   },
 
   "entry": {

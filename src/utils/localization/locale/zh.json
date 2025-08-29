@@ -1,6 +1,8 @@
 {
   "common": {
-    "selectPlaceHolder": "請選擇..."
+    "selectPlaceHolder": "請選擇...",
+    "am": "上午",
+    "pm": "下午"
   },
 
   "entry": {
