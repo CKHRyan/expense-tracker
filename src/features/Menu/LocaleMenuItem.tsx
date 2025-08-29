@@ -18,7 +18,7 @@ export const LocaleMenuItem = () => {
           onClick={() => changeLocale(locale)}
           className="text-xl"
         >
-          {t(`Locale.${locale}`)}
+          {t(`menu.locale.${locale}`)}
         </Button>
       ))}
     </div>
@@ -26,7 +26,7 @@ export const LocaleMenuItem = () => {
 
   return (
     <MenuItem
-      title="Language"
+      title={t("menu.language")}
       icon="icon-[fluent-mdl2--locale-language]"
       content={content}
       className="p-6"

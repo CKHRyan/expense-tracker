@@ -2,6 +2,7 @@ import { Button, Modal, TimePicker, Calendar } from "@components";
 import type { TimeValue } from "@components/TimePicker";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
 import { DatePadButtonCard } from "@features/ExpenseInput/PadButtonCard";
+import { useLocale } from "@hooks/useLocale";
 import { useToggle } from "@hooks/useToggle";
 import type { Moment } from "moment";
 import moment from "moment";
@@ -10,6 +11,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 type Props = Pick<TransactionInputInterface, "date" | "setDate">;
 
 export const TxnDatePad = ({ date, setDate }: Props) => {
+  const { locale } = useLocale();
+
   const [openDateModal, toggleDateModal] = useToggle(false);
   const [value, setValue] = useState<Moment | null>(date ?? null);
 
@@ -74,6 +77,7 @@ export const TxnDatePad = ({ date, setDate }: Props) => {
           value={value?.toDate()}
           onChange={onDateChange}
           className="w-full"
+          locale={locale}
         />
         <Button onClick={onDateConfirm} className="w-full font-semibold">
           Confirm

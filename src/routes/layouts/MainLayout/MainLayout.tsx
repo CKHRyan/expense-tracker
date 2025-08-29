@@ -1,9 +1,11 @@
 import { BottomNavTabs } from "@components";
 import { OverlayFabProvider } from "@components/Fab";
 import { Outlet } from "react-router";
-import { bottomNavTabItemOptions } from "src/routes/layouts/MainLayout/constants";
+import { useBottomNavTabItemOptions } from "src/routes/layouts/MainLayout/hooks";
 
 export const MainLayout = () => {
+  const navTabItemOptions = useBottomNavTabItemOptions();
+
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <div className="flex-1 relative overflow-hidden">
@@ -13,7 +15,7 @@ export const MainLayout = () => {
           </div>
         </OverlayFabProvider>
       </div>
-      <BottomNavTabs items={bottomNavTabItemOptions} />
+      <BottomNavTabs items={navTabItemOptions} />
     </div>
   );
 };

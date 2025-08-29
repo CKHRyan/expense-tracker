@@ -2,10 +2,12 @@ import { Button, FormTextArea, Icon, Modal, Text } from "@components";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
 import { useToggle } from "@hooks/useToggle";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = Pick<TransactionInputInterface, "description" | "setDescription">;
 
 export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
+  const { t } = useTranslation();
   const [openDescModal, toggleDescModal] = useToggle(false);
   const [value, setValue] = useState(description ?? "");
 
@@ -26,7 +28,7 @@ export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
         <Text className="font-medium text-center text-ellipsis w-full">
           {description || (
             <>
-              Click to add remarks&nbsp;&nbsp;
+              {t("expenseInput.addRemarksCta")}&nbsp;&nbsp;
               <Icon
                 name="icon-[streamline-ultimate-color--paper-write]"
                 className="text-lg"

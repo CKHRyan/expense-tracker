@@ -1,10 +1,104 @@
 {
-  "Locale": {
-    "zh": "中文",
-    "en": "ENG"
+  "common": {
+    "selectPlaceHolder": "請選擇..."
   },
 
-  "ExpenseList": {
-    "CumulativeExpense": "Cumulative Expense"
+  "entry": {
+    "googleSignIn": "使用 Google 帳戶登入"
+  },
+
+  "navTab": {
+    "expenses": "支出",
+    "anaylsis": "分析",
+    "menu": "選單"
+  },
+
+  "expense": {
+    "categoryGroup": {
+      "all": "全部",
+      "other": "其他",
+      "shopping": "購物",
+      "dining": "餐飲",
+      "life": "生活",
+      "entertainment": "娛樂",
+      "vacation": "度假"
+    },
+    "category": {
+      "other": "其他",
+      "lunch": "午餐",
+      "dinner": "晚餐",
+      "breakfast": "早餐",
+      "dessert": "甜點",
+      "bread": "麵包",
+      "drink": "飲料",
+      "lifestyle": "生活品味",
+      "clothes": "服裝",
+      "shoes": "鞋子",
+      "gift": "禮物",
+      "cook": "烹飪",
+      "fruit": "水果",
+      "electron": "電子產品",
+      "daily": "日常用品",
+      "transport": "交通",
+      "party": "派對",
+      "movie": "電影",
+      "game": "遊戲",
+      "medic": "醫療",
+      "travel": "旅行",
+      "hostel": "住宿",
+      "snack": "零食",
+      "skinCare": "護膚",
+      "sport": "運動",
+      "equipment": "裝備"
+    }
+  },
+
+  "expenseList": {
+    "monthlyCumulativeExpense": "本月累計支出",
+    "spendingRecords": "支出記錄",
+    "emptyRecord": "本月沒有支出",
+    "addSpendingPrompt": "立即記錄支出以掌握你的金錢！"
+  },
+
+  "expenseInput": {
+    "add": "記帳",
+    "addSpending": "新增支出記錄",
+    "editSpending": "編輯支出記錄",
+    "remove": "移除",
+    "addRemarksCta": "點擊新增備註",
+    "remarks": "備註",
+    "remarksPlaceHolder": "花費於...",
+    "today": "今天",
+    "done": "完成",
+    "confirm": "確認"
+  },
+
+  "anaylsis": {
+    "spendingAnalysis": "支出分析",
+    "monthlyCumulativeExpense": "本月累計支出"
+  },
+
+  "menu": {
+    "menu": "選單",
+    "language": "語言",
+    "locale": {
+      "zh": "中文",
+      "en": "ENG"
+    },
+    "sheetConfig": "記錄表設定",
+    "logout": "登出"
+  },
+
+  "shetConfig": {
+    "sheetParameters": "記錄表設定",
+    "spreadsheet": "試算表",
+    "sheetTab": "工作表標籤",
+    "selectSheet": "選擇",
+    "loadRecords": "載入記錄",
+    "goBack": "返回"
+  },
+
+  "error": {
+    "missingSheetData": "缺少所需記錄表資料"
   }
 }

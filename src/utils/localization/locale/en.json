@@ -1,10 +1,104 @@
 {
-  "Locale": {
-    "zh": "中文",
-    "en": "ENG"
+  "common": {
+    "selectPlaceHolder": "Select..."
   },
 
-  "ExpenseList": {
-    "CumulativeExpense": "Cumulative Expense"
+  "entry": {
+    "googleSignIn": "Sign in with Google"
+  },
+
+  "navTab": {
+    "expenses": "EXPENSES",
+    "anaylsis": "ANALYSIS",
+    "menu": "MENU"
+  },
+
+  "expense": {
+    "categoryGroup": {
+      "all": "All",
+      "other": "Other",
+      "shopping": "Shopping",
+      "dining": "Dining",
+      "life": "Life",
+      "entertainment": "Entertainment",
+      "vacation": "Vacation"
+    },
+    "category": {
+      "other": "Other",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "breakfast": "Breakfast",
+      "dessert": "Dessert",
+      "bread": "Bread",
+      "drink": "Drink",
+      "lifestyle": "Lifestyle",
+      "clothes": "Clothes",
+      "shoes": "Shoes",
+      "gift": "Gift",
+      "cook": "Cook",
+      "fruit": "Fruit",
+      "electron": "Electron",
+      "daily": "Daily",
+      "transport": "Transport",
+      "party": "Party",
+      "movie": "Movie",
+      "game": "Game",
+      "medic": "Medic",
+      "travel": "Travel",
+      "hostel": "Hostel",
+      "snack": "Snack",
+      "skinCare": "Skin",
+      "sport": "Sport",
+      "equipment": "Equip"
+    }
+  },
+
+  "expenseList": {
+    "monthlyCumulativeExpense": "Monthly Cumulative Expense",
+    "spendingRecords": "Spending Records",
+    "emptyRecord": "NO EXPENSE FOR THIS MONTH",
+    "addSpendingPrompt": "Begin adding your spending to keep track of your money!"
+  },
+
+  "expenseInput": {
+    "add": "Add",
+    "addSpending": "Add Spending Record",
+    "editSpending": "Edit Spending Record",
+    "remove": "Remove",
+    "addRemarksCta": "Click to add remarks",
+    "remarks": "Remarks",
+    "remarksPlaceHolder": "Spend on...",
+    "today": "Today",
+    "done": "Done",
+    "confirm": "Confirm"
+  },
+
+  "anaylsis": {
+    "spendingAnalysis": "Spending Analysis",
+    "monthlyCumulativeExpense": "Monthly Cumulative Expense"
+  },
+
+  "menu": {
+    "menu": "Menu",
+    "language": "Language",
+    "locale": {
+      "zh": "中文",
+      "en": "ENG"
+    },
+    "sheetConfig": "Sheet Config",
+    "logout": "Logout"
+  },
+
+  "shetConfig": {
+    "sheetParameters": "Sheet Parameters",
+    "spreadsheet": "Spreadsheet",
+    "sheetTab": "Sheet tab",
+    "selectSheet": "Select",
+    "loadRecords": "LOAD RECORDS",
+    "goBack": "GO BACK"
+  },
+
+  "error": {
+    "missingSheetData": "Missing required sheet data"
   }
 }

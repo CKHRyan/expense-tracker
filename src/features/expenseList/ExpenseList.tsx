@@ -3,6 +3,7 @@ import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
 import { useExpenseData } from "./hooks";
 import type { MonthViewValue } from "@features/ExpenseList/type";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   data: ExpenseRecordWithIndex[];
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export const ExpenseList = ({ data, onItemPress, monthView }: Props) => {
+  const { t } = useTranslation();
+
   const { recordsByDay, transactionDates } = useExpenseData(data, {
     filter: { monthView },
   });
@@ -23,10 +26,10 @@ export const ExpenseList = ({ data, onItemPress, monthView }: Props) => {
         <Icon name="icon-[game-icons--wallet]" className="w-[80px] h-[80px]" />
         <div className="flex flex-col items-center gap-2 px-4">
           <Text className="font-semibold text-center">
-            NO EXPENSE FOR THIS MONTH
+            {t("expenseList.emptyRecord")}
           </Text>
           <Text className="text-gray-400 text-center">
-            Begin adding your spending to keep track of your money!
+            {t("expenseList.addSpendingPrompt")}
           </Text>
         </div>
       </div>

@@ -1,14 +1,14 @@
 import { Tabs } from "@components";
 import { CategoryPadButtonCard } from "@features/ExpenseInput/PadButtonCard/CategoryPadButtonCard";
 import { useEffect, useMemo, useState } from "react";
-import {
-  categoryOptions,
-  categoryGroupOptions,
-  categoryGroupOptionItems,
-} from "./constants";
+import { categoryOptions, categoryGroupOptions } from "./constants";
 import { twMerge } from "tailwind-merge";
-import { categoryAttributes, categoryGroupMap } from "src/constants/expense";
+import { categoryGroupMap } from "src/constants/expense";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
+import {
+  useCategoryAttributes,
+  useCategoryGroupOptionItems,
+} from "@features/Expense/hooks";
 
 type Props = {
   className?: string;
@@ -23,6 +23,9 @@ export const TxnCategoryPad = ({
   tabbarClassName,
   categoryListClassName,
 }: Props) => {
+  const categoryGroupOptionItems = useCategoryGroupOptionItems();
+  const categoryAttributes = useCategoryAttributes();
+
   const [currentTab, setCurrentTab] = useState<
     (typeof categoryGroupOptions)[number]
   >(categoryGroupOptions[0]);

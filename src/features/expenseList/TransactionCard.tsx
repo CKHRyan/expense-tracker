@@ -1,7 +1,10 @@
 import { Icon, Text } from "@components";
 import { ListItemCard } from "@components/ListItemCard";
+import {
+  useCategoryAttributes,
+  useCategoryGroupAttributes,
+} from "@features/Expense/hooks";
 import moment from "moment";
-import { categoryAttributes } from "src/constants/expense";
 import type { ExpenseRecordWithIndex } from "src/types/expense";
 
 type Props = {
@@ -11,13 +14,25 @@ type Props = {
 
 export const TransactionCard = ({ record, onClick }: Props) => {
   const { date, category, item, amount, remark } = record;
+
+  const categoryAttributes = useCategoryAttributes();
+  const categoryGroupAttributes = useCategoryGroupAttributes();
+
+  const { icon: categoryIcon, title: categoryTitle } = categoryAttributes[item];
+  const { title: categoryGroupTitle } = categoryGroupAttributes[category];
+
   return (
     <ListItemCard onClick={() => onClick?.(record)}>
-      <Icon name={categoryAttributes[item].icon} className="text-xl" />
+      <Icon name={categoryIcon} className="text-xl" />
       <div className="flex-1 overflow-hidden">
-        <Text>{item}</Text>
+        <Text>{categoryTitle}</Text>
+
         <Text className="text-sm text-gray-400 truncate">
-          {category} {moment(date).format("HH:mm")} {remark}
+          {categoryGroupTitle}
+          &ensp;
+          {moment(date).format("HH:mm")}
+          &ensp;
+          {remark}
         </Text>
       </div>
       <Text>-${amount.toLocaleString()}</Text>

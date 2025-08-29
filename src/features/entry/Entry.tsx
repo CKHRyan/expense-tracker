@@ -1,9 +1,11 @@
 import GoogleButton from "react-google-button";
 import { Title } from "@components";
 import { useAuth } from "@hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 export const Entry = () => {
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="p-8 w-full h-full flex flex-col items-center justify-center gap-16">
@@ -11,7 +13,7 @@ export const Entry = () => {
         <img src="icon-256.png" />
         <Title>Expense Tracker</Title>
       </div>
-      <GoogleButton onClick={() => login()}>Login</GoogleButton>
+      <GoogleButton label={t("entry.googleSignIn")} onClick={() => login()} />
     </div>
   );
 };

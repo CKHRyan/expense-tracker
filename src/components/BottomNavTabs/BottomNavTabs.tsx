@@ -16,6 +16,7 @@ type Props = { items: BottomNavTabItemOption[] };
 
 export const BottomNavTabs = ({ items }: Props) => {
   const { pathname } = useLocation();
+
   return (
     <div className="bg-[#252525] px-4 pt-4 pb-6 flex drop-shadow-[0_0px_30px_rgba(255,255,255,0.08)]">
       {items.map((item, index) => (

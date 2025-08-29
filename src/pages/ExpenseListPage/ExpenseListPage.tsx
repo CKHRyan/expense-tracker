@@ -29,7 +29,7 @@ export const ExpenseListPage = () => {
     <>
       <div className="p-6 w-full h-full flex flex-col gap-4">
         <ValueCard
-          title={t("ExpenseList.CumulativeExpense")}
+          title={t("expenseList.monthlyCumulativeExpense")}
           value={`$${totalExpense.toLocaleString()}`}
           bgColor="#FF4433"
         />
@@ -37,7 +37,7 @@ export const ExpenseListPage = () => {
         <div className="flex flex-col gap-4 pb-26 flex-1">
           <div className="flex gap-4 items-center">
             <Text className="text-xl font-bold flex-1">
-              Transaction Records
+              {t("expenseList.spendingRecords")}
             </Text>
             <MonthSelector value={monthView} onChange={setMonthView} />
           </div>
@@ -49,7 +49,9 @@ export const ExpenseListPage = () => {
         </div>
       </div>
 
-      <OverlayFab onClick={openNewExpenseSheet}>Add</OverlayFab>
+      <OverlayFab onClick={openNewExpenseSheet}>
+        {t("expenseInput.add")}
+      </OverlayFab>
 
       <ExpenseInputModal
         {...expenseSheetParams}

@@ -1,6 +1,6 @@
 import { Icon, Text } from "@components";
 import { ListItemCard } from "@components/ListItemCard";
-import { categoryGroupAttributes } from "src/constants/expense";
+import { useCategoryGroupAttributes } from "@features/Expense/hooks";
 import type { CategoryGroup } from "src/types/expense";
 import { twMerge } from "tailwind-merge";
 
@@ -15,7 +15,9 @@ export const CategoryExpenseCard = ({
   expense,
   className,
 }: Props) => {
+  const categoryGroupAttributes = useCategoryGroupAttributes();
   const { title, icon } = categoryGroupAttributes[categoryGroup];
+
   return (
     <ListItemCard className={twMerge("py-4", className)}>
       <Icon name={icon} className="text-xl" />

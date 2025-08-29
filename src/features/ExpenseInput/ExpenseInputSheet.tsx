@@ -7,6 +7,7 @@ import {
 import { useViewStore, type ExpenseSheetParams } from "@stores/viewStore";
 import moment from "moment";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Sheet, type SheetRef } from "react-modal-sheet";
 
 const snapPoints = [1, 0];
@@ -21,6 +22,7 @@ export const ExpenseInputSheet = ({
   expenseRecord,
   onClose,
 }: Props) => {
+  const { t } = useTranslation();
   const ref = useRef<SheetRef>(null);
 
   const transactionInputInterface = useTransactionInput({
@@ -79,7 +81,9 @@ export const ExpenseInputSheet = ({
       <Sheet.Container className="overflow-hidden !rounded-tl-xl !rounded-tr-xl">
         <Sheet.Content className="bg-zinc-800 pt-4 h-full gap-1">
           <Text className="text-center font-semibold">
-            {isEdit ? "Edit Transaction" : "Add Transaction"}
+            {isEdit
+              ? t("expenseInput.editSpending")
+              : t("expenseInput.addSpending")}
           </Text>
           <TxnInputPad
             isEdit={isEdit}

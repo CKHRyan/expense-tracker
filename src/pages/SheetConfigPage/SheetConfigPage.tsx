@@ -10,8 +10,11 @@ import useDrivePicker from "react-google-drive-picker";
 import type { PickerConfiguration } from "react-google-drive-picker/dist/typeDefs";
 import { useGetDoc } from "src/queries/hooks/useGetSheet";
 import { FormSelect } from "@components/FormSelect";
+import { useTranslation } from "react-i18next";
 
 export const SheetConfigPage = () => {
+  const { t } = useTranslation();
+
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
   const [_spreadsheetId, _setSpreadsheetId] = useState(spreadsheetId ?? "");
@@ -45,7 +48,7 @@ export const SheetConfigPage = () => {
   const onLoad = useCallback(() => {
     try {
       if (!_spreadsheetId || isNil(_sheetId)) {
-        throw new Error("Missing required sheet data");
+        throw new Error(t("error.missingSheetData"));
       }
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
@@ -61,6 +64,7 @@ export const SheetConfigPage = () => {
     setSpreadsheetId,
     setSheetId,
     isConfiguredBefore,
+    t,
     navigate,
   ]);
 
@@ -101,22 +105,22 @@ export const SheetConfigPage = () => {
 
   return (
     <div className="p-8 flex flex-col gap-10">
-      <Title>Sheet Parameters</Title>
+      <Title>{t("shetConfig.sheetParameters")}</Title>
       <div className="flex flex-col gap-6">
         <div className="flex gap-4 items-end">
           <FormInput
             id="spreadsheet"
-            label="Spreadsheet"
+            label={t("shetConfig.spreadsheet")}
             required
             value={doc?.title ?? ""}
             readOnly
             className="flex-1"
           />
-          <Button onClick={onSelectDoc}>Select</Button>
+          <Button onClick={onSelectDoc}>{t("shetConfig.selectSheet")}</Button>
         </div>
         <FormSelect
           id="sheet"
-          label="Sheet tab"
+          label={t("shetConfig.sheetTab")}
           required
           isDisabled={!_spreadsheetId}
           options={sheetOptions}
@@ -125,9 +129,11 @@ export const SheetConfigPage = () => {
         />
       </div>
       <Button onClick={onLoad} disabled={!isDirty}>
-        LOAD RECORDS
+        {t("shetConfig.loadRecords")}
       </Button>
-      {isGoBackShown && <Button onClick={onBackClick}>GO BACK</Button>}
+      {isGoBackShown && (
+        <Button onClick={onBackClick}>{t("shetConfig.goBack")}</Button>
+      )}
     </div>
   );
 };
