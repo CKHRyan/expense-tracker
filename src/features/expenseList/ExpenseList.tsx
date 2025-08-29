@@ -1,8 +1,7 @@
-import type { ExpenseRecordWithIndex } from "src/types/expense";
+import type { ExpenseRecordWithIndex, MonthViewValue } from "src/types/expense";
 import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
 import { useExpenseData } from "./hooks";
-import type { MonthViewValue } from "@features/ExpenseList/type";
 import { useTranslation } from "react-i18next";
 
 type Props = {

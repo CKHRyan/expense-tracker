@@ -1,16 +1,19 @@
 import { Icon, Text } from "@components";
-import type { MonthViewValue } from "@features/ExpenseList/type";
 import moment from "moment";
 import { useCallback } from "react";
+import type { MonthViewValue } from "src/types/expense";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   value?: MonthViewValue;
   onChange?: (value: MonthViewValue) => void;
+  className?: string;
 };
 
 export const MonthSelector = ({
   value = { year: moment().year(), month: moment().month() },
   onChange,
+  className,
 }: Props) => {
   const yearMonthTitle = `${value.year}-${(value.month + 1)
     .toString()
@@ -35,7 +38,7 @@ export const MonthSelector = ({
   const onNextClick = useCallback(() => changeMonth(1), [changeMonth]);
 
   return (
-    <div className="flex items-center gap-0">
+    <div className={twMerge("flex items-center gap-0", className)}>
       <Icon
         name="icon-[material-symbols--chevron-left-rounded]"
         onClick={onBackClick}

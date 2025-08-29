@@ -15,3 +15,8 @@ export type CategoryGroup =
   (typeof CATEGORY_GROUP)[keyof typeof CATEGORY_GROUP];
 
 export type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
+
+export type MonthViewValue = {
+  year: number;
+  month: number;
+};

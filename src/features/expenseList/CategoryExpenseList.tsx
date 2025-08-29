@@ -1,11 +1,13 @@
 import { CategoryExpenseCard } from "@features/ExpenseList/CategoryExpenseCard";
 import { useExpenseData } from "@features/ExpenseList/hooks";
-import type { ExpenseRecordWithIndex } from "src/types/expense";
+import type { ExpenseRecordWithIndex, MonthViewValue } from "src/types/expense";
 
-type Props = { data: ExpenseRecordWithIndex[] };
+type Props = { data: ExpenseRecordWithIndex[]; monthView?: MonthViewValue };
 
-export const CategoryExpenseList = ({ data }: Props) => {
-  const { groupsInExpenseOrder, totalExpenseByGroup } = useExpenseData(data);
+export const CategoryExpenseList = ({ data, monthView }: Props) => {
+  const { groupsInExpenseOrder, totalExpenseByGroup } = useExpenseData(data, {
+    filter: { monthView },
+  });
 
   return (
     <div className="flex flex-col gap-4">

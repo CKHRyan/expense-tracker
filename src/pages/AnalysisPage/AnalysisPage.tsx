@@ -1,14 +1,18 @@
 import { Loading, Title, ValueCard } from "@components";
-import { CategoryExpenseList } from "@features/ExpenseList";
+import { CategoryExpenseList, MonthSelector } from "@features/ExpenseList";
 import { useExpenseData } from "@features/ExpenseList/hooks";
+import { useViewStore } from "@stores";
 import { useTranslation } from "react-i18next";
 import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
 
 export const AnalysisPage = () => {
   const { t } = useTranslation();
+
+  const { monthView, setMonthView } = useViewStore();
+
   const { data = [], isLoading } = useGetExpenses();
 
-  const { totalExpense } = useExpenseData(data);
+  const { totalExpense } = useExpenseData(data, { filter: { monthView } });
 
   if (isLoading) return <Loading isFullScreen />;
 
@@ -20,7 +24,12 @@ export const AnalysisPage = () => {
         value={`$${totalExpense.toLocaleString()}`}
         bgColor="#FF4433"
       />
-      <CategoryExpenseList data={data} />
+      <MonthSelector
+        value={monthView}
+        onChange={setMonthView}
+        className="self-end"
+      />
+      <CategoryExpenseList data={data} monthView={monthView} />
     </div>
   );
 };
