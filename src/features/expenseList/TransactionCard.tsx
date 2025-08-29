@@ -5,7 +5,7 @@ import {
   useCategoryGroupAttributes,
 } from "@features/Expense/hooks";
 import moment from "moment";
-import type { ExpenseRecordWithIndex } from "src/types/expense";
+import type { ExpenseRecordWithIndex } from "@features/Expense/types";
 
 type Props = {
   record: ExpenseRecordWithIndex;

@@ -6,7 +6,7 @@ import {
 } from "@utils/googleSheet/helpers/facade";
 import { getSheetQueryKeys } from "@utils/googleSheet/helpers/spreadsheet";
 import { facadeExpenseRecordToBase } from "src/helpers/expense";
-import type { ExpenseRecord } from "src/types/expense";
+import type { ExpenseRecord } from "@features/Expense/types";
 import { invalidateGetExpenses, logError } from "src/queries/helpers";
 
 export const useCreateExpenseKey = ["createExpense"];

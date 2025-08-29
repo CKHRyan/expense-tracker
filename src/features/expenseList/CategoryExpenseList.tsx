@@ -1,6 +1,9 @@
 import { CategoryExpenseCard } from "@features/ExpenseList/CategoryExpenseCard";
 import { useExpenseData } from "@features/ExpenseList/hooks";
-import type { ExpenseRecordWithIndex, MonthViewValue } from "src/types/expense";
+import type {
+  ExpenseRecordWithIndex,
+  MonthViewValue,
+} from "@features/Expense/types";
 
 type Props = { data: ExpenseRecordWithIndex[]; monthView?: MonthViewValue };
 

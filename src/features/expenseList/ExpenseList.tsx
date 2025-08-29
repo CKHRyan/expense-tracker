@@ -1,4 +1,7 @@
-import type { ExpenseRecordWithIndex, MonthViewValue } from "src/types/expense";
+import type {
+  ExpenseRecordWithIndex,
+  MonthViewValue,
+} from "@features/Expense/types";
 import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
 import { useExpenseData } from "./hooks";

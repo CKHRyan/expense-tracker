@@ -1,5 +1,8 @@
 import moment from "moment";
-import type { ExpenseRecordWithIndex, MonthViewValue } from "src/types/expense";
+import type {
+  ExpenseRecordWithIndex,
+  MonthViewValue,
+} from "@features/Expense/types";
 import { create } from "zustand";
 
 export type ExpenseSheetParams = {

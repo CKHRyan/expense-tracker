@@ -1,7 +1,7 @@
 import { Icon, Text } from "@components";
 import { ListItemCard } from "@components/ListItemCard";
 import { useCategoryGroupAttributes } from "@features/Expense/hooks";
-import type { CategoryGroup } from "src/types/expense";
+import type { CategoryGroup } from "@features/Expense/types";
 import { twMerge } from "tailwind-merge";
 
 type Props = {

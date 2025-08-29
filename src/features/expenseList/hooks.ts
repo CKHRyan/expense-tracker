@@ -1,4 +1,4 @@
-import type { MonthViewValue } from "@features/ExpenseList/type";
+import type { MonthViewValue } from "@features/Expense/types";
 import {
   serverDateFormat,
   displayDateFormat,
@@ -7,7 +7,10 @@ import { groupBy } from "lodash";
 import moment from "moment";
 import { useMemo } from "react";
 import { CATEGORY_GROUP } from "src/constants/expense";
-import type { CategoryGroup, ExpenseRecordWithIndex } from "src/types/expense";
+import type {
+  CategoryGroup,
+  ExpenseRecordWithIndex,
+} from "@features/Expense/types";
 
 export type ExpenseDisplayOptions = {
   filter?: { monthView?: MonthViewValue };

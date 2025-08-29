@@ -13,7 +13,7 @@ import type {
   CategoryGroup,
   ExpenseRecord,
   ExpenseRecordWithIndex,
-} from "src/types/expense";
+} from "@features/Expense/types";
 
 export const isValidCategory = (value: string): value is Category =>
   value in CATEGORY;

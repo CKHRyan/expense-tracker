@@ -1,5 +1,5 @@
 import { CATEGORY_GROUP, CATEGORY } from "src/constants/expense";
-import type { Category } from "src/types/expense";
+import type { Category } from "@features/Expense/types";
 
 export const categoryGroupOptions = [
   "All",

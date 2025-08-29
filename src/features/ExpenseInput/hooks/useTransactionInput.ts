@@ -5,7 +5,7 @@ import { isNil } from "lodash";
 import type { Moment } from "moment";
 import { useCallback, useState } from "react";
 import { CATEGORY, categoryGroupMap } from "src/constants/expense";
-import type { Category } from "src/types/expense";
+import type { Category } from "@features/Expense/types";
 
 const initialAmount = 0;
 const initialCategory = CATEGORY.Other;

@@ -1,4 +1,4 @@
-import type { Category, CategoryGroup } from "src/types/expense";
+import type { Category, CategoryGroup } from "@features/Expense/types";
 
 export const CATEGORY_GROUP = {
   Shopping: "Shopping",

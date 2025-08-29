@@ -1,7 +1,7 @@
 import { Icon, Text } from "@components";
 import moment from "moment";
 import { useCallback } from "react";
-import type { MonthViewValue } from "src/types/expense";
+import type { MonthViewValue } from "@features/Expense/types";
 import { twMerge } from "tailwind-merge";
 
 type Props = {

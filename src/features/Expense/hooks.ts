@@ -2,7 +2,7 @@ import { categoryGroupOptions } from "@features/ExpenseInput/TxnInputPad/TxnCate
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { CATEGORY, CATEGORY_GROUP } from "src/constants/expense";
-import type { Category, CategoryGroup } from "src/types/expense";
+import type { Category, CategoryGroup } from "@features/Expense/types";
 
 export const useCategoryAttributes = (): Record<
   Category,
