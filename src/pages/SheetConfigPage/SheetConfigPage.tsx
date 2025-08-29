@@ -11,8 +11,10 @@ import type { PickerConfiguration } from "react-google-drive-picker/dist/typeDef
 import { useGetDoc } from "src/queries/hooks/useGetSheet";
 import { FormSelect } from "@components/FormSelect";
 import { useTranslation } from "react-i18next";
+import { useLocale } from "@hooks/useLocale";
 
 export const SheetConfigPage = () => {
+  const { locale } = useLocale();
   const { t } = useTranslation();
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
@@ -95,6 +97,7 @@ export const SheetConfigPage = () => {
         _setSpreadsheetId(spreadsheetId);
         _setSheetId(undefined);
       },
+      locale,
     };
     openPicker(config);
   }, [openPicker, token]);
