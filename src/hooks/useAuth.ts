@@ -1,9 +1,8 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuthStore } from "@stores";
+import { GOOGLE_OAUTH_SCOPES } from "@utils/google/constants";
 import { useCallback } from "react";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
-
-const googleOAuthScope = "https://www.googleapis.com/auth/spreadsheets";
 
 export const useAuth = () => {
   const { token, setToken } = useAuthStore();
@@ -19,7 +18,7 @@ export const useAuth = () => {
       checkGoogleAuth(access_token);
     },
     onError: (err) => console.error(err),
-    scope: googleOAuthScope,
+    scope: GOOGLE_OAUTH_SCOPES.join(" "),
   });
 
   const logout = useCallback(() => setToken(undefined), [setToken]);

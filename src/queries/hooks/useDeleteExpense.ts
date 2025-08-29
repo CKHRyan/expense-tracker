@@ -1,6 +1,6 @@
 import { useGetSheetRows } from "src/queries/hooks/useGetSheet";
 import { useMutation } from "@tanstack/react-query";
-import { getSheetRowsQueryKeys } from "@utils/googleSheet/helpers/spreadsheet";
+import { getSheetRowsQueryKeys } from "@utils/google/googleSheet/helpers/spreadsheet";
 import { invalidateGetExpenses, logError } from "src/queries/helpers";
 
 export const useDeleteExpenseKey = ["deleteExpense"];

@@ -5,7 +5,7 @@ import {
   getDoc,
   getSheet,
   getSheetQueryKeys,
-} from "@utils/googleSheet/helpers/spreadsheet";
+} from "@utils/google/googleSheet/helpers/spreadsheet";
 import { isAxiosError } from "axios";
 import type { QueryOptions } from "src/queries/types";
 

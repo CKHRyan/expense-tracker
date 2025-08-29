@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query";
 import {
   facadeRawExpenseRowToSheetRecord,
   isValidBaseExpenseRecord,
-} from "@utils/googleSheet/helpers/facade";
-import { getSheetRowsQueryKeys } from "@utils/googleSheet/helpers/spreadsheet";
+} from "@utils/google/googleSheet/helpers/facade";
+import { getSheetRowsQueryKeys } from "@utils/google/googleSheet/helpers/spreadsheet";
 import { facadeExpenseRecordToBase } from "src/helpers/expense";
 import type { ExpenseRecordWithIndex } from "@features/Expense/types";
 import { invalidateGetExpenses, logError } from "src/queries/helpers";

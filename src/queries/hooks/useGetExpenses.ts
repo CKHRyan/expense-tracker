@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import {
   facadeSheetExpenseRow,
   facadeSheetBaseExpenseRecord,
-} from "@utils/googleSheet/helpers/facade";
-import { getSheetRowsQueryKeys } from "@utils/googleSheet/helpers/spreadsheet";
+} from "@utils/google/googleSheet/helpers/facade";
+import { getSheetRowsQueryKeys } from "@utils/google/googleSheet/helpers/spreadsheet";
 import {
   facadeBaseExpenseRecordWithIndex,
   isValidExpenseWithIndex,

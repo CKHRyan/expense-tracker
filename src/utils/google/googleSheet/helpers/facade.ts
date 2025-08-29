@@ -1,5 +1,5 @@
 import moment, { type Moment } from "moment";
-import type { Entries } from "../../types";
+import type { Entries } from "../../../types";
 import {
   serverDatetimeFormat,
   ExpenseDataType,
