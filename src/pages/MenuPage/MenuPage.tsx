@@ -1,5 +1,5 @@
 import { Title } from "@components";
-import { Menu, useMenuItemOptions } from "@features/Menu";
+import { LocaleMenuItem, Menu, useMenuItemOptions } from "@features/Menu";
 
 export const MenuPage = () => {
   const items = useMenuItemOptions();
@@ -7,7 +7,12 @@ export const MenuPage = () => {
   return (
     <div>
       <Title className="p-6">Menu</Title>
-      <Menu items={items} menuItemClassName="p-6" />
+      <Menu
+        items={items}
+        header={<LocaleMenuItem />}
+        headerDivider
+        menuItemClassName="p-6"
+      />
     </div>
   );
 };

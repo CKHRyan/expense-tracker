@@ -1,0 +1,10 @@
+{
+  "Locale": {
+    "zh": "中文",
+    "en": "ENG"
+  },
+
+  "ExpenseList": {
+    "CumulativeExpense": "Cumulative Expense"
+  }
+}

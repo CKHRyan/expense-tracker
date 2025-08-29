@@ -1,3 +1,7 @@
+export const APP_LOCALES = ["en", "zh"] as const;
+
+export type AppLocale = (typeof APP_LOCALES)[number];
+
 export type Entries<T> = {
   [K in keyof T]: [K, T[K]];
 }[keyof T][];

@@ -5,20 +5,23 @@ import { ExpenseList, MonthSelector } from "@features/ExpenseList";
 import { OverlayFab } from "@components/Fab";
 import { useExpenseData } from "@features/ExpenseList/hooks";
 import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
+import { useTranslation } from "react-i18next";
 
 export const ExpenseListPage = () => {
-  const { monthView, setMonthView } = useViewStore();
-
-  const { data = [], isLoading } = useGetExpenses();
-
-  const { totalExpense } = useExpenseData(data, { filter: { monthView } });
+  const { t } = useTranslation();
 
   const {
     expenseSheetParams,
     openNewExpenseSheet,
     openEditExpenseSheet,
     closeExpenseInputSheet,
+    monthView,
+    setMonthView,
   } = useViewStore();
+
+  const { data = [], isLoading } = useGetExpenses();
+
+  const { totalExpense } = useExpenseData(data, { filter: { monthView } });
 
   if (isLoading) return <Loading isFullScreen />;
 
@@ -26,7 +29,7 @@ export const ExpenseListPage = () => {
     <>
       <div className="p-6 w-full h-full flex flex-col gap-4">
         <ValueCard
-          title="Cumulative Expense"
+          title={t("ExpenseList.CumulativeExpense")}
           value={`$${totalExpense.toLocaleString()}`}
           bgColor="#FF4433"
         />
