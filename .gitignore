@@ -12,7 +12,9 @@ node_modules
 dist
 dist-ssr
 *.local
-dev-dist/*
+dev-dist
+.firebase
+.env
 
 # Editor directories and files
 .vscode/*
@@ -24,5 +26,3 @@ dev-dist/*
 *.njsproj
 *.sln
 *.sw?
-dev-dist
-.firebase
