@@ -4,7 +4,7 @@ import {
   useCalculator,
   useTransactionInput,
 } from "@features/ExpenseInput/hooks";
-import type { ExpenseSheetParams } from "@stores/appStore";
+import { useViewStore, type ExpenseSheetParams } from "@stores/viewStore";
 import moment from "moment";
 import { useEffect, useRef } from "react";
 import { Sheet, type SheetRef } from "react-modal-sheet";
@@ -40,6 +40,8 @@ export const ExpenseInputSheet = ({
   });
   const { setCalculatorValue, clear: clearCalculator } = calculatorInterface;
 
+  const { monthView } = useViewStore();
+
   useEffect(() => {
     if (isOpen) {
       if (isEdit) {
@@ -49,7 +51,14 @@ export const ExpenseInputSheet = ({
         setCalculatorValue(expenseRecord.amount);
         setDescription(expenseRecord.remark);
       } else {
-        setDate(moment());
+        const monthViewMoment = moment()
+          .year(monthView.year)
+          .month(monthView.month);
+        const isMonthViewNow = moment().isSame(monthViewMoment, "month");
+        const initialDate = isMonthViewNow
+          ? moment()
+          : monthViewMoment.startOf("month");
+        setDate(initialDate);
       }
     } else {
       clearCalculator();

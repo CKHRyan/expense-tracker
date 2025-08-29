@@ -1,3 +1,4 @@
+import type { MonthViewValue } from "@features/ExpenseList/type";
 import {
   serverDateFormat,
   displayDateFormat,
@@ -8,9 +9,36 @@ import { useMemo } from "react";
 import { CATEGORY_GROUP } from "src/constants/expense";
 import type { CategoryGroup, ExpenseRecordWithIndex } from "src/types/expense";
 
-export const useExpenseData = (data: ExpenseRecordWithIndex[]) => {
+export type ExpenseDisplayOptions = {
+  filter?: { monthView?: MonthViewValue };
+};
+
+export const useExpenseData = (
+  data: ExpenseRecordWithIndex[],
+  options?: ExpenseDisplayOptions
+) => {
+  const { filter } = options ?? {};
+
+  const expenseData = useMemo(() => {
+    const { monthView } = filter ?? {};
+
+    let filteredData = data;
+
+    if (monthView) {
+      const monthViewMoment = moment()
+        .year(monthView.year)
+        .month(monthView.month);
+
+      filteredData = data.filter(({ date }) =>
+        date.isSame(monthViewMoment, "month")
+      );
+    }
+
+    return filteredData;
+  }, [data, filter]);
+
   const recordsByDay = useMemo(() => {
-    const recordGrops = groupBy(data, (result) =>
+    const recordGrops = groupBy(expenseData, (result) =>
       moment(result.date, serverDateFormat).format(displayDateFormat)
     );
     return Object.entries(recordGrops).reduce(
@@ -20,7 +48,7 @@ export const useExpenseData = (data: ExpenseRecordWithIndex[]) => {
       }),
       {} as Record<string, ExpenseRecordWithIndex[]>
     );
-  }, [data]);
+  }, [expenseData]);
 
   const transactionDates = useMemo(
     () =>
@@ -35,7 +63,7 @@ export const useExpenseData = (data: ExpenseRecordWithIndex[]) => {
     const initial = Object.fromEntries(
       groups.map((group) => [group, 0])
     ) as Record<CategoryGroup, number>;
-    const groupExpense = data.reduce(
+    const groupExpense = expenseData.reduce(
       (obj, { category, amount }) => ({
         ...obj,
         [category]: obj[category] + amount,
@@ -43,7 +71,7 @@ export const useExpenseData = (data: ExpenseRecordWithIndex[]) => {
       initial
     );
     return groupExpense;
-  }, [data]);
+  }, [expenseData]);
 
   const groupsInExpenseOrder = useMemo(
     () =>
@@ -54,8 +82,8 @@ export const useExpenseData = (data: ExpenseRecordWithIndex[]) => {
   );
 
   const totalExpense = useMemo(
-    () => data.reduce((sum, { amount }) => amount + sum, 0),
-    [data]
+    () => expenseData.reduce((sum, { amount }) => amount + sum, 0),
+    [expenseData]
   );
 
   return {

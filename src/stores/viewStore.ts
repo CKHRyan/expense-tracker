@@ -1,3 +1,5 @@
+import type { MonthViewValue } from "@features/ExpenseList/type";
+import moment from "moment";
 import type { ExpenseRecordWithIndex } from "src/types/expense";
 import { create } from "zustand";
 
@@ -13,19 +15,26 @@ const initialExpenseSheetParams: ExpenseSheetParams = {
   expenseRecord: undefined,
 };
 
-interface AppState {
+const now = moment();
+const initialMonthView = { year: now.year(), month: now.month() };
+
+interface ViewState {
   expenseSheetParams: ExpenseSheetParams;
+  monthView: MonthViewValue;
   openNewExpenseSheet: () => void;
   openEditExpenseSheet: (expenseRecord: ExpenseRecordWithIndex) => void;
   closeExpenseInputSheet: () => void;
+  setMonthView: (monthView: MonthViewValue) => void;
 }
 
-export const useAppStore = create<AppState>()((set) => ({
+export const useViewStore = create<ViewState>()((set) => ({
   expenseSheetParams: initialExpenseSheetParams,
+  monthView: initialMonthView,
   openNewExpenseSheet: () =>
     set({ expenseSheetParams: { isOpen: true, isEdit: false } }),
   openEditExpenseSheet: (expenseRecord) =>
     set({ expenseSheetParams: { isOpen: true, isEdit: true, expenseRecord } }),
   closeExpenseInputSheet: () =>
     set({ expenseSheetParams: initialExpenseSheetParams }),
+  setMonthView: (monthView) => set({ monthView }),
 }));

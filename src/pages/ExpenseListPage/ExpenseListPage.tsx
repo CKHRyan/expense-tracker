@@ -1,22 +1,24 @@
-import { useAppStore } from "@stores";
+import { useViewStore } from "@stores";
 import { Text, ValueCard, Loading } from "@components";
 import { ExpenseInputModal } from "@features/ExpenseInput";
-import { ExpenseList } from "@features/ExpenseList";
+import { ExpenseList, MonthSelector } from "@features/ExpenseList";
 import { OverlayFab } from "@components/Fab";
 import { useExpenseData } from "@features/ExpenseList/hooks";
 import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
 
 export const ExpenseListPage = () => {
+  const { monthView, setMonthView } = useViewStore();
+
   const { data = [], isLoading } = useGetExpenses();
 
-  const { totalExpense } = useExpenseData(data);
+  const { totalExpense } = useExpenseData(data, { filter: { monthView } });
 
   const {
     expenseSheetParams,
     openNewExpenseSheet,
     openEditExpenseSheet,
     closeExpenseInputSheet,
-  } = useAppStore();
+  } = useViewStore();
 
   if (isLoading) return <Loading isFullScreen />;
 
@@ -30,8 +32,17 @@ export const ExpenseListPage = () => {
         />
 
         <div className="flex flex-col gap-4 pb-26 flex-1">
-          <Text className="text-xl font-bold">Transaction Records</Text>
-          <ExpenseList data={data} onItemPress={openEditExpenseSheet} />
+          <div className="flex gap-4 items-center">
+            <Text className="text-xl font-bold flex-1">
+              Transaction Records
+            </Text>
+            <MonthSelector value={monthView} onChange={setMonthView} />
+          </div>
+          <ExpenseList
+            data={data}
+            onItemPress={openEditExpenseSheet}
+            monthView={monthView}
+          />
         </div>
       </div>
 

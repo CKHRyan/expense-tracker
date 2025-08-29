@@ -2,14 +2,18 @@ import type { ExpenseRecordWithIndex } from "src/types/expense";
 import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
 import { useExpenseData } from "./hooks";
+import type { MonthViewValue } from "@features/ExpenseList/type";
 
 type Props = {
   data: ExpenseRecordWithIndex[];
   onItemPress?: (item: ExpenseRecordWithIndex) => void;
+  monthView?: MonthViewValue;
 };
 
-export const ExpenseList = ({ data, onItemPress }: Props) => {
-  const { recordsByDay, transactionDates } = useExpenseData(data);
+export const ExpenseList = ({ data, onItemPress, monthView }: Props) => {
+  const { recordsByDay, transactionDates } = useExpenseData(data, {
+    filter: { monthView },
+  });
 
   const isEmpty = transactionDates.length === 0;
 
@@ -19,7 +23,7 @@ export const ExpenseList = ({ data, onItemPress }: Props) => {
         <Icon name="icon-[game-icons--wallet]" className="w-[80px] h-[80px]" />
         <div className="flex flex-col items-center gap-2 px-4">
           <Text className="font-semibold text-center">
-            YOU DON'T HAVE EXPENSE YET
+            NO EXPENSE FOR THIS MONTH
           </Text>
           <Text className="text-gray-400 text-center">
             Begin adding your spending to keep track of your money!
