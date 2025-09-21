@@ -23,6 +23,7 @@ export const categoryOptions: {
   { category: CATEGORY.Dessert },
   { category: CATEGORY.Bread },
   { category: CATEGORY.Cook },
+  { category: CATEGORY.Utensil },
   { category: CATEGORY.Fruit },
   { category: CATEGORY.Snack },
   { category: CATEGORY.Drink },

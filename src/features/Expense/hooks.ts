@@ -26,7 +26,7 @@ export const useCategoryAttributes = (): Record<
       },
       [CATEGORY.OtherLife]: {
         title: t("expense.category.other"),
-        icon: "icon-[noto--man-light-skin-tone-curly-hair]",
+        icon: "icon-[flat-color-icons--home]",
       },
       [CATEGORY.OtherEntertainment]: {
         title: t("expense.category.other"),
@@ -78,7 +78,11 @@ export const useCategoryAttributes = (): Record<
       },
       [CATEGORY.Cook]: {
         title: t("expense.category.cook"),
-        icon: "icon-[noto--cut-of-meat]",
+        icon: "icon-[twemoji--carrot]",
+      },
+      [CATEGORY.Utensil]: {
+        title: t("expense.category.utensil"),
+        icon: "icon-[streamline-ultimate-color--kitchenware-spatula-1]",
       },
       [CATEGORY.Fruit]: {
         title: t("expense.category.fruit"),
