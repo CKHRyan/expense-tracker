@@ -69,6 +69,8 @@ export const ExpenseInputSheet = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
+  useEffect(() => onClose, [onClose]);
+
   return (
     <Sheet
       ref={ref}
