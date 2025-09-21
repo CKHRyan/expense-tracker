@@ -1,4 +1,4 @@
-import { Button, FormInput, Title } from "@components";
+import { Button, FormInput, Loading, Title } from "@components";
 import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
 import { useAuthStore, useSheetStore } from "@stores";
@@ -12,6 +12,7 @@ import { useGetDoc } from "src/queries/hooks/useGetSheet";
 import { FormSelect } from "@components/FormSelect";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@hooks/useLocale";
+import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
@@ -22,9 +23,12 @@ export const SheetConfigPage = () => {
   const [_spreadsheetId, _setSpreadsheetId] = useState(spreadsheetId ?? "");
   const [_sheetId, _setSheetId] = useState<number | undefined>(sheetId);
 
-  const { data: doc } = useGetDoc(_spreadsheetId ?? "", {
-    skip: !_spreadsheetId,
-  });
+  const { data: doc, isLoading: isDocLoading } = useGetDoc(
+    _spreadsheetId ?? "",
+    {
+      skip: !_spreadsheetId,
+    }
+  );
   const sheetOptions = useMemo(
     () =>
       doc?.sheetsByIndex.map(({ a1SheetName, sheetId }, index) => ({
@@ -42,6 +46,9 @@ export const SheetConfigPage = () => {
   const canGoBack = useCanGoBack();
   const { isAuth, logout } = useAuth();
   const { token } = useAuthStore();
+  const { data: userInfo, isLoading: isUserInfoLoading } = useGoogleUserInfo();
+
+  const isLoading = (!!spreadsheetId && isDocLoading) || isUserInfoLoading;
   const isConfiguredBefore = !!spreadsheetId && !isNil(sheetId);
   const isGoBackShown = isAuth && isConfiguredBefore;
 
@@ -106,10 +113,20 @@ export const SheetConfigPage = () => {
     _setSheetId(value);
   };
 
+  if (isLoading) {
+    return <Loading isFullScreen />;
+  }
+
   return (
     <div className="p-8 flex flex-col gap-10">
       <Title>{t("sheetConfig.sheetParameters")}</Title>
       <div className="flex flex-col gap-6">
+        <FormInput
+          id="linkedAccount"
+          label={t("sheetConfig.linkedAccount")}
+          value={userInfo?.email}
+          readOnly
+        />
         <div className="flex gap-4 items-end">
           <FormInput
             id="spreadsheet"

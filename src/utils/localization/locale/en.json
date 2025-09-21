@@ -93,6 +93,7 @@
 
   "sheetConfig": {
     "sheetParameters": "Sheet Parameters",
+    "linkedAccount": "Linked Account",
     "spreadsheet": "Spreadsheet",
     "sheetTab": "Sheet tab",
     "selectSheet": "Select",

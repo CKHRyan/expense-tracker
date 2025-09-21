@@ -93,6 +93,7 @@
 
   "sheetConfig": {
     "sheetParameters": "記錄表設定",
+    "linkedAccount": "連結帳戶",
     "spreadsheet": "試算表",
     "sheetTab": "工作表標籤",
     "selectSheet": "選擇",
