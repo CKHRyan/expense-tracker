@@ -100,7 +100,7 @@ export const SheetConfigPage = () => {
       locale,
     };
     openPicker(config);
-  }, [openPicker, token]);
+  }, [locale, openPicker, token]);
 
   const onSelectSheet = ({ value }: { value: number }) => {
     _setSheetId(value);

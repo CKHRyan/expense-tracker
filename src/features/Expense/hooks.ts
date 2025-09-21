@@ -64,7 +64,10 @@ export const useCategoryAttributes = (): Record<
         title: t("expense.category.drink"),
         icon: "icon-[fluent-emoji-flat--bubble-tea]",
       },
-      [CATEGORY.Clothes]: { title: "Clothes", icon: "icon-[noto--t-shirt]" },
+      [CATEGORY.Clothes]: {
+        title: t("expense.category.clothes"),
+        icon: "icon-[noto--t-shirt]",
+      },
       [CATEGORY.Shoes]: {
         title: t("expense.category.shoes"),
         icon: "icon-[fluent-emoji-flat--running-shoe]",
