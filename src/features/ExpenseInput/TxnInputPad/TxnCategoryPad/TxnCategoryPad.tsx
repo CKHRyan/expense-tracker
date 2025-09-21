@@ -68,7 +68,11 @@ export const TxnCategoryPad = ({
       />
 
       <div className={twMerge("shrink", categoryListClassName)}>
-        <div className={"grid grid-cols-4 gap-4 p-4"}>
+        <div
+          className={
+            "grid xl:grid-cols-10 lg:grid-cols-8 md:grid-cols-6 grid-cols-4 gap-4 p-4"
+          }
+        >
           {filteredcategoryOptions.map(({ category }) => (
             <CategoryPadButtonCard
               key={`category-${category}`}

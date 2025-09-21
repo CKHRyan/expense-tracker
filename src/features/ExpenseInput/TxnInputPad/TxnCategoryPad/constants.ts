@@ -22,6 +22,8 @@ export const categoryOptions: {
   { category: CATEGORY.Breakfast },
   { category: CATEGORY.Dessert },
   { category: CATEGORY.Bread },
+  { category: CATEGORY.Cook },
+  { category: CATEGORY.Fruit },
   { category: CATEGORY.Snack },
   { category: CATEGORY.Drink },
   { category: CATEGORY.Clothes },
