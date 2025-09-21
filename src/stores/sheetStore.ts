@@ -6,8 +6,7 @@ interface SheetState {
   setSpreadsheetId: (spreadsheetId: string) => void;
   sheetId?: number;
   setSheetId: (sheetId: number) => void;
-  mutationCounter: number;
-  triggerMutationCounter: () => void;
+  resetSheetConfig: () => void;
 }
 
 export const useSheetStore = create<SheetState>()(
@@ -17,9 +16,8 @@ export const useSheetStore = create<SheetState>()(
       setSpreadsheetId: (spreadsheetId: string) => set({ spreadsheetId }),
       sheetId: undefined,
       setSheetId: (sheetId: number) => set({ sheetId }),
-      mutationCounter: 0,
-      triggerMutationCounter: () =>
-        set((state) => ({ mutationCounter: state.mutationCounter + 1 })),
+      resetSheetConfig: () =>
+        set({ spreadsheetId: undefined, sheetId: undefined }),
     }),
     { name: "sheet-storage" }
   )

@@ -13,7 +13,7 @@ export const useGetSheetKey = ["sheet"];
 
 export const useGetSheet = () => {
   const { token = "" } = useAuthStore();
-  const { spreadsheetId = "", sheetId } = useSheetStore();
+  const { spreadsheetId = "", sheetId, resetSheetConfig } = useSheetStore();
   const { logout } = useAuth();
 
   return useQuery({
@@ -24,8 +24,15 @@ export const useGetSheet = () => {
         const sheet = await getSheet(doc, sheetId);
         return sheet;
       } catch (err: unknown) {
-        if (isAxiosError(err) && err.status === 401) {
-          logout();
+        if (isAxiosError(err)) {
+          switch (err.status) {
+            case 401:
+              logout();
+              break;
+            case 403:
+              resetSheetConfig();
+              break;
+          }
         }
         throw err;
       }

@@ -40,7 +40,7 @@ export const SheetConfigPage = () => {
 
   const navigate = useNavigate();
   const canGoBack = useCanGoBack();
-  const { isAuth } = useAuth();
+  const { isAuth, logout } = useAuth();
   const { token } = useAuthStore();
   const isConfiguredBefore = !!spreadsheetId && !isNil(sheetId);
   const isGoBackShown = isAuth && isConfiguredBefore;
@@ -108,22 +108,22 @@ export const SheetConfigPage = () => {
 
   return (
     <div className="p-8 flex flex-col gap-10">
-      <Title>{t("shetConfig.sheetParameters")}</Title>
+      <Title>{t("sheetConfig.sheetParameters")}</Title>
       <div className="flex flex-col gap-6">
         <div className="flex gap-4 items-end">
           <FormInput
             id="spreadsheet"
-            label={t("shetConfig.spreadsheet")}
+            label={t("sheetConfig.spreadsheet")}
             required
             value={doc?.title ?? ""}
             readOnly
             className="flex-1"
           />
-          <Button onClick={onSelectDoc}>{t("shetConfig.selectSheet")}</Button>
+          <Button onClick={onSelectDoc}>{t("sheetConfig.selectSheet")}</Button>
         </div>
         <FormSelect
           id="sheet"
-          label={t("shetConfig.sheetTab")}
+          label={t("sheetConfig.sheetTab")}
           required
           isDisabled={!_spreadsheetId}
           options={sheetOptions}
@@ -131,12 +131,18 @@ export const SheetConfigPage = () => {
           onChange={onSelectSheet as any}
         />
       </div>
-      <Button onClick={onLoad} disabled={!isDirty}>
-        {t("shetConfig.loadRecords")}
-      </Button>
-      {isGoBackShown && (
-        <Button onClick={onBackClick}>{t("shetConfig.goBack")}</Button>
-      )}
+      <div className="flex flex-col gap-4">
+        <Button onClick={onLoad} disabled={!isDirty}>
+          {t("sheetConfig.loadRecords")}
+        </Button>
+        {isGoBackShown ? (
+          <Button onClick={onBackClick}>{t("sheetConfig.goBack")}</Button>
+        ) : (
+          <Button onClick={logout}>
+            {t("sheetConfig.switchToAnotherAccount")}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

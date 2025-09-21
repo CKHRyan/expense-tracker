@@ -91,13 +91,14 @@
     "logout": "Logout"
   },
 
-  "shetConfig": {
+  "sheetConfig": {
     "sheetParameters": "Sheet Parameters",
     "spreadsheet": "Spreadsheet",
     "sheetTab": "Sheet tab",
     "selectSheet": "Select",
     "loadRecords": "LOAD RECORDS",
-    "goBack": "GO BACK"
+    "goBack": "GO BACK",
+    "switchToAnotherAccount": "SWITCH TO ANOTHER ACCOUNT"
   },
 
   "error": {
