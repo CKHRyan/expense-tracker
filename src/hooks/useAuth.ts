@@ -1,11 +1,12 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { useAuthStore } from "@stores";
+import { useAuthStore, useSheetStore } from "@stores";
 import { GOOGLE_OAUTH_SCOPES } from "@utils/google/constants";
 import { useCallback } from "react";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
 
 export const useAuth = () => {
   const { token, setToken } = useAuthStore();
+  const { resetSheetConfig } = useSheetStore();
   const { mutate: checkGoogleAuth, isIdle, isPending } = useCheckGoogleAuth();
 
   const isAuthLoading = !!token && (isIdle || isPending);
@@ -21,7 +22,10 @@ export const useAuth = () => {
     scope: GOOGLE_OAUTH_SCOPES.join(" "),
   });
 
-  const logout = useCallback(() => setToken(undefined), [setToken]);
+  const logout = useCallback(() => {
+    setToken(undefined);
+    resetSheetConfig();
+  }, [resetSheetConfig, setToken]);
 
   const verify = useCallback(async () => {
     try {
