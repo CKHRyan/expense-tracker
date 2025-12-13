@@ -1,14 +1,21 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type { MenuItemOption } from "./Menu";
 import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import { useAuth } from "@hooks/useAuth";
 import { useTranslation } from "react-i18next";
+import { useSheetStore } from "@stores";
 
 export const useMenuItemOptions = (): MenuItemOption[] => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { resetSheetConfig } = useSheetStore();
   const { t } = useTranslation();
+
+  const onLogoutPress = useCallback(() => {
+    logout();
+    resetSheetConfig();
+  }, [logout, resetSheetConfig]);
 
   const options = useMemo(
     () => [
@@ -20,10 +27,10 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
       {
         title: t("menu.logout"),
         icon: "icon-[material-symbols--logout]",
-        onClick: logout,
+        onClick: onLogoutPress,
       },
     ],
-    [logout, navigate, t]
+    [navigate, onLogoutPress, t]
   );
 
   return options;

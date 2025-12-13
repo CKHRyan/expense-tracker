@@ -37,9 +37,9 @@ export const useTransactionInput = ({
   editIndex,
   onSubmit,
 }: Params): TransactionInputInterface => {
-  const { mutate: createExpense } = useCreateExpense();
-  const { mutate: updateExpense } = useUpdateExpense();
-  const { mutate: deleteExpense } = useDeleteExpense();
+  const { mutateAsync: createExpense } = useCreateExpense();
+  const { mutateAsync: updateExpense } = useUpdateExpense();
+  const { mutateAsync: deleteExpense } = useDeleteExpense();
 
   const [amount, setAmount] = useState<number>(initialAmount);
   const [category, setCategory] = useState<Category>(initialCategory);
