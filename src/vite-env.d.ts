@@ -11,6 +11,7 @@ interface ImportMetaEnv {
   readonly VITE_GOOGLE_SERVICE_ACCOUNT_API_KEY: string;
   readonly VITE_POC_SHEET_ID: string;
   readonly VITE_GOOGLE_OAUTH_CLIENT_ID: string;
+  readonly VITE_AUTH_SERVICE_HOST: string;
 }
 
 interface ImportMeta {

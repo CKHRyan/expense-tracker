@@ -1,54 +1,56 @@
-import {
-  useGoogleLogin,
-  type UseGoogleLoginOptionsImplicitFlow,
-} from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useAuthStore } from "@stores";
 import { GOOGLE_OAUTH_SCOPES } from "@utils/google/constants";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
+import { useGoogleAuth } from "src/queries/hooks/useGoogleAuth";
+import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
 
 export const useAuth = () => {
-  const { token, setToken } = useAuthStore();
-  const {
-    mutateAsync: checkGoogleAuth,
-    isIdle,
-    isPending,
-  } = useCheckGoogleAuth();
+  const { token, clearAuth } = useAuthStore();
+  const { mutateAsync: checkGoogleAuth, isLoading: isCheckGoogleAuthLoading } =
+    useCheckGoogleAuth();
+  const { mutateAsync: authGoogle } = useGoogleAuth();
+  const { mutateAsync: refreshToken } = useRefreshToken();
 
-  const isAuthLoading = !!token && (isIdle || isPending);
+  const isAuthLoading = !!token && isCheckGoogleAuthLoading;
 
   const isAuth = !!token;
 
-  const loginOptions = useMemo(
-    (): UseGoogleLoginOptionsImplicitFlow => ({
-      onSuccess: ({ access_token }) => {
-        setToken(access_token);
-        checkGoogleAuth(access_token);
-      },
-      onError: (err) => console.error(err),
-      scope: GOOGLE_OAUTH_SCOPES.join(" "),
-    }),
-    [checkGoogleAuth, setToken]
-  );
+  // const login = useGoogleLogin({
+  //   onSuccess: ({ access_token }) => {
+  //     setToken(access_token);
+  //     checkGoogleAuth(access_token);
+  //   },
+  //   onError: (err) => console.error(err),
+  //   scope: GOOGLE_OAUTH_SCOPES.join(" "),
+  // });
 
-  const login = useGoogleLogin(loginOptions);
-
-  const logout = useCallback(() => {
-    setToken(undefined);
-  }, [setToken]);
+  const loginByCode = useGoogleLogin({
+    onSuccess: ({ code }) => authGoogle(code),
+    onError: (err) => console.error(err),
+    scope: GOOGLE_OAUTH_SCOPES.join(" "),
+    flow: "auth-code",
+  });
 
   const verify = useCallback(async () => {
     try {
       if (!token) return false;
       await checkGoogleAuth(token);
-      console.log("ttt auth", token);
       return true;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_) {
-      logout();
+    } catch (err) {
+      console.error(err);
+      await refreshToken();
       return false;
     }
-  }, [checkGoogleAuth, logout, token]);
+  }, [checkGoogleAuth, refreshToken, token]);
 
-  return { token, isAuth, login, logout, verify, isAuthLoading };
+  return {
+    token,
+    isAuth,
+    login: loginByCode,
+    logout: clearAuth,
+    verify,
+    isAuthLoading,
+  };
 };

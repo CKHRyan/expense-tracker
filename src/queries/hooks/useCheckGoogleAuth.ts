@@ -16,8 +16,8 @@ type GoogleOauthTokenInfo = {
   access_type: string;
 };
 
-export const useCheckGoogleAuth = () =>
-  useMutation({
+export const useCheckGoogleAuth = () => {
+  const mutation = useMutation({
     mutationKey: [...useCheckGoogleAuthKey],
     mutationFn: async (token: string) =>
       (
@@ -26,3 +26,6 @@ export const useCheckGoogleAuth = () =>
         })
       ).data,
   });
+
+  return { ...mutation, isLoading: mutation.isIdle || mutation.isPending };
+};
