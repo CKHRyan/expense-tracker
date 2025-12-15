@@ -8,7 +8,7 @@ import { App } from "./App";
 import "./utils/localization/i18n";
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
-  <App />
-  // </StrictMode>
+  <StrictMode>
+    <App />
+  </StrictMode>
 );
