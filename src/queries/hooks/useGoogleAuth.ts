@@ -9,13 +9,13 @@ const authApiPath = "/api/google-auth";
 
 type GoogleAuthInfo = {
   access_token: string;
-  session_token: string;
+  refresh_token: string;
   expires_in: string;
   email: string;
 };
 
 export const useGoogleAuth = () => {
-  const { setToken, setSession, setEmail } = useAuthStore();
+  const { setToken, setRefreshToken } = useAuthStore();
 
   return useMutation({
     mutationKey: [...useGoogleAuthKey],
@@ -25,10 +25,9 @@ export const useGoogleAuth = () => {
           code,
         })
       ).data,
-    onSuccess: ({ access_token, session_token, email }) => {
+    onSuccess: ({ access_token, refresh_token }) => {
       setToken(access_token);
-      setSession(session_token);
-      setEmail(email);
+      setRefreshToken(refresh_token);
     },
     onError: logError,
   });

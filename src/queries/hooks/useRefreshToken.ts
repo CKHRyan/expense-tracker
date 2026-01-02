@@ -9,25 +9,24 @@ const authApiPath = "/api/google-refresh";
 
 type RefreshTokenInfo = {
   access_token: string;
-  session_token: string;
+  refresh_token: string;
   expires_in: string;
 };
 
 export const useRefreshToken = () => {
-  const { session, setToken, setSession, email, clearAuth } = useAuthStore();
+  const { refreshToken, setToken, setRefreshToken, clearAuth } = useAuthStore();
 
   const mutation = useMutation({
     mutationKey: [...useRefreshTokenKey],
     mutationFn: async () =>
       (
         await authAxios.post<RefreshTokenInfo>(authApiPath, {
-          email,
-          session_token: session,
+          refresh_token: refreshToken,
         })
       ).data,
-    onSuccess: ({ access_token, session_token }) => {
+    onSuccess: ({ access_token, refresh_token }) => {
       setToken(access_token);
-      setSession(session_token);
+      setRefreshToken(refresh_token);
     },
     onError: (err: any) => {
       logError(err);
