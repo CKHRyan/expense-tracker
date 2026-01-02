@@ -16,7 +16,7 @@ type RefreshTokenInfo = {
 export const useRefreshToken = () => {
   const { session, setToken, setSession, email, clearAuth } = useAuthStore();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationKey: [...useRefreshTokenKey],
     mutationFn: async () =>
       (
@@ -34,4 +34,6 @@ export const useRefreshToken = () => {
       clearAuth();
     },
   });
+
+  return { ...mutation, isLoading: mutation.isIdle || mutation.isPending };
 };

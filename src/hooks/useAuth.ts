@@ -11,9 +11,11 @@ export const useAuth = () => {
   const { mutateAsync: checkGoogleAuth, isLoading: isCheckGoogleAuthLoading } =
     useCheckGoogleAuth();
   const { mutateAsync: authGoogle } = useGoogleAuth();
-  const { mutateAsync: refreshToken } = useRefreshToken();
+  const { mutateAsync: refreshToken, isLoading: isRefreshingToken } =
+    useRefreshToken();
 
-  const isAuthLoading = !!token && isCheckGoogleAuthLoading;
+  const isAuthLoading =
+    !!token && (isCheckGoogleAuthLoading || isRefreshingToken);
 
   const isAuth = !!token;
 
