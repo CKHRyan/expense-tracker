@@ -17,15 +17,6 @@ export const useAuth = () => {
 
   const isAuth = !!token;
 
-  // const login = useGoogleLogin({
-  //   onSuccess: ({ access_token }) => {
-  //     setToken(access_token);
-  //     checkGoogleAuth(access_token);
-  //   },
-  //   onError: (err) => console.error(err),
-  //   scope: GOOGLE_OAUTH_SCOPES.join(" "),
-  // });
-
   const loginByCode = useGoogleLogin({
     onSuccess: ({ code }) => authGoogle(code),
     onError: (err) => console.error(err),
