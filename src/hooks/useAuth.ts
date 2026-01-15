@@ -8,14 +8,24 @@ import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
 
 export const useAuth = () => {
   const { token, clearAuth } = useAuthStore();
-  const { mutateAsync: checkGoogleAuth, isLoading: isCheckGoogleAuthLoading } =
-    useCheckGoogleAuth();
+  const {
+    mutateAsync: checkGoogleAuth,
+    isIdle: isGoogleAuthUnchecked,
+    isPending: isCheckGoogleAuthLoading,
+    isError: isGoogleAuthFailed,
+  } = useCheckGoogleAuth();
   const { mutateAsync: authGoogle } = useGoogleAuth();
-  const { mutateAsync: refreshToken, isLoading: isRefreshingToken } =
-    useRefreshToken();
+  const {
+    mutateAsync: refreshToken,
+    isIdle: isRefreshTokenIdle,
+    isPending: isRefreshingToken,
+  } = useRefreshToken();
 
   const isAuthLoading =
-    !!token && (isCheckGoogleAuthLoading || isRefreshingToken);
+    !!token &&
+    (isGoogleAuthUnchecked ||
+      isCheckGoogleAuthLoading ||
+      (isGoogleAuthFailed && (isRefreshTokenIdle || isRefreshingToken)));
 
   const isAuth = !!token;
 

@@ -10,7 +10,9 @@ export const AuthGuard = () => {
 
   useEffect(() => void verify(), [verify]);
 
-  if (isAuthLoading) return <Loading isFullScreen />;
+  if (isAuthLoading) {
+    return <Loading isFullScreen />;
+  }
 
   if (!isAuth && pathname !== path.login) {
     return <Navigate to={path.login} />;

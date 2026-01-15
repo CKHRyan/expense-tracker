@@ -13,9 +13,6 @@ export const MenuPage = () => {
   const { data: userInfo } = useGoogleUserInfo();
   const { t } = useTranslation();
 
-  {
-    console.log(userInfo);
-  }
   return (
     <div>
       <div className="px-6 py-4 flex items-center gap-6">

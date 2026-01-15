@@ -16,7 +16,7 @@ type RefreshTokenInfo = {
 export const useRefreshToken = () => {
   const { refreshToken, setToken, setRefreshToken, clearAuth } = useAuthStore();
 
-  const mutation = useMutation({
+  return useMutation({
     mutationKey: [...useRefreshTokenKey],
     mutationFn: async () =>
       (
@@ -26,13 +26,13 @@ export const useRefreshToken = () => {
       ).data,
     onSuccess: ({ access_token, refresh_token }) => {
       setToken(access_token);
-      setRefreshToken(refresh_token);
+      if (refresh_token) {
+        setRefreshToken(refresh_token);
+      }
     },
     onError: (err: any) => {
       logError(err);
       clearAuth();
     },
   });
-
-  return { ...mutation, isLoading: mutation.isIdle || mutation.isPending };
 };
