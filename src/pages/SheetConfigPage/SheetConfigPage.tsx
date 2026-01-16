@@ -13,6 +13,7 @@ import { FormSelect } from "@components/FormSelect";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@hooks/useLocale";
 import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
+import { config } from "@utils/config";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
@@ -88,9 +89,9 @@ export const SheetConfigPage = () => {
   const [openPicker] = useDrivePicker();
 
   const onSelectDoc = useCallback(() => {
-    const config: PickerConfiguration = {
-      clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
-      developerKey: import.meta.env.VITE_GOOGLE_API_KEY,
+    const pickerConfig: PickerConfiguration = {
+      clientId: config.googleOAuthClientId,
+      developerKey: config.googleApiKey,
       viewId: "SPREADSHEETS",
       token,
       showUploadView: true,
@@ -106,7 +107,7 @@ export const SheetConfigPage = () => {
       },
       locale,
     };
-    openPicker(config);
+    openPicker(pickerConfig);
   }, [locale, openPicker, token]);
 
   const onSelectSheet = ({ value }: { value: number }) => {
