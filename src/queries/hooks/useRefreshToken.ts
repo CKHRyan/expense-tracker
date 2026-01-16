@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { logError } from "src/queries/helpers";
 import { useAuthStore } from "@stores";
 import { authAxios } from "@utils/axios";
+import { config } from "@utils/config";
 
 const useRefreshTokenKey = ["refreshToken"];
 
@@ -18,12 +19,17 @@ export const useRefreshToken = () => {
 
   return useMutation({
     mutationKey: [...useRefreshTokenKey],
-    mutationFn: async () =>
-      (
+    mutationFn: async () => {
+      if (!config.enableAuthService) {
+        throw new Error("Refresh token failed as auth service is not enabled");
+      }
+
+      return (
         await authAxios.post<RefreshTokenInfo>(authApiPath, {
           refresh_token: refreshToken,
         })
-      ).data,
+      ).data;
+    },
     onSuccess: ({ access_token, refresh_token }) => {
       setToken(access_token);
       if (refresh_token) {

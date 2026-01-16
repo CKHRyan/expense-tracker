@@ -1,9 +1,8 @@
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "@hooks/useGoogleAuth";
 import { useAuthStore } from "@stores";
-import { GOOGLE_OAUTH_SCOPES } from "@utils/google/constants";
+import { config } from "@utils/config";
 import { useCallback } from "react";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
-import { useGoogleAuth } from "src/queries/hooks/useGoogleAuth";
 import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
 
 export const useAuth = () => {
@@ -14,7 +13,6 @@ export const useAuth = () => {
     isPending: isCheckGoogleAuthLoading,
     isError: isGoogleAuthFailed,
   } = useCheckGoogleAuth();
-  const { mutateAsync: authGoogle } = useGoogleAuth();
   const {
     mutateAsync: refreshToken,
     isIdle: isRefreshTokenIdle,
@@ -29,12 +27,7 @@ export const useAuth = () => {
 
   const isAuth = !!token;
 
-  const loginByCode = useGoogleLogin({
-    onSuccess: ({ code }) => authGoogle(code),
-    onError: (err) => console.error(err),
-    scope: GOOGLE_OAUTH_SCOPES.join(" "),
-    flow: "auth-code",
-  });
+  const googleLogin = useGoogleAuth();
 
   const verify = useCallback(async () => {
     try {
@@ -43,7 +36,9 @@ export const useAuth = () => {
       return true;
     } catch (err) {
       console.error(err);
-      await refreshToken();
+      if (config.enableAuthService) {
+        await refreshToken();
+      }
       return false;
     }
   }, [checkGoogleAuth, refreshToken, token]);
@@ -51,7 +46,7 @@ export const useAuth = () => {
   return {
     token,
     isAuth,
-    login: loginByCode,
+    login: googleLogin,
     logout: clearAuth,
     verify,
     isAuthLoading,

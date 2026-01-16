@@ -1,6 +1,7 @@
 import { useAuthStore } from "@stores";
 import { useMutation } from "@tanstack/react-query";
 import { authAxios } from "@utils/axios";
+import { config } from "@utils/config";
 import { logError } from "src/queries/helpers";
 
 export const useGoogleAuthKey = ["googleAuth"];
@@ -14,17 +15,22 @@ type GoogleAuthInfo = {
   email: string;
 };
 
-export const useGoogleAuth = () => {
+export const useAuthByCode = () => {
   const { setToken, setRefreshToken } = useAuthStore();
 
   return useMutation({
     mutationKey: [...useGoogleAuthKey],
-    mutationFn: async (code: string) =>
-      (
+    mutationFn: async (code: string) => {
+      if (!config.enableAuthService) {
+        throw new Error("Refresh token failed as auth service is not enabled");
+      }
+
+      return (
         await authAxios.post<GoogleAuthInfo>(authApiPath, {
           code,
         })
-      ).data,
+      ).data;
+    },
     onSuccess: ({ access_token, refresh_token }) => {
       setToken(access_token);
       setRefreshToken(refresh_token);
