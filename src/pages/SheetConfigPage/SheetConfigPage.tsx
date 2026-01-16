@@ -1,7 +1,7 @@
 import { Button, FormInput, Loading, Title } from "@components";
 import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
-import { useAuthStore, useSheetStore } from "@stores";
+import { useAppStore, useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -14,10 +14,14 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@hooks/useLocale";
 import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
 import { config } from "@utils/config";
+import { useTransactionUtils } from "@utils/transactions";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
   const { t } = useTranslation();
+
+  const { storageMode } = useAppStore();
+  const { load: loadTransactions } = useTransactionUtils(storageMode);
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
@@ -55,13 +59,16 @@ export const SheetConfigPage = () => {
 
   const isDirty = spreadsheetId !== _spreadsheetId || sheetId !== _sheetId;
 
-  const onLoad = useCallback(() => {
+  const onLoad = useCallback(async () => {
     try {
       if (!_spreadsheetId || isNil(_sheetId)) {
         throw new Error(t("error.missingSheetData"));
       }
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
+
+      await loadTransactions(_spreadsheetId, _sheetId);
+
       if (!isConfiguredBefore) {
         navigate(path.expenseList);
       }
@@ -73,6 +80,7 @@ export const SheetConfigPage = () => {
     _sheetId,
     setSpreadsheetId,
     setSheetId,
+    loadTransactions,
     isConfiguredBefore,
     t,
     navigate,

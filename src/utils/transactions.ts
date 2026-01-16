@@ -1,7 +1,13 @@
 import { StorageMode } from "@features/ExpenseInput/types";
-import { useTransactionStore } from "@stores";
-import { facadeRawExpenseRowToSheetRecord } from "@utils/google/googleSheet/helpers/facade";
+import { useAuthStore, useTransactionStore } from "@stores";
+import {
+  facadeRawExpenseRowToSheetRecord,
+  facadeSheetBaseExpenseRecord,
+  facadeSheetExpenseRow,
+} from "@utils/google/googleSheet/helpers/facade";
+import { getSheetRows } from "@utils/google/googleSheet/helpers/spreadsheet";
 import type { BaseExpenseRecord } from "@utils/google/googleSheet/types";
+import { useMemo } from "react";
 import { useGetSheet, useGetSheetRows } from "src/queries/hooks/useGetSheet";
 import type { QueryOptions } from "src/queries/types";
 
@@ -76,15 +82,43 @@ const useSheetTransactionUtils = (
 };
 
 export const useTransactionUtils = (storageMode: StorageMode) => {
+  const { token } = useAuthStore();
+  const { transactionSheet, setTransactions, setTransactionSheet } =
+    useTransactionStore();
+
   const localTransactionUtils = useLocalTransactionUtils();
   const sheetTransactionUtils = useSheetTransactionUtils({
     skip: storageMode !== StorageMode.SHEET,
   });
 
-  switch (storageMode) {
-    case StorageMode.LOCAL:
-      return localTransactionUtils;
-    case StorageMode.SHEET:
-      return sheetTransactionUtils;
-  }
+  const mutationUtils = useMemo(() => {
+    switch (storageMode) {
+      case StorageMode.LOCAL:
+        return localTransactionUtils;
+      case StorageMode.SHEET:
+        return sheetTransactionUtils;
+    }
+  }, [localTransactionUtils, sheetTransactionUtils, storageMode]);
+
+  const load = async (spreadsheetId: string, sheetId: number) => {
+    if (
+      transactionSheet &&
+      (transactionSheet.spreadsheetId !== spreadsheetId ||
+        transactionSheet.sheetId !== sheetId)
+      // TODO: Add condition for un-uploaded local transactions
+    ) {
+      // TODO: Prompt to save to sheet before load
+    }
+    const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
+      token: token ?? "",
+    });
+    const baseExpenseRecords = sheetRows.map((row) => {
+      const rawSheetRecord = facadeSheetExpenseRow(row);
+      return facadeSheetBaseExpenseRecord(rawSheetRecord);
+    });
+    setTransactionSheet({ spreadsheetId, sheetId });
+    setTransactions(baseExpenseRecords);
+  };
+
+  return { ...mutationUtils, load };
 };

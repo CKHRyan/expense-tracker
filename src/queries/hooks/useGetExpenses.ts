@@ -9,12 +9,31 @@ import {
   facadeBaseExpenseRecordWithIndex,
   isValidExpenseWithIndex,
 } from "src/helpers/expense";
+import { useTransactionStore } from "@stores";
 
 type Params = { lazy?: boolean };
 
 export const useGetExpensesKey = ["getExpenses"];
 
 export const useGetExpenses = (params?: Params) => {
+  const { lazy = false } = params ?? {};
+  const { transactions, transactionSheet } = useTransactionStore();
+
+  return useQuery({
+    queryKey: [
+      ...useGetExpensesKey,
+      transactionSheet?.sheetId,
+      transactionSheet?.spreadsheetId,
+    ],
+    queryFn: () =>
+      transactions
+        .map(facadeBaseExpenseRecordWithIndex)
+        .filter(isValidExpenseWithIndex),
+    enabled: !lazy,
+  });
+};
+
+export const useGetExpensesSheet = (params?: Params) => {
   const { lazy = false } = params ?? {};
   const {
     data: sheetRows,
