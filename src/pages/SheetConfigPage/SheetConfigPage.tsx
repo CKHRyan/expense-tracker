@@ -15,13 +15,15 @@ import { useLocale } from "@hooks/useLocale";
 import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
 import { config } from "@utils/config";
 import { useTransactionUtils } from "@utils/transactions";
+import { StorageMode } from "@features/ExpenseInput/types";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
   const { t } = useTranslation();
 
   const { storageMode } = useAppStore();
-  const { load: loadTransactions } = useTransactionUtils(storageMode);
+  const { load: loadTransactions, upload: uploadTransactions } =
+    useTransactionUtils(storageMode);
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
@@ -57,11 +59,13 @@ export const SheetConfigPage = () => {
   const isConfiguredBefore = !!spreadsheetId && !isNil(sheetId);
   const isGoBackShown = isAuth && isConfiguredBefore;
 
-  const isDirty = spreadsheetId !== _spreadsheetId || sheetId !== _sheetId;
+  const isFilled = !!_spreadsheetId && !isNil(_sheetId);
+  const isSheetChanged =
+    spreadsheetId !== _spreadsheetId || sheetId !== _sheetId;
 
   const onLoad = useCallback(async () => {
     try {
-      if (!_spreadsheetId || isNil(_sheetId)) {
+      if (!isFilled) {
         throw new Error(t("error.missingSheetData"));
       }
       setSpreadsheetId(_spreadsheetId);
@@ -76,15 +80,24 @@ export const SheetConfigPage = () => {
       alert(e);
     }
   }, [
-    _spreadsheetId,
-    _sheetId,
+    isFilled,
     setSpreadsheetId,
+    _spreadsheetId,
     setSheetId,
+    _sheetId,
     loadTransactions,
     isConfiguredBefore,
     t,
     navigate,
   ]);
+
+  const onUpload = useCallback(async () => {
+    if (!isFilled) {
+      throw new Error(t("error.missingSheetData"));
+    }
+
+    await uploadTransactions(_spreadsheetId, _sheetId);
+  }, [_sheetId, _spreadsheetId, isFilled, t, uploadTransactions]);
 
   const onBackClick = useCallback(() => {
     if (canGoBack) {
@@ -158,9 +171,14 @@ export const SheetConfigPage = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <Button onClick={onLoad} disabled={!isDirty}>
+        <Button onClick={onLoad} disabled={!isFilled}>
           {t("sheetConfig.loadRecords")}
         </Button>
+        {storageMode === StorageMode.LOCAL && isConfiguredBefore && (
+          <Button onClick={onUpload} disabled={!isFilled || isSheetChanged}>
+            {t("sheetConfig.uploadRecords")}
+          </Button>
+        )}
         {isGoBackShown ? (
           <Button onClick={onBackClick}>{t("sheetConfig.goBack")}</Button>
         ) : (

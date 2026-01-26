@@ -18,6 +18,7 @@ export const useGoogleAuth = () => {
   const implicitParams: UseGoogleLoginOptionsImplicitFlow = {
     onSuccess: ({ access_token }) => setToken(access_token),
     flow: "implicit",
+    scope: googleAuthScope,
   };
 
   const authCodeParams: UseGoogleLoginOptionsAuthCodeFlow = {

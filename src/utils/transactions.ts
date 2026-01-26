@@ -4,10 +4,15 @@ import {
   facadeRawExpenseRowToSheetRecord,
   facadeSheetBaseExpenseRecord,
   facadeSheetExpenseRow,
+  isValidBaseExpenseRecord,
 } from "@utils/google/googleSheet/helpers/facade";
-import { getSheetRows } from "@utils/google/googleSheet/helpers/spreadsheet";
+import {
+  getDoc,
+  getSheet,
+  getSheetRows,
+} from "@utils/google/googleSheet/helpers/spreadsheet";
 import type { BaseExpenseRecord } from "@utils/google/googleSheet/types";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useGetSheet, useGetSheetRows } from "src/queries/hooks/useGetSheet";
 import type { QueryOptions } from "src/queries/types";
 
@@ -83,8 +88,12 @@ const useSheetTransactionUtils = (
 
 export const useTransactionUtils = (storageMode: StorageMode) => {
   const { token } = useAuthStore();
-  const { transactionSheet, setTransactions, setTransactionSheet } =
-    useTransactionStore();
+  const {
+    transactions,
+    transactionSheet,
+    setTransactions,
+    setTransactionSheet,
+  } = useTransactionStore();
 
   const localTransactionUtils = useLocalTransactionUtils();
   const sheetTransactionUtils = useSheetTransactionUtils({
@@ -100,25 +109,44 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
     }
   }, [localTransactionUtils, sheetTransactionUtils, storageMode]);
 
-  const load = async (spreadsheetId: string, sheetId: number) => {
-    if (
-      transactionSheet &&
-      (transactionSheet.spreadsheetId !== spreadsheetId ||
-        transactionSheet.sheetId !== sheetId)
-      // TODO: Add condition for un-uploaded local transactions
-    ) {
-      // TODO: Prompt to save to sheet before load
-    }
-    const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
-      token: token ?? "",
-    });
-    const baseExpenseRecords = sheetRows.map((row) => {
-      const rawSheetRecord = facadeSheetExpenseRow(row);
-      return facadeSheetBaseExpenseRecord(rawSheetRecord);
-    });
-    setTransactionSheet({ spreadsheetId, sheetId });
-    setTransactions(baseExpenseRecords);
-  };
+  const load = useCallback(
+    async (spreadsheetId: string, sheetId: number) => {
+      if (
+        transactionSheet &&
+        (transactionSheet.spreadsheetId !== spreadsheetId ||
+          transactionSheet.sheetId !== sheetId)
+        // TODO: Add condition for un-uploaded local transactions
+      ) {
+        // TODO: Prompt to save to sheet before load
+      }
+      const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
+        token: token ?? "",
+      });
+      const baseExpenseRecords = sheetRows.map((row) => {
+        const rawSheetRecord = facadeSheetExpenseRow(row);
+        return facadeSheetBaseExpenseRecord(rawSheetRecord);
+      });
+      setTransactionSheet({ spreadsheetId, sheetId });
+      setTransactions(baseExpenseRecords);
+    },
+    [setTransactionSheet, setTransactions, token, transactionSheet]
+  );
 
-  return { ...mutationUtils, load };
+  const upload = useCallback(
+    async (spreadsheetId: string, sheetId: number) => {
+      if (!transactions.every(isValidBaseExpenseRecord)) {
+        throw new Error("Invalid expense records");
+      }
+
+      const doc = await getDoc({ token }, spreadsheetId);
+      const sheet = await getSheet(doc, sheetId);
+
+      const rawRecords = transactions.map(facadeRawExpenseRowToSheetRecord);
+      await sheet.clearRows();
+      await sheet.addRows(rawRecords);
+    },
+    [token, transactions]
+  );
+
+  return { ...mutationUtils, load, upload };
 };
