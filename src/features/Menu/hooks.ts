@@ -4,14 +4,16 @@ import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import { useAuth } from "@hooks/useAuth";
 import { useTranslation } from "react-i18next";
-import { useSheetStore } from "@stores";
+import { useAppStore, useSheetStore } from "@stores";
 import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
+import { StorageMode } from "@features/ExpenseInput/types";
 
 export const useMenuItemOptions = (): MenuItemOption[] => {
   const { t } = useTranslation();
 
   const { isAuth, logout, login } = useAuth();
   const { resetSheetConfig } = useSheetStore();
+  const { storageMode } = useAppStore();
 
   const navigate = useNavigate();
   const { confirm } = useConfirmModal();
@@ -19,13 +21,16 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
   const onLogoutPress = useCallback(async () => {
     const isConfirmed = await confirm({
       title: t("menu.logout"),
-      description: t("menu.logout.prompt"),
+      description:
+        storageMode === StorageMode.SHEET
+          ? t("menu.logout.prompt.unsync")
+          : t("menu.logout.prompt"),
     });
     if (!isConfirmed) return;
 
-    logout();
+    logout({ keepSyncTransactions: true });
     resetSheetConfig();
-  }, [confirm, logout, resetSheetConfig, t]);
+  }, [confirm, logout, resetSheetConfig, storageMode, t]);
 
   const options = useMemo(
     () => [

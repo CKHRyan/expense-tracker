@@ -10,7 +10,10 @@
   },
 
   "entry": {
-    "googleSignIn": "Sign in with Google"
+    "googleSignIn": "Sign In For Spending Record Sync",
+    "or": "or",
+    "unsync": "Record Spending in Local Storage",
+    "unsync.prompt": "Do you confirm to unsync the Google sheet and store your spending record in the local storage?"
   },
 
   "navTab": {
@@ -99,7 +102,8 @@
     "sheetSync": "Google Sheet Sync",
     "login": "Login",
     "logout": "Logout",
-    "logout.prompt": "Do you confirm to logout your account?"
+    "logout.prompt": "Do you confirm to logout your account?",
+    "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet."
   },
 
   "sheetConfig": {

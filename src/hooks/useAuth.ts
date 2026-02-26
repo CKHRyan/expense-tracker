@@ -1,6 +1,18 @@
+import { StorageMode } from "@features/ExpenseInput/types";
 import { useGoogleAuth } from "@hooks/useGoogleAuth";
-import { useAuthStore } from "@stores";
+import {
+  useAppStore,
+  useAuthStore,
+  useSheetStore,
+  useTransactionStore,
+} from "@stores";
 import { config } from "@utils/config";
+import {
+  facadeSheetExpenseRow,
+  facadeSheetBaseExpenseRecord,
+} from "@utils/google/googleSheet/helpers/facade";
+import { getSheetRows } from "@utils/google/googleSheet/helpers/spreadsheet";
+import { isNil } from "lodash";
 import { useCallback, useEffect } from "react";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
 import { useGoogleUserInfoKey } from "src/queries/hooks/useGoogleUserInfo";
@@ -8,6 +20,7 @@ import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
 import { queryClient } from "src/queries/utils";
 
 export const useAuth = () => {
+  const { setStorageMode } = useAppStore();
   const { token, clearAuth } = useAuthStore();
   const {
     mutateAsync: checkGoogleAuth,
@@ -20,6 +33,9 @@ export const useAuth = () => {
     isIdle: isRefreshTokenIdle,
     isPending: isRefreshingToken,
   } = useRefreshToken();
+
+  const { spreadsheetId, sheetId } = useSheetStore();
+  const { setTransactions } = useTransactionStore();
 
   const isAuthLoading =
     !!token &&
@@ -47,6 +63,30 @@ export const useAuth = () => {
     }
   }, [checkGoogleAuth, refreshToken, token]);
 
+  const loadSyncRecords = useCallback(async () => {
+    if (!spreadsheetId || isNil(sheetId)) return;
+
+    const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
+      token: token ?? "",
+    });
+    const baseExpenseRecords = sheetRows.map((row) => {
+      const rawSheetRecord = facadeSheetExpenseRow(row);
+      return facadeSheetBaseExpenseRecord(rawSheetRecord);
+    });
+    setTransactions(baseExpenseRecords);
+  }, [setTransactions, sheetId, spreadsheetId, token]);
+
+  const logout = useCallback(
+    (params?: { keepSyncTransactions: boolean }) => {
+      clearAuth();
+      setStorageMode(StorageMode.LOCAL);
+      if (params?.keepSyncTransactions && spreadsheetId && !isNil(sheetId)) {
+        loadSyncRecords();
+      }
+    },
+    [clearAuth, loadSyncRecords, setStorageMode, sheetId, spreadsheetId],
+  );
+
   const onAuthChange = useCallback(() => {
     queryClient.removeQueries({ queryKey: useGoogleUserInfoKey });
   }, []);
@@ -57,7 +97,7 @@ export const useAuth = () => {
     token,
     isAuth,
     login: googleLogin,
-    logout: clearAuth,
+    logout,
     verify,
     isAuthLoading,
   };

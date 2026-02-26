@@ -1,4 +1,5 @@
-import { useSheetStore } from "@stores";
+import { StorageMode } from "@features/ExpenseInput/types";
+import { useAppStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { Navigate, Outlet, useLocation } from "react-router";
 import { path } from "src/routes/constants/path";
@@ -6,10 +7,15 @@ import { path } from "src/routes/constants/path";
 export const ConfigGuard = () => {
   const { pathname } = useLocation();
   const { spreadsheetId, sheetId } = useSheetStore();
+  const { storageMode } = useAppStore();
 
   const isConfigured = !!spreadsheetId && !isNil(sheetId);
 
-  if (!isConfigured && pathname !== path.config) {
+  if (
+    storageMode === StorageMode.SHEET &&
+    !isConfigured &&
+    pathname !== path.config
+  ) {
     return <Navigate to={path.config} />;
   }
 

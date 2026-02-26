@@ -293,7 +293,10 @@ export const SheetConfigPage = () => {
             {t("sheetConfig.goBack")}
           </Button>
         ) : (
-          <Button onClick={logout} colorVariant="secondary">
+          <Button
+            onClick={() => logout({ keepSyncTransactions: true })}
+            colorVariant="secondary"
+          >
             {t("sheetConfig.switchToAnotherAccount")}
           </Button>
         )}
