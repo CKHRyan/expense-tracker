@@ -9,7 +9,8 @@ import {
   facadeBaseExpenseRecordWithIndex,
   isValidExpenseWithIndex,
 } from "src/helpers/expense";
-import { useTransactionStore } from "@stores";
+import { useAppStore, useSheetStore } from "@stores";
+import { useTransactionUtils } from "@utils/transactions";
 
 type Params = { lazy?: boolean };
 
@@ -17,18 +18,15 @@ export const useGetExpensesKey = ["getExpenses"];
 
 export const useGetExpenses = (params?: Params) => {
   const { lazy = false } = params ?? {};
-  const { transactions, transactionSheet } = useTransactionStore();
+
+  const { storageMode } = useAppStore();
+  const { get } = useTransactionUtils(storageMode);
+
+  const { spreadsheetId, sheetId } = useSheetStore();
 
   return useQuery({
-    queryKey: [
-      ...useGetExpensesKey,
-      transactionSheet?.sheetId,
-      transactionSheet?.spreadsheetId,
-    ],
-    queryFn: () =>
-      transactions
-        .map(facadeBaseExpenseRecordWithIndex)
-        .filter(isValidExpenseWithIndex),
+    queryKey: [...useGetExpensesKey, spreadsheetId, sheetId],
+    queryFn: get,
     enabled: !lazy,
   });
 };
@@ -54,7 +52,7 @@ export const useGetExpensesSheet = (params?: Params) => {
             facadeSheetBaseExpenseRecord(rawSheetRecord);
           const expense = facadeBaseExpenseRecordWithIndex(
             baseExpenseRecord,
-            index
+            index,
           );
           return expense;
         })

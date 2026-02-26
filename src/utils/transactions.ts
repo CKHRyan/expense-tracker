@@ -1,5 +1,6 @@
+import type { ExpenseRecordWithIndex } from "@features/Expense/types";
 import { StorageMode } from "@features/ExpenseInput/types";
-import { useAuthStore, useTransactionStore } from "@stores";
+import { useAuthStore, useSheetStore, useTransactionStore } from "@stores";
 import {
   facadeRawExpenseRowToSheetRecord,
   facadeSheetBaseExpenseRecord,
@@ -12,21 +13,33 @@ import {
   getSheetRows,
 } from "@utils/google/googleSheet/helpers/spreadsheet";
 import type { BaseExpenseRecord } from "@utils/google/googleSheet/types";
+import { isNil } from "lodash";
 import { useCallback, useMemo } from "react";
+import {
+  facadeBaseExpenseRecordWithIndex,
+  isValidExpenseWithIndex,
+} from "src/helpers/expense";
 import { useGetSheet, useGetSheetRows } from "src/queries/hooks/useGetSheet";
 import type { QueryOptions } from "src/queries/types";
 
 interface TransactionUtils {
+  get: () => ExpenseRecordWithIndex[] | Promise<ExpenseRecordWithIndex[]>;
   create: (transaction: BaseExpenseRecord) => void | Promise<void>;
   update: (
     index: number,
-    transaction: BaseExpenseRecord
+    transaction: BaseExpenseRecord,
   ) => void | Promise<void>;
   remove: (index: number) => void | Promise<void>;
 }
 
 const useLocalTransactionUtils = (): TransactionUtils => {
   const { transactions, setTransactions } = useTransactionStore();
+
+  const get: TransactionUtils["get"] = () => {
+    return transactions
+      .map(facadeBaseExpenseRecordWithIndex)
+      .filter(isValidExpenseWithIndex);
+  };
 
   const create: TransactionUtils["create"] = (transaction) => {
     setTransactions([...transactions, transaction]);
@@ -44,14 +57,37 @@ const useLocalTransactionUtils = (): TransactionUtils => {
     setTransactions(updatedTransactions);
   };
 
-  return { create, update, remove };
+  return { get, create, update, remove };
 };
 
 const useSheetTransactionUtils = (
-  queryOptions?: QueryOptions
+  queryOptions?: QueryOptions,
 ): TransactionUtils => {
   const { data: sheet } = useGetSheet(queryOptions);
   const { data: sheetRows } = useGetSheetRows(queryOptions);
+
+  const { token } = useAuthStore();
+  const { spreadsheetId, sheetId } = useSheetStore();
+
+  const get: TransactionUtils["get"] = async () => {
+    if (!spreadsheetId || isNil(sheetId)) {
+      throw new Error("Missing spreadsheet info");
+    }
+    const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
+      token: token ?? "",
+    });
+    return sheetRows
+      .map((row, index) => {
+        const rawSheetRecord = facadeSheetExpenseRow(row);
+        const baseExpenseRecord = facadeSheetBaseExpenseRecord(rawSheetRecord);
+        const expense = facadeBaseExpenseRecordWithIndex(
+          baseExpenseRecord,
+          index,
+        );
+        return expense;
+      })
+      .filter(isValidExpenseWithIndex);
+  };
 
   const create: TransactionUtils["create"] = async (transaction) => {
     if (!sheet) {
@@ -83,24 +119,20 @@ const useSheetTransactionUtils = (
     await sheetRows[index].delete();
   };
 
-  return { create, update, remove };
+  return { create, update, remove, get };
 };
 
 export const useTransactionUtils = (storageMode: StorageMode) => {
   const { token } = useAuthStore();
-  const {
-    transactions,
-    transactionSheet,
-    setTransactions,
-    setTransactionSheet,
-  } = useTransactionStore();
+  const { transactions, setTransactions, clearTransactions } =
+    useTransactionStore();
 
   const localTransactionUtils = useLocalTransactionUtils();
   const sheetTransactionUtils = useSheetTransactionUtils({
     skip: storageMode !== StorageMode.SHEET,
   });
 
-  const mutationUtils = useMemo(() => {
+  const crudUtils = useMemo(() => {
     switch (storageMode) {
       case StorageMode.LOCAL:
         return localTransactionUtils;
@@ -111,14 +143,6 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
 
   const load = useCallback(
     async (spreadsheetId: string, sheetId: number) => {
-      if (
-        transactionSheet &&
-        (transactionSheet.spreadsheetId !== spreadsheetId ||
-          transactionSheet.sheetId !== sheetId)
-        // TODO: Add condition for un-uploaded local transactions
-      ) {
-        // TODO: Prompt to save to sheet before load
-      }
       const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
         token: token ?? "",
       });
@@ -126,10 +150,9 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
         const rawSheetRecord = facadeSheetExpenseRow(row);
         return facadeSheetBaseExpenseRecord(rawSheetRecord);
       });
-      setTransactionSheet({ spreadsheetId, sheetId });
       setTransactions(baseExpenseRecords);
     },
-    [setTransactionSheet, setTransactions, token, transactionSheet]
+    [setTransactions, token],
   );
 
   const upload = useCallback(
@@ -145,8 +168,12 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
       await sheet.clearRows();
       await sheet.addRows(rawRecords);
     },
-    [token, transactions]
+    [token, transactions],
   );
 
-  return { ...mutationUtils, load, upload };
+  const clearLocalTransactions = useCallback(clearTransactions, [
+    clearTransactions,
+  ]);
+
+  return { ...crudUtils, load, upload, clearLocalTransactions };
 };

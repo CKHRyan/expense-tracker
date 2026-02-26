@@ -25,7 +25,9 @@ export const useAuth = () => {
     !!token &&
     (isGoogleAuthUnchecked ||
       isCheckGoogleAuthLoading ||
-      (isGoogleAuthFailed && (isRefreshTokenIdle || isRefreshingToken)));
+      (isGoogleAuthFailed &&
+        config.enableAuthService &&
+        (isRefreshTokenIdle || isRefreshingToken)));
 
   const isAuth = !!token;
 

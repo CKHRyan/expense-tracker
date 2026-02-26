@@ -3,24 +3,19 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface TransactionState {
-  transactionSheet?: { sheetId: number; spreadsheetId: string };
-  setTransactionSheet: (transactionSheet: {
-    sheetId: number;
-    spreadsheetId: string;
-  }) => void;
   transactions: BaseExpenseRecord[];
   setTransactions: (transactions: BaseExpenseRecord[]) => void;
+  clearTransactions: () => void;
 }
 
 export const useTransactionStore = create<TransactionState>()(
   persist(
     (set) => ({
-      transactionSheet: undefined,
-      setTransactionSheet: (transactionSheet) => set({ transactionSheet }),
       transactions: [],
       setTransactions: (transactions: BaseExpenseRecord[]) =>
         set({ transactions }),
+      clearTransactions: () => set({ transactions: [] }),
     }),
-    { name: "transaction-storage" }
-  )
+    { name: "transaction-storage" },
+  ),
 );

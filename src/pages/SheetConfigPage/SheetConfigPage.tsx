@@ -22,9 +22,12 @@ export const SheetConfigPage = () => {
   const { locale } = useLocale();
   const { t } = useTranslation();
 
-  const { storageMode } = useAppStore();
-  const { load: loadTransactions, upload: uploadTransactions } =
-    useTransactionUtils(storageMode);
+  const { storageMode, setStorageMode } = useAppStore();
+  const {
+    load: loadTransactions,
+    upload: uploadTransactions,
+    clearLocalTransactions,
+  } = useTransactionUtils(storageMode);
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
@@ -65,6 +68,72 @@ export const SheetConfigPage = () => {
 
   const isFilled = !!_spreadsheetId && !isNil(_sheetId);
 
+  const onSync = useCallback(async () => {
+    try {
+      if (!isFilled) {
+        throw new Error(t("error.missingSheetData"));
+      }
+
+      const isConfirmed = await confirm({
+        title: t("sheetConfig.syncRecords.promptTitle"),
+        description: t("sheetConfig.syncRecords.prompt"),
+      });
+      if (!isConfirmed) return;
+
+      setSpreadsheetId(_spreadsheetId);
+      setSheetId(_sheetId);
+
+      clearLocalTransactions();
+
+      setStorageMode(StorageMode.SHEET);
+
+      if (storageMode === StorageMode.SHEET && !isSheetLoadedBefore) {
+        navigate(path.expenseList);
+      }
+    } catch (e) {
+      alert(e);
+    }
+  }, [
+    isFilled,
+    confirm,
+    t,
+    setSpreadsheetId,
+    _spreadsheetId,
+    setSheetId,
+    _sheetId,
+    clearLocalTransactions,
+    setStorageMode,
+    storageMode,
+    isSheetLoadedBefore,
+    navigate,
+  ]);
+
+  const onUnsync = useCallback(async () => {
+    try {
+      const isConfirmed = await confirm({
+        title: t("sheetConfig.unsyncRecords.promptTitle"),
+        description: t("sheetConfig.unsyncRecords.prompt"),
+      });
+      if (!isConfirmed) return;
+
+      if (isSheetLoadedBefore) {
+        await loadTransactions(spreadsheetId, sheetId);
+      }
+
+      setStorageMode(StorageMode.LOCAL);
+    } catch (e) {
+      alert(e);
+    }
+  }, [
+    confirm,
+    t,
+    isSheetLoadedBefore,
+    setStorageMode,
+    loadTransactions,
+    spreadsheetId,
+    sheetId,
+  ]);
+
   const onLoad = useCallback(async () => {
     try {
       if (!isFilled) {
@@ -81,10 +150,6 @@ export const SheetConfigPage = () => {
       setSheetId(_sheetId);
 
       await loadTransactions(_spreadsheetId, _sheetId);
-
-      if (storageMode === StorageMode.SHEET && !isSheetLoadedBefore) {
-        navigate(path.expenseList);
-      }
     } catch (e) {
       alert(e);
     }
@@ -97,9 +162,6 @@ export const SheetConfigPage = () => {
     setSheetId,
     _sheetId,
     loadTransactions,
-    storageMode,
-    isSheetLoadedBefore,
-    navigate,
   ]);
 
   const onUpload = useCallback(async () => {
@@ -200,13 +262,31 @@ export const SheetConfigPage = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <Button onClick={onLoad} disabled={!isFilled}>
-          {t("sheetConfig.loadRecords")}
-        </Button>
-        {storageMode === StorageMode.LOCAL && (
-          <Button onClick={onUpload} disabled={!isFilled}>
-            {t("sheetConfig.uploadRecords")}
+        {storageMode === StorageMode.SHEET && (
+          <Button
+            onClick={onUnsync}
+            disabled={!isFilled}
+            colorVariant="warning"
+          >
+            {t("sheetConfig.unsyncRecords")}
           </Button>
+        )}
+        {storageMode === StorageMode.LOCAL && (
+          <>
+            <Button onClick={onLoad} disabled={!isFilled}>
+              {t("sheetConfig.loadRecords")}
+            </Button>
+            <Button onClick={onUpload} disabled={!isFilled}>
+              {t("sheetConfig.uploadRecords")}
+            </Button>
+            <Button
+              onClick={onSync}
+              disabled={!isFilled}
+              colorVariant="warning"
+            >
+              {t("sheetConfig.syncRecords")}
+            </Button>
+          </>
         )}
         {isGoBackShown ? (
           <Button onClick={onBackClick} colorVariant="secondary">

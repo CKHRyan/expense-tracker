@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type ButtonVariant = "solid" | "text";
 
-type ButtonColorVariant = "primary" | "secondary";
+type ButtonColorVariant = "primary" | "secondary" | "warning";
 
 export type ButtonProps = DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -26,6 +26,8 @@ const colorVariantClassNames: Partial<
       "bg-blue-500 hover:bg-blue-600 focus:ring-blue-300 active:ring-blue-600",
     secondary:
       "bg-zinc-700 hover:bg-zinc-800 focus:ring-zinc-500 active:ring-zinc-800",
+    warning:
+      "bg-amber-500 hover:bg-amber-600 focus:ring-amber-300 active:ring-amber-600",
   },
 };
 
