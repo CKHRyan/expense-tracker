@@ -16,6 +16,7 @@ import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
 import { config } from "@utils/config";
 import { useTransactionUtils } from "@utils/transactions";
 import { StorageMode } from "@features/ExpenseInput/types";
+import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
@@ -34,7 +35,7 @@ export const SheetConfigPage = () => {
     _spreadsheetId ?? "",
     {
       skip: !_spreadsheetId,
-    }
+    },
   );
   const sheetOptions = useMemo(
     () =>
@@ -42,7 +43,7 @@ export const SheetConfigPage = () => {
         value: sheetId,
         label: `${index + 1} - ${a1SheetName}`,
       })) ?? [],
-    [doc?.sheetsByIndex]
+    [doc?.sheetsByIndex],
   );
   const selectedSheetOption = useMemo(() => {
     if (isNil(_sheetId)) return undefined;
@@ -55,25 +56,33 @@ export const SheetConfigPage = () => {
   const { token } = useAuthStore();
   const { data: userInfo, isLoading: isUserInfoLoading } = useGoogleUserInfo();
 
+  const { confirm } = useConfirmModal();
+
   const isLoading = (!!spreadsheetId && isDocLoading) || isUserInfoLoading;
-  const isConfiguredBefore = !!spreadsheetId && !isNil(sheetId);
-  const isGoBackShown = isAuth && isConfiguredBefore;
+  const isSheetLoadedBefore = !!spreadsheetId && !isNil(sheetId);
+  const isGoBackShown =
+    storageMode !== StorageMode.SHEET || (isAuth && isSheetLoadedBefore);
 
   const isFilled = !!_spreadsheetId && !isNil(_sheetId);
-  const isSheetChanged =
-    spreadsheetId !== _spreadsheetId || sheetId !== _sheetId;
 
   const onLoad = useCallback(async () => {
     try {
       if (!isFilled) {
         throw new Error(t("error.missingSheetData"));
       }
+
+      const isConfirmed = await confirm({
+        title: t("sheetConfig.loadRecords.promptTitle"),
+        description: t("sheetConfig.loadRecords.prompt"),
+      });
+      if (!isConfirmed) return;
+
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
 
       await loadTransactions(_spreadsheetId, _sheetId);
 
-      if (!isConfiguredBefore) {
+      if (storageMode === StorageMode.SHEET && !isSheetLoadedBefore) {
         navigate(path.expenseList);
       }
     } catch (e) {
@@ -81,13 +90,15 @@ export const SheetConfigPage = () => {
     }
   }, [
     isFilled,
+    confirm,
+    t,
     setSpreadsheetId,
     _spreadsheetId,
     setSheetId,
     _sheetId,
     loadTransactions,
-    isConfiguredBefore,
-    t,
+    storageMode,
+    isSheetLoadedBefore,
     navigate,
   ]);
 
@@ -96,8 +107,26 @@ export const SheetConfigPage = () => {
       throw new Error(t("error.missingSheetData"));
     }
 
+    const isConfirmed = await confirm({
+      title: t("sheetConfig.uploadRecords.promptTitle"),
+      description: t("sheetConfig.uploadRecords.prompt"),
+    });
+    if (!isConfirmed) return;
+
+    setSpreadsheetId(_spreadsheetId);
+    setSheetId(_sheetId);
+
     await uploadTransactions(_spreadsheetId, _sheetId);
-  }, [_sheetId, _spreadsheetId, isFilled, t, uploadTransactions]);
+  }, [
+    _sheetId,
+    _spreadsheetId,
+    confirm,
+    isFilled,
+    setSheetId,
+    setSpreadsheetId,
+    t,
+    uploadTransactions,
+  ]);
 
   const onBackClick = useCallback(() => {
     if (canGoBack) {
@@ -174,15 +203,17 @@ export const SheetConfigPage = () => {
         <Button onClick={onLoad} disabled={!isFilled}>
           {t("sheetConfig.loadRecords")}
         </Button>
-        {storageMode === StorageMode.LOCAL && isConfiguredBefore && (
-          <Button onClick={onUpload} disabled={!isFilled || isSheetChanged}>
+        {storageMode === StorageMode.LOCAL && (
+          <Button onClick={onUpload} disabled={!isFilled}>
             {t("sheetConfig.uploadRecords")}
           </Button>
         )}
         {isGoBackShown ? (
-          <Button onClick={onBackClick}>{t("sheetConfig.goBack")}</Button>
+          <Button onClick={onBackClick} colorVariant="secondary">
+            {t("sheetConfig.goBack")}
+          </Button>
         ) : (
-          <Button onClick={logout}>
+          <Button onClick={logout} colorVariant="secondary">
             {t("sheetConfig.switchToAnotherAccount")}
           </Button>
         )}

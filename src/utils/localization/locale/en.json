@@ -2,7 +2,11 @@
   "common": {
     "selectPlaceHolder": "Select...",
     "am": "AM",
-    "pm": "PM"
+    "pm": "PM",
+    "cta": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
   },
 
   "entry": {
@@ -66,7 +70,11 @@
   "expenseInput": {
     "add": "Add",
     "addSpending": "Add Spending Record",
+    "addSpending.prompt": "Do you confirm to add the spending record?",
     "editSpending": "Edit Spending Record",
+    "editSpending.prompt": "Do you confirm to edit the spending record?",
+    "removeSpending": "Remove Spending Record",
+    "removeSpending.prompt": "Do you confirm to remove the spending record?",
     "remove": "Remove",
     "addRemarksCta": "Click to add remarks",
     "remarks": "Remarks",
@@ -88,18 +96,24 @@
       "zh": "中文",
       "en": "ENG"
     },
-    "sheetConfig": "Sheet Config",
-    "logout": "Logout"
+    "sheetSync": "Google Sheet Sync",
+    "login": "Login",
+    "logout": "Logout",
+    "logout.prompt": "Do you confirm to logout your account?"
   },
 
   "sheetConfig": {
-    "sheetParameters": "Sheet Parameters",
+    "sheetParameters": "Google Sheet Parameters",
     "linkedAccount": "Linked Account",
     "spreadsheet": "Spreadsheet",
     "sheetTab": "Sheet tab",
     "selectSheet": "Select",
     "loadRecords": "LOAD RECORDS",
+    "loadRecords.promptTitle": "Load Records",
+    "loadRecords.prompt": "Do you confirm to load all the spending records from the selected Google sheet? All your current spending records will be replaced.",
     "uploadRecords": "UPLOAD RECORDS",
+    "uploadRecords.promptTitle": "Upload Records",
+    "uploadRecords.prompt": "Do you confirm to upload your spending records to the selected Google sheet? All your existing spending records in the selected Google sheet will be replaced.",
     "goBack": "GO BACK",
     "switchToAnotherAccount": "SWITCH TO ANOTHER ACCOUNT"
   },

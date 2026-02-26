@@ -1,9 +1,11 @@
 import { useGoogleAuth } from "@hooks/useGoogleAuth";
 import { useAuthStore } from "@stores";
 import { config } from "@utils/config";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
+import { useGoogleUserInfoKey } from "src/queries/hooks/useGoogleUserInfo";
 import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
+import { queryClient } from "src/queries/utils";
 
 export const useAuth = () => {
   const { token, clearAuth } = useAuthStore();
@@ -42,6 +44,12 @@ export const useAuth = () => {
       return false;
     }
   }, [checkGoogleAuth, refreshToken, token]);
+
+  const onAuthChange = useCallback(() => {
+    queryClient.removeQueries({ queryKey: useGoogleUserInfoKey });
+  }, []);
+
+  useEffect(onAuthChange, [isAuth, onAuthChange]);
 
   return {
     token,

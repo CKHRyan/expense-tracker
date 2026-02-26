@@ -11,6 +11,8 @@ import { config } from "@utils/config";
 
 const googleAuthScope = GOOGLE_OAUTH_SCOPES.join(" ");
 
+type GoogleLoginHook = (options: UseGoogleLoginOptions) => () => void;
+
 export const useGoogleAuth = () => {
   const { setToken } = useAuthStore();
   const { mutateAsync: authByCode } = useAuthByCode();
@@ -28,7 +30,7 @@ export const useGoogleAuth = () => {
     flow: "auth-code",
   };
 
-  return (useGoogleLogin as (options: UseGoogleLoginOptions) => void)(
-    config.enableAuthService ? authCodeParams : implicitParams
+  return (useGoogleLogin as GoogleLoginHook)(
+    config.enableAuthService ? authCodeParams : implicitParams,
   );
 };

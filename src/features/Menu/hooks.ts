@@ -5,32 +5,52 @@ import { path } from "src/routes/constants/path";
 import { useAuth } from "@hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { useSheetStore } from "@stores";
+import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
 
 export const useMenuItemOptions = (): MenuItemOption[] => {
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-  const { resetSheetConfig } = useSheetStore();
   const { t } = useTranslation();
 
-  const onLogoutPress = useCallback(() => {
+  const { isAuth, logout, login } = useAuth();
+  const { resetSheetConfig } = useSheetStore();
+
+  const navigate = useNavigate();
+  const { confirm } = useConfirmModal();
+
+  const onLogoutPress = useCallback(async () => {
+    const isConfirmed = await confirm({
+      title: t("menu.logout"),
+      description: t("menu.logout.prompt"),
+    });
+    if (!isConfirmed) return;
+
     logout();
     resetSheetConfig();
-  }, [logout, resetSheetConfig]);
+  }, [confirm, logout, resetSheetConfig, t]);
 
   const options = useMemo(
     () => [
-      {
-        title: t("menu.sheetConfig"),
-        icon: "icon-[bxs--spreadsheet]",
-        onClick: () => navigate(path.config),
-      },
-      {
-        title: t("menu.logout"),
-        icon: "icon-[material-symbols--logout]",
-        onClick: onLogoutPress,
-      },
+      ...(!isAuth
+        ? [
+            {
+              title: t("menu.login"),
+              icon: "icon-[material-symbols--login]",
+              onClick: login,
+            },
+          ]
+        : [
+            {
+              title: t("menu.sheetSync"),
+              icon: "icon-[bxs--spreadsheet]",
+              onClick: () => navigate(path.config),
+            },
+            {
+              title: t("menu.logout"),
+              icon: "icon-[material-symbols--logout]",
+              onClick: onLogoutPress,
+            },
+          ]),
     ],
-    [navigate, onLogoutPress, t]
+    [isAuth, login, navigate, onLogoutPress, t],
   );
 
   return options;

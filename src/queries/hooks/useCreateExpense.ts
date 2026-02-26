@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { isValidBaseExpenseRecord } from "@utils/google/googleSheet/helpers/facade";
 import { facadeExpenseRecordToBase } from "src/helpers/expense";
 import type { ExpenseRecord } from "@features/Expense/types";
-import { invalidateGetExpenses, logError } from "src/queries/helpers";
+import { removeGetExpenses, logError } from "src/queries/helpers";
 import { useAppStore } from "@stores";
 import { useTransactionUtils } from "@utils/transactions";
 
@@ -18,7 +18,7 @@ export const useCreateExpense = () => {
       }
       await create(baseExpenseRecord);
     },
-    onSuccess: invalidateGetExpenses,
+    onSuccess: removeGetExpenses,
     onError: logError,
   });
 };

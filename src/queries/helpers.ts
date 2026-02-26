@@ -6,12 +6,12 @@ export const logError = (err: any) => {
   console.error(err);
 };
 
-export const invalidateGetExpenses = () =>
+export const removeGetExpenses = () =>
   Promise.all([
-    queryClient.invalidateQueries({
+    queryClient.removeQueries({
       queryKey: useGetSheetRowsKey,
     }),
-    queryClient.invalidateQueries({
+    queryClient.removeQueries({
       queryKey: useGetExpensesKey,
     }),
   ]);

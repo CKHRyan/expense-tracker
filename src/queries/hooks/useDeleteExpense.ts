@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { invalidateGetExpenses, logError } from "src/queries/helpers";
+import { removeGetExpenses, logError } from "src/queries/helpers";
 import { useAppStore } from "@stores";
 import { useTransactionUtils } from "@utils/transactions";
 
@@ -11,7 +11,7 @@ export const useDeleteExpense = () => {
     mutationFn: async (index: number) => {
       await remove(index);
     },
-    onSuccess: invalidateGetExpenses,
+    onSuccess: removeGetExpenses,
     onError: logError,
   });
 };

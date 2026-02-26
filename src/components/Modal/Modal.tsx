@@ -4,9 +4,9 @@ import "./style.css";
 
 ReactModal.setAppElement("#root");
 
-type Props = { contentClassname?: string } & ReactModal.Props;
+export type ModalProps = { contentClassname?: string } & ReactModal.Props;
 
-export const Modal = ({ contentClassname, ...otherProps }: Props) => (
+export const Modal = ({ contentClassname, ...otherProps }: ModalProps) => (
   <ReactModal
     overlayClassName={{
       base: "overlay-base",
@@ -14,7 +14,10 @@ export const Modal = ({ contentClassname, ...otherProps }: Props) => (
       beforeClose: "overlay-before",
     }}
     className={{
-      base: twMerge("content-base p-4 flex flex-col", contentClassname),
+      base: twMerge(
+        "content-base w-full max-w-9/10 p-4 flex flex-col",
+        contentClassname,
+      ),
       afterOpen: "content-after",
       beforeClose: "content-before",
     }}

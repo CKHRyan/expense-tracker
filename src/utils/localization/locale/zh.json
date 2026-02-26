@@ -2,7 +2,11 @@
   "common": {
     "selectPlaceHolder": "請選擇...",
     "am": "上午",
-    "pm": "下午"
+    "pm": "下午",
+    "cta": {
+      "confirm": "確定",
+      "cancel": "取消"
+    }
   },
 
   "entry": {
@@ -66,7 +70,11 @@
   "expenseInput": {
     "add": "記帳",
     "addSpending": "新增支出記錄",
-    "editSpending": "編輯支出記錄",
+    "addSpending.prompt": "你是否確定新增支出記錄此支出記錄？",
+    "editSpending": "修改支出記錄",
+    "editSpending.prompt": "你是否確定修改此支出記錄？",
+    "removeSpending": "移除支出記錄",
+    "removeSpending.prompt": "你是否確定移除此支出記錄？",
     "remove": "移除",
     "addRemarksCta": "點擊新增備註",
     "remarks": "備註",
@@ -88,18 +96,24 @@
       "zh": "中文",
       "en": "ENG"
     },
-    "sheetConfig": "記錄表設定",
-    "logout": "登出"
+    "sheetSync": "Google試算表同步設定",
+    "login": "登入",
+    "logout": "登出",
+    "logout.prompt": "你是否確定登出你的帳戶？"
   },
 
   "sheetConfig": {
-    "sheetParameters": "記錄表設定",
+    "sheetParameters": "Google試算表設定",
     "linkedAccount": "連結帳戶",
     "spreadsheet": "試算表",
-    "sheetTab": "工作表標籤",
+    "sheetTab": "試算表頁",
     "selectSheet": "選擇",
     "loadRecords": "載入記錄",
+    "loadRecords.promptTitle": "載入記錄",
+    "loadRecords.prompt": "你是否確定從選定的Google試算表中載入所有支出記錄？目前帳本中的所有支出記錄將會被取代。",
     "uploadRecords": "上載記錄",
+    "uploadRecords.promptTitle": "上載記錄",
+    "uploadRecords.prompt": "你是否確定上傳你的支出記錄到選定的Google試算表？所選的Google試算表中的所有支出記錄將會被取代。",
     "goBack": "返回",
     "switchToAnotherAccount": "切換到另一個帳戶"
   },
