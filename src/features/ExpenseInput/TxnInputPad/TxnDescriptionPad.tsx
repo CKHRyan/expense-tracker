@@ -24,7 +24,10 @@ export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
 
   return (
     <>
-      <div onClick={toggleDescModal} className="bg-zinc-600 py-1.5 px-4">
+      <div
+        onClick={toggleDescModal}
+        className="bg-zinc-600 py-1.5 px-4 cursor-pointer"
+      >
         <Text className="font-medium text-center text-ellipsis w-full">
           {description || (
             <>

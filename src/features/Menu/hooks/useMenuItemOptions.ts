@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import type { MenuItemOption } from "./Menu";
+import type { MenuItemOption } from "../Menu";
 import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import { useAuth } from "@hooks/useAuth";

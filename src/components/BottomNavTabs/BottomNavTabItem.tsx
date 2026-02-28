@@ -29,7 +29,10 @@ export const BottomNavTabItem = ({
   }, [href, navigate]);
 
   return (
-    <div onClick={onClick} className={twMerge("text-center", className)}>
+    <div
+      onClick={onClick}
+      className={twMerge("text-center", href && "cursor-pointer", className)}
+    >
       <Icon name={icon} className={twMerge("text-2xl", iconClassName)} />
       <Text className={twMerge("font-semibold", titleClassName)}>{title}</Text>
     </div>

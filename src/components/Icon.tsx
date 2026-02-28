@@ -7,5 +7,13 @@ export type IconProps = { name: string } & DetailedHTMLProps<
 >;
 
 export const Icon = ({ name, className, ...spanProps }: IconProps) => (
-  <span className={twMerge("-mb-[2px]", name, className)} {...spanProps}></span>
+  <span
+    className={twMerge(
+      "-mb-[2px]",
+      name,
+      spanProps.onClick && "cursor-pointer",
+      className,
+    )}
+    {...spanProps}
+  />
 );

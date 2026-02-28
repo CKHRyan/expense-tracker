@@ -21,7 +21,11 @@ export const MenuItem = ({
   ...otherProps
 }: MenuItemProps) => (
   <div
-    className={twMerge("p-4 flex gap-3 items-center", className)}
+    className={twMerge(
+      "p-4 flex gap-3 items-center",
+      otherProps.onClick && "cursor-pointer",
+      className,
+    )}
     {...otherProps}
   >
     {icon && <Icon name={icon} className="text-3xl" />}

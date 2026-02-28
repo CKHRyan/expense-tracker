@@ -21,7 +21,7 @@ export const Tabs = <T extends string | number>({
   className,
 }: Props<T>) => {
   const tabRefs = useRef<Record<T, HTMLButtonElement | null>>(
-    {} as Record<T, HTMLButtonElement | null>
+    {} as Record<T, HTMLButtonElement | null>,
   );
   const indicatorRef = useRef<HTMLDivElement | null>(null);
   const tabsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -52,8 +52,8 @@ export const Tabs = <T extends string | number>({
       <button
         ref={tabRef}
         className={twMerge(
-          "relative px-4 py-2 font-semibold transition-colors duration-200 ease-in-out whitespace-nowrap",
-          isSelected ? "text-blue-500" : "text-gray-500 hover:text-blue-500"
+          "relative px-4 py-2 font-semibold transition-colors duration-200 ease-in-out whitespace-nowrap cursor-pointer",
+          isSelected ? "text-blue-500" : "text-gray-500 hover:text-blue-500",
         )}
         onClick={() => onChange(value)}
         role="tab"

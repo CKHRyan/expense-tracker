@@ -3,6 +3,7 @@ import { MenuItem } from "./MenuItem";
 import { Button } from "@components";
 import { useLocale } from "@hooks/useLocale";
 import { APP_LOCALES } from "@utils/types";
+import { twMerge } from "tailwind-merge";
 
 export const LocaleMenuItem = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const LocaleMenuItem = () => {
           variant="text"
           disabled={currentLocale === locale}
           onClick={() => changeLocale(locale)}
-          className="text-xl"
+          className="opacity-50 disabled:opacity-100"
         >
           {t(`menu.locale.${locale}`)}
         </Button>
