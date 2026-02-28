@@ -1,4 +1,4 @@
-import type { MonthViewValue } from "@features/Expense/types";
+import { DateViewMode, type DateViewValue } from "@features/Expense/types";
 import {
   serverDateFormat,
   displayDateFormat,
@@ -13,27 +13,30 @@ import type {
 } from "@features/Expense/types";
 
 export type ExpenseDisplayOptions = {
-  filter?: { monthView?: MonthViewValue };
+  filter?: { dateView?: DateViewValue; dateViewMode?: DateViewMode };
 };
 
 export const useExpenseData = (
   data: ExpenseRecordWithIndex[],
-  options?: ExpenseDisplayOptions
+  options?: ExpenseDisplayOptions,
 ) => {
   const { filter } = options ?? {};
 
   const expenseData = useMemo(() => {
-    const { monthView } = filter ?? {};
+    const { dateView, dateViewMode } = filter ?? {};
 
     let filteredData = data;
 
-    if (monthView) {
-      const monthViewMoment = moment()
-        .year(monthView.year)
-        .month(monthView.month);
+    if (dateView) {
+      const dateViewMoment = moment().year(dateView.year).month(dateView.month);
+
+      const granularity: moment.unitOfTime.Base = {
+        [DateViewMode.MONTH_VIEW]: "month" as const,
+        [DateViewMode.YEAR_VIEW]: "year" as const,
+      }[dateViewMode ?? DateViewMode.MONTH_VIEW];
 
       filteredData = data.filter(({ date }) =>
-        date.isSame(monthViewMoment, "month")
+        date.isSame(dateViewMoment, granularity),
       );
     }
 
@@ -42,36 +45,36 @@ export const useExpenseData = (
 
   const recordsByDay = useMemo(() => {
     const recordGrops = groupBy(expenseData, (result) =>
-      moment(result.date, serverDateFormat).format(displayDateFormat)
+      moment(result.date, serverDateFormat).format(displayDateFormat),
     );
     return Object.entries(recordGrops).reduce(
       (obj, [key, value]) => ({
         ...obj,
         [key]: value.sort((a, b) => (a.date.isBefore(b.date) ? 1 : -1)),
       }),
-      {} as Record<string, ExpenseRecordWithIndex[]>
+      {} as Record<string, ExpenseRecordWithIndex[]>,
     );
   }, [expenseData]);
 
   const transactionDates = useMemo(
     () =>
       Object.keys(recordsByDay).sort((a, b) =>
-        moment(a).isBefore(moment(b)) ? 1 : -1
+        moment(a).isBefore(moment(b)) ? 1 : -1,
       ),
-    [recordsByDay]
+    [recordsByDay],
   );
 
   const totalExpenseByGroup = useMemo(() => {
     const groups = Object.values(CATEGORY_GROUP);
     const initial = Object.fromEntries(
-      groups.map((group) => [group, 0])
+      groups.map((group) => [group, 0]),
     ) as Record<CategoryGroup, number>;
     const groupExpense = expenseData.reduce(
       (obj, { category, amount }) => ({
         ...obj,
         [category]: obj[category] + amount,
       }),
-      initial
+      initial,
     );
     return groupExpense;
   }, [expenseData]);
@@ -79,14 +82,14 @@ export const useExpenseData = (
   const groupsInExpenseOrder = useMemo(
     () =>
       (Object.keys(totalExpenseByGroup) as CategoryGroup[]).sort(
-        (a, b) => totalExpenseByGroup[b] - totalExpenseByGroup[a]
+        (a, b) => totalExpenseByGroup[b] - totalExpenseByGroup[a],
       ),
-    [totalExpenseByGroup]
+    [totalExpenseByGroup],
   );
 
   const totalExpense = useMemo(
     () => expenseData.reduce((sum, { amount }) => amount + sum, 0),
-    [expenseData]
+    [expenseData],
   );
 
   return {

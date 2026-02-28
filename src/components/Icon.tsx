@@ -11,7 +11,7 @@ export const Icon = ({ name, className, ...spanProps }: IconProps) => (
     className={twMerge(
       "-mb-[2px]",
       name,
-      spanProps.onClick && "cursor-pointer",
+      spanProps.onClick && !spanProps.disabled && "cursor-pointer",
       className,
     )}
     {...spanProps}

@@ -2,14 +2,29 @@ import { CategoryExpenseCard } from "@features/ExpenseList/CategoryExpenseCard";
 import { useExpenseData } from "@features/ExpenseList/hooks";
 import type {
   ExpenseRecordWithIndex,
-  MonthViewValue,
+  DateViewValue,
+  DateViewMode,
 } from "@features/Expense/types";
+import { useMemo } from "react";
 
-type Props = { data: ExpenseRecordWithIndex[]; monthView?: MonthViewValue };
+type Props = {
+  data: ExpenseRecordWithIndex[];
+  dateView?: DateViewValue;
+  dateViewMode?: DateViewMode;
+};
 
-export const CategoryExpenseList = ({ data, monthView }: Props) => {
+export const CategoryExpenseList = ({
+  data,
+  dateView,
+  dateViewMode,
+}: Props) => {
+  const expenseFilter = useMemo(
+    () => ({ dateView, dateViewMode }),
+    [dateView, dateViewMode],
+  );
+
   const { groupsInExpenseOrder, totalExpenseByGroup } = useExpenseData(data, {
-    filter: { monthView },
+    filter: expenseFilter,
   });
 
   return (

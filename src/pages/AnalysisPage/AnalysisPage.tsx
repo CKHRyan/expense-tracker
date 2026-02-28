@@ -1,18 +1,28 @@
 import { Loading, Title, ValueCard } from "@components";
-import { CategoryExpenseList, MonthSelector } from "@features/ExpenseList";
+import { DateViewMode } from "@features/Expense/types";
+import { CategoryExpenseList } from "@features/ExpenseList";
+import { DateViewSelector } from "@features/ExpenseList/DateViewSelector";
 import { useExpenseData } from "@features/ExpenseList/hooks";
 import { useViewStore } from "@stores";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
 
 export const AnalysisPage = () => {
   const { t } = useTranslation();
 
-  const { monthView, setMonthView } = useViewStore();
+  const { dateView, setDateView, dateViewMode } = useViewStore();
 
   const { data = [], isLoading } = useGetExpenses();
 
-  const { totalExpense } = useExpenseData(data, { filter: { monthView } });
+  const expenseFilter = useMemo(
+    () => ({ dateView, dateViewMode }),
+    [dateView, dateViewMode],
+  );
+
+  const { totalExpense } = useExpenseData(data, {
+    filter: expenseFilter,
+  });
 
   if (isLoading) return <Loading isFullScreen />;
 
@@ -20,16 +30,26 @@ export const AnalysisPage = () => {
     <div className="p-6 w-full h-full flex flex-col gap-6">
       <Title>{t("anaylsis.spendingAnalysis")}</Title>
       <ValueCard
-        title={t("anaylsis.monthlyCumulativeExpense")}
+        title={
+          dateViewMode === DateViewMode.MONTH_VIEW
+            ? t("anaylsis.monthlyCumulativeExpense")
+            : dateViewMode === DateViewMode.YEAR_VIEW
+              ? t("anaylsis.yearlyCumulativeExpense")
+              : ""
+        }
         value={`$${totalExpense.toLocaleString()}`}
         bgColor="#FF4433"
       />
-      <MonthSelector
-        value={monthView}
-        onChange={setMonthView}
+      <DateViewSelector
+        value={dateView}
+        onChange={setDateView}
         className="self-end"
       />
-      <CategoryExpenseList data={data} monthView={monthView} />
+      <CategoryExpenseList
+        data={data}
+        dateView={dateView}
+        dateViewMode={dateViewMode}
+      />
     </div>
   );
 };

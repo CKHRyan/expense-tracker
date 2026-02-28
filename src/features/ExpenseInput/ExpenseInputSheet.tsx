@@ -42,7 +42,7 @@ export const ExpenseInputSheet = ({
   });
   const { setCalculatorValue, clear: clearCalculator } = calculatorInterface;
 
-  const { monthView } = useViewStore();
+  const { dateView } = useViewStore();
 
   useEffect(() => {
     if (isOpen) {
@@ -53,13 +53,13 @@ export const ExpenseInputSheet = ({
         setCalculatorValue(expenseRecord.amount);
         setDescription(expenseRecord.remark);
       } else {
-        const monthViewMoment = moment()
-          .year(monthView.year)
-          .month(monthView.month);
-        const isMonthViewNow = moment().isSame(monthViewMoment, "month");
+        const dateViewMoment = moment()
+          .year(dateView.year)
+          .month(dateView.month);
+        const isMonthViewNow = moment().isSame(dateViewMoment, "month");
         const initialDate = isMonthViewNow
           ? moment()
-          : monthViewMoment.startOf("month");
+          : dateViewMoment.startOf("month");
         setDate(initialDate);
       }
     } else {

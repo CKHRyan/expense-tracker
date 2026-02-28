@@ -3,7 +3,6 @@ import { MenuItem } from "./MenuItem";
 import { Button } from "@components";
 import { useLocale } from "@hooks/useLocale";
 import { APP_LOCALES } from "@utils/types";
-import { twMerge } from "tailwind-merge";
 
 export const LocaleMenuItem = () => {
   const { t } = useTranslation();

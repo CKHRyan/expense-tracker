@@ -16,7 +16,12 @@ export type CategoryGroup =
 
 export type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
 
-export type MonthViewValue = {
+export type DateViewValue = {
   year: number;
   month: number;
 };
+
+export enum DateViewMode {
+  MONTH_VIEW = "MONTH_VIEW",
+  YEAR_VIEW = "YEAR_VIEW",
+}

@@ -1,23 +1,36 @@
 import type {
   ExpenseRecordWithIndex,
-  MonthViewValue,
+  DateViewValue,
+  DateViewMode,
 } from "@features/Expense/types";
 import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
 import { useExpenseData } from "./hooks";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 type Props = {
   data: ExpenseRecordWithIndex[];
   onItemPress?: (item: ExpenseRecordWithIndex) => void;
-  monthView?: MonthViewValue;
+  dateView?: DateViewValue;
+  dateViewMode?: DateViewMode;
 };
 
-export const ExpenseList = ({ data, onItemPress, monthView }: Props) => {
+export const ExpenseList = ({
+  data,
+  onItemPress,
+  dateView,
+  dateViewMode,
+}: Props) => {
   const { t } = useTranslation();
 
+  const expenseFilter = useMemo(
+    () => ({ dateView, dateViewMode }),
+    [dateView, dateViewMode],
+  );
+
   const { recordsByDay, transactionDates } = useExpenseData(data, {
-    filter: { monthView },
+    filter: expenseFilter,
   });
 
   const isEmpty = transactionDates.length === 0;
