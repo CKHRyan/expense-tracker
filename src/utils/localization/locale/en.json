@@ -91,6 +91,7 @@
 
   "anaylsis": {
     "spendingAnalysis": "Spending Analysis",
+    "spendingCategory": "Spending Category",
     "monthlyCumulativeExpense": "Monthly Cumulative Expense",
     "yearlyCumulativeExpense": "Yearly Cumulative Expense",
     "dailyCumulativeExpense": "Daily Cumulative Expense"

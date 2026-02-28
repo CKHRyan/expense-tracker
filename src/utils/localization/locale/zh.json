@@ -91,6 +91,7 @@
 
   "anaylsis": {
     "spendingAnalysis": "支出分析",
+    "spendingCategory": "支出分類",
     "monthlyCumulativeExpense": "本月累計支出",
     "yearlyCumulativeExpense": "本年累計支出",
     "dailyCumulativeExpense": "本日累計支出"

@@ -1,4 +1,4 @@
-import { Loading, Title, ValueCard } from "@components";
+import { Loading, Text, Title, ValueCard } from "@components";
 import { DateViewMode } from "@features/Expense/types";
 import { CategoryExpenseList } from "@features/ExpenseList";
 import { DateViewSelector } from "@features/ExpenseList/DateViewSelector";
@@ -47,11 +47,12 @@ export const AnalysisPage = () => {
         value={`$${totalExpense.toLocaleString()}`}
         bgColor="#FF4433"
       />
-      <DateViewSelector
-        value={dateView}
-        onChange={setDateView}
-        className="self-end"
-      />
+      <div className="flex gap-4 items-center">
+        <Text className="text-xl font-bold flex-1">
+          {t("anaylsis.spendingCategory")}
+        </Text>
+        <DateViewSelector value={dateView} onChange={setDateView} />
+      </div>
       <CategoryExpenseList
         data={data}
         dateView={dateView}
