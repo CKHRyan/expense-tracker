@@ -33,27 +33,24 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
   }, [confirm, logout, resetSheetConfig, storageMode, t]);
 
   const options = useMemo(
-    () => [
-      ...(!isAuth
-        ? [
-            {
-              title: t("menu.login"),
-              icon: "icon-[material-symbols--login]",
-              onClick: login,
-            },
-          ]
-        : [
-            {
-              title: t("menu.sheetSync"),
-              icon: "icon-[bxs--spreadsheet]",
-              onClick: () => navigate(path.config),
-            },
-            {
-              title: t("menu.logout"),
-              icon: "icon-[material-symbols--logout]",
-              onClick: onLogoutPress,
-            },
-          ]),
+    (): MenuItemOption[] => [
+      {
+        title: t("menu.sheetSync"),
+        icon: "icon-[bxs--spreadsheet]",
+        onClick: () => navigate(path.config),
+        isLocked: !isAuth,
+      },
+      isAuth
+        ? {
+            title: t("menu.logout"),
+            icon: "icon-[material-symbols--logout]",
+            onClick: onLogoutPress,
+          }
+        : {
+            title: t("menu.login"),
+            icon: "icon-[material-symbols--login]",
+            onClick: login,
+          },
     ],
     [isAuth, login, navigate, onLogoutPress, t],
   );

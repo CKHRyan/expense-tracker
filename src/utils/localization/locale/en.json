@@ -107,7 +107,8 @@
     "login": "Login",
     "logout": "Logout",
     "logout.prompt": "Do you confirm to logout your account?",
-    "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet."
+    "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet.",
+    "authLockLabel": "Login"
   },
 
   "sheetConfig": {

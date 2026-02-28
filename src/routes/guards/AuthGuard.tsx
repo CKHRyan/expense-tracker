@@ -19,7 +19,10 @@ export const AuthGuard = () => {
     return <Loading isFullScreen />;
   }
 
-  if (isAuth && pathname === path.login) {
+  if (
+    (isAuth || (!isAuth && storageMode !== StorageMode.SHEET)) &&
+    pathname === path.login
+  ) {
     return <Navigate to={path.expenseList} />;
   }
 

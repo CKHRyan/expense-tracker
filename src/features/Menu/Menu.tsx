@@ -3,7 +3,10 @@ import { MenuItem, type MenuItemProps } from "@features/Menu/MenuItem";
 import type { ReactNode } from "react";
 import { Fragment } from "react/jsx-runtime";
 
-export type MenuItemOption = Pick<MenuItemProps, "title" | "icon" | "onClick">;
+export type MenuItemOption = Pick<
+  MenuItemProps,
+  "title" | "icon" | "onClick" | "isLocked" | "suffixComponent"
+>;
 
 type Props = {
   items: MenuItemOption[];
