@@ -16,6 +16,7 @@ export type GenericDateViewSelectorProps = {
 
 type DateViewSelectorProps = GenericDateViewSelectorProps & {
   selectorClassName?: string;
+  modePickerPosition?: "start" | "end";
 };
 
 type DateViewSelectorOption = {
@@ -27,6 +28,7 @@ type DateViewSelectorOption = {
 
 export const DateViewSelector = ({
   className,
+  modePickerPosition = "end",
   ...selectorProps
 }: DateViewSelectorProps) => {
   const { dateView, setDateView, dateViewMode, setDateViewMode } =
@@ -54,7 +56,7 @@ export const DateViewSelector = ({
   const selector = useMemo(() => {
     const _selectorProps = {
       ...selectorProps,
-      className: twMerge(selectorProps.selectorClassName, "mr-[-10px]"),
+      className: twMerge(selectorProps.selectorClassName, "mr-[-12px]"),
     };
     switch (dateViewMode) {
       case DateViewMode.MONTH_VIEW:
@@ -66,27 +68,32 @@ export const DateViewSelector = ({
     }
   }, [dateViewMode, selectorProps]);
 
+  const modePicker = (
+    <div className="flex gap-4">
+      {dateViewSelectorOptions.map((option) => (
+        <Icon
+          key={`date-view-selector-option-${option.dateViewMode}`}
+          name={option.icon}
+          className={twMerge(
+            "w-[20px] h-[20px]",
+            option.dateViewMode === dateViewMode && "opacity-50",
+            option.className,
+          )}
+          onClick={() => {
+            setDateViewMode(option.dateViewMode);
+            option.onClick?.();
+          }}
+          disabled={dateViewMode === option.dateViewMode}
+        />
+      ))}
+    </div>
+  );
+
   return (
-    <div className={twMerge("flex flex-col gap-1 items-end", className)}>
-      <div>{selector}</div>
-      <div className="flex gap-4 p-2 rounded">
-        {dateViewSelectorOptions.map((option) => (
-          <Icon
-            key={`date-view-selector-option-${option.dateViewMode}`}
-            name={option.icon}
-            className={twMerge(
-              "w-[20px] h-[20px]",
-              option.dateViewMode === dateViewMode && "opacity-50",
-              option.className,
-            )}
-            onClick={() => {
-              setDateViewMode(option.dateViewMode);
-              option.onClick?.();
-            }}
-            disabled={dateViewMode === option.dateViewMode}
-          />
-        ))}
-      </div>
+    <div className={twMerge("flex flex-col gap-3 items-end", className)}>
+      {modePickerPosition === "start"
+        ? [modePicker, selector]
+        : [selector, modePicker]}
     </div>
   );
 };
