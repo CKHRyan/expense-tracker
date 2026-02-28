@@ -5,7 +5,7 @@ import type {
 } from "@features/Expense/types";
 import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
-import { useExpenseData } from "./hooks";
+import { useExpenseData } from "./hooks/useExpenseData";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 

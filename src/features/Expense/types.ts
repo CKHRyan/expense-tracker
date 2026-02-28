@@ -19,9 +19,11 @@ export type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
 export type DateViewValue = {
   year: number;
   month: number;
+  date: number;
 };
 
 export enum DateViewMode {
   MONTH_VIEW = "MONTH_VIEW",
   YEAR_VIEW = "YEAR_VIEW",
+  DAY_VIEW = "DAY_VIEW",
 }

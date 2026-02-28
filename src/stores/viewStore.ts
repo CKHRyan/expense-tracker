@@ -19,7 +19,11 @@ const initialExpenseSheetParams: ExpenseSheetParams = {
 };
 
 const now = moment();
-const initialDateView = { year: now.year(), month: now.month() };
+const initialDateView = {
+  year: now.year(),
+  month: now.month(),
+  date: now.date(),
+};
 const initialDateViewMode = DateViewMode.MONTH_VIEW;
 
 interface ViewState {

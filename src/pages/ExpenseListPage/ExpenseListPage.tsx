@@ -3,7 +3,7 @@ import { Text, ValueCard, Loading } from "@components";
 import { ExpenseInputModal } from "@features/ExpenseInput";
 import { ExpenseList } from "@features/ExpenseList";
 import { OverlayFab } from "@components/Fab";
-import { useExpenseData } from "@features/ExpenseList/hooks";
+import { useExpenseData } from "@features/ExpenseList/hooks/useExpenseData";
 import { useGetExpenses } from "src/queries/hooks/useGetExpenses";
 import { useTranslation } from "react-i18next";
 import { DateViewSelector } from "@features/ExpenseList/DateViewSelector";
@@ -34,19 +34,26 @@ export const ExpenseListPage = () => {
     filter: expenseFilter,
   });
 
+  const cumulativeExpenseTitle = useMemo(() => {
+    switch (dateViewMode) {
+      case DateViewMode.MONTH_VIEW:
+        return t("expenseList.monthlyCumulativeExpense");
+      case DateViewMode.YEAR_VIEW:
+        return t("expenseList.yearlyCumulativeExpense");
+      case DateViewMode.DAY_VIEW:
+        return t("expenseList.dailyCumulativeExpense");
+      default:
+        return "";
+    }
+  }, [dateViewMode, t]);
+
   if (isLoading) return <Loading isFullScreen />;
 
   return (
     <>
       <div className="p-6 w-full h-full flex flex-col gap-4">
         <ValueCard
-          title={
-            dateViewMode === DateViewMode.MONTH_VIEW
-              ? t("expenseList.monthlyCumulativeExpense")
-              : dateViewMode === DateViewMode.YEAR_VIEW
-                ? t("expenseList.yearlyCumulativeExpense")
-                : ""
-          }
+          title={cumulativeExpenseTitle}
           value={`$${totalExpense.toLocaleString()}`}
           bgColor="#FF4433"
         />

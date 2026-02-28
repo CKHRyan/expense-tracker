@@ -49,20 +49,6 @@ export const useAuth = () => {
 
   const googleLogin = useGoogleAuth();
 
-  const verify = useCallback(async () => {
-    try {
-      if (!token) return false;
-      await checkGoogleAuth(token);
-      return true;
-    } catch (err) {
-      console.error(err);
-      if (config.enableAuthService) {
-        await refreshToken();
-      }
-      return false;
-    }
-  }, [checkGoogleAuth, refreshToken, token]);
-
   const loadSyncRecords = useCallback(async () => {
     if (!spreadsheetId || isNil(sheetId)) return;
 
@@ -86,6 +72,22 @@ export const useAuth = () => {
     },
     [clearAuth, loadSyncRecords, setStorageMode, sheetId, spreadsheetId],
   );
+
+  const verify = useCallback(async () => {
+    try {
+      if (!token) return false;
+      await checkGoogleAuth(token);
+      return true;
+    } catch (err) {
+      console.error(err);
+      if (config.enableAuthService) {
+        await refreshToken();
+      } else {
+        logout();
+      }
+      return false;
+    }
+  }, [checkGoogleAuth, logout, refreshToken, token]);
 
   const onAuthChange = useCallback(() => {
     queryClient.removeQueries({ queryKey: useGoogleUserInfoKey });

@@ -66,6 +66,7 @@
   "expenseList": {
     "monthlyCumulativeExpense": "Monthly Cumulative Expense",
     "yearlyCumulativeExpense": "Yearly Cumulative Expense",
+    "dailyCumulativeExpense": "Daily Cumulative Expense",
     "spendingRecords": "Spending Records",
     "emptyRecord": "NO EXPENSE FOR THIS MONTH",
     "addSpendingPrompt": "Begin adding your spending to keep track of your money!"
@@ -91,7 +92,8 @@
   "anaylsis": {
     "spendingAnalysis": "Spending Analysis",
     "monthlyCumulativeExpense": "Monthly Cumulative Expense",
-    "yearlyCumulativeExpense": "Yearly Cumulative Expense"
+    "yearlyCumulativeExpense": "Yearly Cumulative Expense",
+    "dailyCumulativeExpense": "Daily Cumulative Expense"
   },
 
   "menu": {

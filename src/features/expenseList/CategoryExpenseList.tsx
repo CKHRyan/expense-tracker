@@ -1,5 +1,5 @@
 import { CategoryExpenseCard } from "@features/ExpenseList/CategoryExpenseCard";
-import { useExpenseData } from "@features/ExpenseList/hooks";
+import { useExpenseData } from "@features/ExpenseList/hooks/useExpenseData";
 import type {
   ExpenseRecordWithIndex,
   DateViewValue,

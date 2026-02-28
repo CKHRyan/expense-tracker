@@ -66,6 +66,7 @@
   "expenseList": {
     "monthlyCumulativeExpense": "本月累計支出",
     "yearlyCumulativeExpense": "本年累計支出",
+    "dailyCumulativeExpense": "本日累計支出",
     "spendingRecords": "支出記錄",
     "emptyRecord": "本月沒有支出",
     "addSpendingPrompt": "立即記錄支出以掌握你的金錢！"
@@ -91,7 +92,8 @@
   "anaylsis": {
     "spendingAnalysis": "支出分析",
     "monthlyCumulativeExpense": "本月累計支出",
-    "yearlyCumulativeExpense": "本年累計支出"
+    "yearlyCumulativeExpense": "本年累計支出",
+    "dailyCumulativeExpense": "本日累計支出"
   },
 
   "menu": {
