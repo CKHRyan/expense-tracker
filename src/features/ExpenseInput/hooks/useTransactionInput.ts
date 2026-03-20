@@ -6,6 +6,8 @@ import type { Moment } from "moment";
 import { useCallback, useState } from "react";
 import { CATEGORY, categoryGroupMap } from "src/constants/expense";
 import type { Category } from "@features/Expense/types";
+import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
+import { useTranslation } from "react-i18next";
 
 const initialAmount = 0;
 const initialCategory = CATEGORY.Other;
@@ -46,6 +48,9 @@ export const useTransactionInput = ({
   const [date, setDate] = useState<Moment | null>(initialDate);
   const [description, setDescription] = useState(initialDescription);
 
+  const { t } = useTranslation();
+  const { confirm } = useConfirmModal();
+
   const disabledSubmit = isNil(amount) || !category || !date;
 
   const clear = useCallback(() => {
@@ -58,6 +63,12 @@ export const useTransactionInput = ({
   const create = useCallback(async () => {
     try {
       if (disabledSubmit) throw new Error("Invalid input");
+
+      const isConfirmed = await confirm({
+        title: t("expenseInput.addSpending"),
+        description: t("expenseInput.addSpending.prompt"),
+      });
+      if (!isConfirmed) return;
 
       await createExpense({
         date,
@@ -74,16 +85,24 @@ export const useTransactionInput = ({
   }, [
     amount,
     category,
+    confirm,
     createExpense,
     date,
     description,
     disabledSubmit,
     onSubmit,
+    t,
   ]);
 
   const edit = useCallback(async () => {
     try {
       if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
+
+      const isConfirmed = await confirm({
+        title: t("expenseInput.editSpending"),
+        description: t("expenseInput.editSpending.prompt"),
+      });
+      if (!isConfirmed) return;
 
       await updateExpense({
         index: editIndex,
@@ -99,19 +118,27 @@ export const useTransactionInput = ({
       alert("Failed to edit expense. Please try again.");
     }
   }, [
-    amount,
-    category,
-    date,
-    description,
     disabledSubmit,
     editIndex,
-    onSubmit,
+    confirm,
+    t,
     updateExpense,
+    date,
+    category,
+    amount,
+    description,
+    onSubmit,
   ]);
 
   const remove = useCallback(async () => {
     try {
       if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
+
+      const isConfirmed = await confirm({
+        title: t("expenseInput.removeSpending"),
+        description: t("expenseInput.removeSpending.prompt"),
+      });
+      if (!isConfirmed) return;
 
       await deleteExpense(editIndex);
       onSubmit?.();
@@ -119,7 +146,7 @@ export const useTransactionInput = ({
       console.error(err);
       alert("Failed to remove expense. Please try again.");
     }
-  }, [deleteExpense, disabledSubmit, editIndex, onSubmit]);
+  }, [confirm, deleteExpense, disabledSubmit, editIndex, onSubmit, t]);
 
   return {
     amount,

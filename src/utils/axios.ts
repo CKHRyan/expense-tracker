@@ -1,5 +1,6 @@
+import { config } from "@utils/config";
 import axios from "axios";
 
 export const authAxios = axios.create({
-  baseURL: import.meta.env.VITE_AUTH_SERVICE_HOST,
+  baseURL: config.authServiceHost,
 });

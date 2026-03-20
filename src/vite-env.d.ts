@@ -6,14 +6,17 @@ interface ViteTypeOptions {
   strictImportMetaEnv: unknown;
 }
 
-interface ImportMetaEnv {
-  readonly VITE_GOOGLE_API_KEY: string;
-  readonly VITE_GOOGLE_SERVICE_ACCOUNT_API_KEY: string;
-  readonly VITE_POC_SHEET_ID: string;
-  readonly VITE_GOOGLE_OAUTH_CLIENT_ID: string;
-  readonly VITE_AUTH_SERVICE_HOST: string;
-}
+type ImportMetaEnvKey =
+  | "VITE_GOOGLE_API_KEY"
+  | "VITE_GOOGLE_SERVICE_ACCOUNT_API_KEY"
+  | "VITE_POC_SHEET_ID"
+  | "VITE_GOOGLE_OAUTH_CLIENT_ID"
+  | "VITE_AUTH_SERVICE_HOST"
+  | "VITE_ENABLE_AUTH_SERVICE";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface ImportMetaEnv extends Record<ImportMetaEnvKey, string> {}
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv;
+  readonly env: Record<ImportMetaEnvKey, string>;
 }

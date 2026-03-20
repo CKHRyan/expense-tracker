@@ -2,11 +2,18 @@
   "common": {
     "selectPlaceHolder": "Select...",
     "am": "AM",
-    "pm": "PM"
+    "pm": "PM",
+    "cta": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
   },
 
   "entry": {
-    "googleSignIn": "Sign in with Google"
+    "googleSignIn": "Sign In For Spending Record Sync",
+    "or": "or",
+    "unsync": "Record Spending in Local Storage",
+    "unsync.prompt": "Do you confirm to unsync the Google sheet and store your spending record in the local storage?"
   },
 
   "navTab": {
@@ -66,7 +73,11 @@
   "expenseInput": {
     "add": "Add",
     "addSpending": "Add Spending Record",
+    "addSpending.prompt": "Do you confirm to add the spending record?",
     "editSpending": "Edit Spending Record",
+    "editSpending.prompt": "Do you confirm to edit the spending record?",
+    "removeSpending": "Remove Spending Record",
+    "removeSpending.prompt": "Do you confirm to remove the spending record?",
     "remove": "Remove",
     "addRemarksCta": "Click to add remarks",
     "remarks": "Remarks",
@@ -88,17 +99,31 @@
       "zh": "中文",
       "en": "ENG"
     },
-    "sheetConfig": "Sheet Config",
-    "logout": "Logout"
+    "sheetSync": "Google Sheet Sync",
+    "login": "Login",
+    "logout": "Logout",
+    "logout.prompt": "Do you confirm to logout your account?",
+    "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet."
   },
 
   "sheetConfig": {
-    "sheetParameters": "Sheet Parameters",
+    "sheetParameters": "Google Sheet Parameters",
     "linkedAccount": "Linked Account",
     "spreadsheet": "Spreadsheet",
     "sheetTab": "Sheet tab",
     "selectSheet": "Select",
+    "syncRecords": "SYNC RECORDS",
+    "syncRecords.promptTitle": "Sync Records",
+    "syncRecords.prompt": "Do you confirm to sync the spending records with the selected Google sheet? All your current spending records will be replaced.",
+    "unsyncRecords": "UNSYNC RECORDS",
+    "unsyncRecords.promptTitle": "Unsync Records",
+    "unsyncRecords.prompt": "Do you confirm to unsync the selected Google sheet? Your spending records will no longer be loaded from / uploaded to the Gogole sheet.",
     "loadRecords": "LOAD RECORDS",
+    "loadRecords.promptTitle": "Load Records",
+    "loadRecords.prompt": "Do you confirm to load all the spending records from the selected Google sheet? All your current spending records will be replaced.",
+    "uploadRecords": "UPLOAD RECORDS",
+    "uploadRecords.promptTitle": "Upload Records",
+    "uploadRecords.prompt": "Do you confirm to upload your spending records to the selected Google sheet? All your existing spending records in the selected Google sheet will be replaced.",
     "goBack": "GO BACK",
     "switchToAnotherAccount": "SWITCH TO ANOTHER ACCOUNT"
   },

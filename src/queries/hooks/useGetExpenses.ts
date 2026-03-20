@@ -9,12 +9,29 @@ import {
   facadeBaseExpenseRecordWithIndex,
   isValidExpenseWithIndex,
 } from "src/helpers/expense";
+import { useAppStore, useSheetStore } from "@stores";
+import { useTransactionUtils } from "@utils/transactions";
 
 type Params = { lazy?: boolean };
 
 export const useGetExpensesKey = ["getExpenses"];
 
 export const useGetExpenses = (params?: Params) => {
+  const { lazy = false } = params ?? {};
+
+  const { storageMode } = useAppStore();
+  const { get } = useTransactionUtils(storageMode);
+
+  const { spreadsheetId, sheetId } = useSheetStore();
+
+  return useQuery({
+    queryKey: [...useGetExpensesKey, spreadsheetId, sheetId],
+    queryFn: get,
+    enabled: !lazy,
+  });
+};
+
+export const useGetExpensesSheet = (params?: Params) => {
   const { lazy = false } = params ?? {};
   const {
     data: sheetRows,
@@ -35,7 +52,7 @@ export const useGetExpenses = (params?: Params) => {
             facadeSheetBaseExpenseRecord(rawSheetRecord);
           const expense = facadeBaseExpenseRecordWithIndex(
             baseExpenseRecord,
-            index
+            index,
           );
           return expense;
         })

@@ -32,6 +32,16 @@ export const getSheet = async (doc: GoogleSpreadsheet, sheetId?: number) => {
   return sheet;
 };
 
+export const getSheetRows = async (
+  spreadsheetId: string,
+  sheetId: number,
+  options: { token: string }
+) => {
+  const doc = await getDoc({ token: options.token }, spreadsheetId);
+  const sheet = await getSheet(doc, sheetId);
+  return await sheet.getRows();
+};
+
 export const getSheetQueryKeys = (sheet?: GoogleSpreadsheetWorksheet) => {
   if (!sheet) return [];
 

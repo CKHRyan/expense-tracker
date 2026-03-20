@@ -1,7 +1,7 @@
 import { Button, FormInput, Loading, Title } from "@components";
 import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
-import { useAuthStore, useSheetStore } from "@stores";
+import { useAppStore, useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -13,10 +13,21 @@ import { FormSelect } from "@components/FormSelect";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@hooks/useLocale";
 import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
+import { config } from "@utils/config";
+import { useTransactionUtils } from "@utils/transactions";
+import { StorageMode } from "@features/ExpenseInput/types";
+import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
   const { t } = useTranslation();
+
+  const { storageMode, setStorageMode } = useAppStore();
+  const {
+    load: loadTransactions,
+    upload: uploadTransactions,
+    clearLocalTransactions,
+  } = useTransactionUtils(storageMode);
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
@@ -27,7 +38,7 @@ export const SheetConfigPage = () => {
     _spreadsheetId ?? "",
     {
       skip: !_spreadsheetId,
-    }
+    },
   );
   const sheetOptions = useMemo(
     () =>
@@ -35,7 +46,7 @@ export const SheetConfigPage = () => {
         value: sheetId,
         label: `${index + 1} - ${a1SheetName}`,
       })) ?? [],
-    [doc?.sheetsByIndex]
+    [doc?.sheetsByIndex],
   );
   const selectedSheetOption = useMemo(() => {
     if (isNil(_sheetId)) return undefined;
@@ -48,33 +59,135 @@ export const SheetConfigPage = () => {
   const { token } = useAuthStore();
   const { data: userInfo, isLoading: isUserInfoLoading } = useGoogleUserInfo();
 
+  const { confirm } = useConfirmModal();
+
   const isLoading = (!!spreadsheetId && isDocLoading) || isUserInfoLoading;
-  const isConfiguredBefore = !!spreadsheetId && !isNil(sheetId);
-  const isGoBackShown = isAuth && isConfiguredBefore;
+  const isSheetLoadedBefore = !!spreadsheetId && !isNil(sheetId);
+  const isGoBackShown =
+    storageMode !== StorageMode.SHEET || (isAuth && isSheetLoadedBefore);
 
-  const isDirty = spreadsheetId !== _spreadsheetId || sheetId !== _sheetId;
+  const isFilled = !!_spreadsheetId && !isNil(_sheetId);
 
-  const onLoad = useCallback(() => {
+  const onSync = useCallback(async () => {
     try {
-      if (!_spreadsheetId || isNil(_sheetId)) {
+      if (!isFilled) {
         throw new Error(t("error.missingSheetData"));
       }
+
+      const isConfirmed = await confirm({
+        title: t("sheetConfig.syncRecords.promptTitle"),
+        description: t("sheetConfig.syncRecords.prompt"),
+      });
+      if (!isConfirmed) return;
+
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
-      if (!isConfiguredBefore) {
+
+      clearLocalTransactions();
+
+      setStorageMode(StorageMode.SHEET);
+
+      if (storageMode === StorageMode.SHEET && !isSheetLoadedBefore) {
         navigate(path.expenseList);
       }
     } catch (e) {
       alert(e);
     }
   }, [
-    _spreadsheetId,
-    _sheetId,
-    setSpreadsheetId,
-    setSheetId,
-    isConfiguredBefore,
+    isFilled,
+    confirm,
     t,
+    setSpreadsheetId,
+    _spreadsheetId,
+    setSheetId,
+    _sheetId,
+    clearLocalTransactions,
+    setStorageMode,
+    storageMode,
+    isSheetLoadedBefore,
     navigate,
+  ]);
+
+  const onUnsync = useCallback(async () => {
+    try {
+      const isConfirmed = await confirm({
+        title: t("sheetConfig.unsyncRecords.promptTitle"),
+        description: t("sheetConfig.unsyncRecords.prompt"),
+      });
+      if (!isConfirmed) return;
+
+      if (isSheetLoadedBefore) {
+        await loadTransactions(spreadsheetId, sheetId);
+      }
+
+      setStorageMode(StorageMode.LOCAL);
+    } catch (e) {
+      alert(e);
+    }
+  }, [
+    confirm,
+    t,
+    isSheetLoadedBefore,
+    setStorageMode,
+    loadTransactions,
+    spreadsheetId,
+    sheetId,
+  ]);
+
+  const onLoad = useCallback(async () => {
+    try {
+      if (!isFilled) {
+        throw new Error(t("error.missingSheetData"));
+      }
+
+      const isConfirmed = await confirm({
+        title: t("sheetConfig.loadRecords.promptTitle"),
+        description: t("sheetConfig.loadRecords.prompt"),
+      });
+      if (!isConfirmed) return;
+
+      setSpreadsheetId(_spreadsheetId);
+      setSheetId(_sheetId);
+
+      await loadTransactions(_spreadsheetId, _sheetId);
+    } catch (e) {
+      alert(e);
+    }
+  }, [
+    isFilled,
+    confirm,
+    t,
+    setSpreadsheetId,
+    _spreadsheetId,
+    setSheetId,
+    _sheetId,
+    loadTransactions,
+  ]);
+
+  const onUpload = useCallback(async () => {
+    if (!isFilled) {
+      throw new Error(t("error.missingSheetData"));
+    }
+
+    const isConfirmed = await confirm({
+      title: t("sheetConfig.uploadRecords.promptTitle"),
+      description: t("sheetConfig.uploadRecords.prompt"),
+    });
+    if (!isConfirmed) return;
+
+    setSpreadsheetId(_spreadsheetId);
+    setSheetId(_sheetId);
+
+    await uploadTransactions(_spreadsheetId, _sheetId);
+  }, [
+    _sheetId,
+    _spreadsheetId,
+    confirm,
+    isFilled,
+    setSheetId,
+    setSpreadsheetId,
+    t,
+    uploadTransactions,
   ]);
 
   const onBackClick = useCallback(() => {
@@ -88,9 +201,9 @@ export const SheetConfigPage = () => {
   const [openPicker] = useDrivePicker();
 
   const onSelectDoc = useCallback(() => {
-    const config: PickerConfiguration = {
-      clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
-      developerKey: import.meta.env.VITE_GOOGLE_API_KEY,
+    const pickerConfig: PickerConfiguration = {
+      clientId: config.googleOAuthClientId,
+      developerKey: config.googleApiKey,
       viewId: "SPREADSHEETS",
       token,
       showUploadView: true,
@@ -106,7 +219,7 @@ export const SheetConfigPage = () => {
       },
       locale,
     };
-    openPicker(config);
+    openPicker(pickerConfig);
   }, [locale, openPicker, token]);
 
   const onSelectSheet = ({ value }: { value: number }) => {
@@ -149,13 +262,41 @@ export const SheetConfigPage = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <Button onClick={onLoad} disabled={!isDirty}>
-          {t("sheetConfig.loadRecords")}
-        </Button>
+        {storageMode === StorageMode.SHEET && (
+          <Button
+            onClick={onUnsync}
+            disabled={!isFilled}
+            colorVariant="warning"
+          >
+            {t("sheetConfig.unsyncRecords")}
+          </Button>
+        )}
+        {storageMode === StorageMode.LOCAL && (
+          <>
+            <Button onClick={onLoad} disabled={!isFilled}>
+              {t("sheetConfig.loadRecords")}
+            </Button>
+            <Button onClick={onUpload} disabled={!isFilled}>
+              {t("sheetConfig.uploadRecords")}
+            </Button>
+            <Button
+              onClick={onSync}
+              disabled={!isFilled}
+              colorVariant="warning"
+            >
+              {t("sheetConfig.syncRecords")}
+            </Button>
+          </>
+        )}
         {isGoBackShown ? (
-          <Button onClick={onBackClick}>{t("sheetConfig.goBack")}</Button>
+          <Button onClick={onBackClick} colorVariant="secondary">
+            {t("sheetConfig.goBack")}
+          </Button>
         ) : (
-          <Button onClick={logout}>
+          <Button
+            onClick={() => logout({ keepSyncTransactions: true })}
+            colorVariant="secondary"
+          >
             {t("sheetConfig.switchToAnotherAccount")}
           </Button>
         )}

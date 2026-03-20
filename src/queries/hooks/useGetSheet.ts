@@ -11,7 +11,7 @@ import type { QueryOptions } from "src/queries/types";
 
 export const useGetSheetKey = ["sheet"];
 
-export const useGetSheet = () => {
+export const useGetSheet = (options?: QueryOptions) => {
   const { token = "" } = useAuthStore();
   const { spreadsheetId = "", sheetId, resetSheetConfig } = useSheetStore();
   const { logout } = useAuth();
@@ -37,17 +37,18 @@ export const useGetSheet = () => {
         throw err;
       }
     },
+    enabled: !options?.skip,
   });
 };
 
 export const useGetSheetRowsKey = ["sheetRows"];
 
-export const useGetSheetRows = () => {
+export const useGetSheetRows = (options?: QueryOptions) => {
   const {
     data: sheet,
     isFetched: isSheetFetched,
     isLoading: isSheetLoading,
-  } = useGetSheet();
+  } = useGetSheet(options);
 
   const { isLoading: isQueryLoading, ...queryResult } = useQuery({
     queryKey: [...useGetSheetRowsKey, ...getSheetQueryKeys(sheet)],
@@ -58,7 +59,7 @@ export const useGetSheetRows = () => {
       const rows = await sheet?.getRows();
       return rows;
     },
-    enabled: isSheetFetched,
+    enabled: isSheetFetched && !options?.skip,
   });
 
   return { isLoading: isQueryLoading || isSheetLoading, ...queryResult };

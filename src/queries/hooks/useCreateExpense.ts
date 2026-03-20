@@ -1,33 +1,24 @@
-import { useGetSheet } from "src/queries/hooks/useGetSheet";
 import { useMutation } from "@tanstack/react-query";
-import {
-  facadeRawExpenseRowToSheetRecord,
-  isValidBaseExpenseRecord,
-} from "@utils/google/googleSheet/helpers/facade";
-import { getSheetQueryKeys } from "@utils/google/googleSheet/helpers/spreadsheet";
+import { isValidBaseExpenseRecord } from "@utils/google/googleSheet/helpers/facade";
 import { facadeExpenseRecordToBase } from "src/helpers/expense";
 import type { ExpenseRecord } from "@features/Expense/types";
-import { invalidateGetExpenses, logError } from "src/queries/helpers";
-
-export const useCreateExpenseKey = ["createExpense"];
+import { removeGetExpenses, logError } from "src/queries/helpers";
+import { useAppStore } from "@stores";
+import { useTransactionUtils } from "@utils/transactions";
 
 export const useCreateExpense = () => {
-  const { data: sheet } = useGetSheet();
+  const { storageMode } = useAppStore();
+  const { create } = useTransactionUtils(storageMode);
 
   return useMutation({
-    mutationKey: [...useCreateExpenseKey, ...getSheetQueryKeys(sheet)],
     mutationFn: async (record: ExpenseRecord) => {
-      if (!sheet) {
-        throw new Error("Missing sheet");
-      }
-      if (!isValidBaseExpenseRecord(record)) {
+      const baseExpenseRecord = facadeExpenseRecordToBase(record);
+      if (!isValidBaseExpenseRecord(baseExpenseRecord)) {
         throw new Error("Invalid expense record");
       }
-      const baseExpenseRecord = facadeExpenseRecordToBase(record);
-      const rawRecord = facadeRawExpenseRowToSheetRecord(baseExpenseRecord);
-      await sheet.addRow(rawRecord);
+      await create(baseExpenseRecord);
     },
-    onSuccess: invalidateGetExpenses,
+    onSuccess: removeGetExpenses,
     onError: logError,
   });
 };

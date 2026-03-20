@@ -8,7 +8,7 @@ import { facadeExpenseRecordToBase } from "src/helpers/expense";
 
 export const useUpdateExpenseKey = ["updateExpense"];
 
-export const useUpdateExpense = () => {
+export const useUploadExpenseList = () => {
   const { storageMode } = useAppStore();
   const { update } = useTransactionUtils(storageMode);
 
