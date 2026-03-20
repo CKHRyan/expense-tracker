@@ -72,3 +72,7 @@ yarn build
 2. Create a new Google Sheet with format according to the [template](https://github.com/CKHRyan/expense-tracker/blob/main/public/expense-tracker-sheet-template.xlsx)
 3. Login to the Google account with allowed Google Sheet access
 4. Created Google Sheet shall be found in the Google Sheet Sync config
+
+## License
+
+MIT © 2026 Ryan Chung
