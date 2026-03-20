@@ -65,6 +65,8 @@
 
   "expenseList": {
     "monthlyCumulativeExpense": "本月累計支出",
+    "yearlyCumulativeExpense": "本年累計支出",
+    "dailyCumulativeExpense": "本日累計支出",
     "spendingRecords": "支出記錄",
     "emptyRecord": "本月沒有支出",
     "addSpendingPrompt": "立即記錄支出以掌握你的金錢！"
@@ -89,7 +91,9 @@
 
   "anaylsis": {
     "spendingAnalysis": "支出分析",
-    "monthlyCumulativeExpense": "本月累計支出"
+    "monthlyCumulativeExpense": "本月累計支出",
+    "yearlyCumulativeExpense": "本年累計支出",
+    "dailyCumulativeExpense": "本日累計支出"
   },
 
   "menu": {
@@ -103,7 +107,8 @@
     "login": "登入",
     "logout": "登出",
     "logout.prompt": "你是否確定登出你的帳戶？",
-    "logout.prompt.unsync": "你是否確定登出你的帳戶？你將不能再與Google試算表同步支出記錄。"
+    "logout.prompt.unsync": "你是否確定登出你的帳戶？你將不能再與Google試算表同步支出記錄。",
+    "authLockLabel": "需登入"
   },
 
   "sheetConfig": {

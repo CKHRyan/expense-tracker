@@ -1,7 +1,8 @@
 import moment from "moment";
-import type {
-  ExpenseRecordWithIndex,
-  MonthViewValue,
+import {
+  type ExpenseRecordWithIndex,
+  type DateViewValue,
+  DateViewMode,
 } from "@features/Expense/types";
 import { create } from "zustand";
 
@@ -18,25 +19,34 @@ const initialExpenseSheetParams: ExpenseSheetParams = {
 };
 
 const now = moment();
-const initialMonthView = { year: now.year(), month: now.month() };
+const initialDateView = {
+  year: now.year(),
+  month: now.month(),
+  date: now.date(),
+};
+const initialDateViewMode = DateViewMode.MONTH_VIEW;
 
 interface ViewState {
   expenseSheetParams: ExpenseSheetParams;
-  monthView: MonthViewValue;
+  dateView: DateViewValue;
+  dateViewMode: DateViewMode;
   openNewExpenseSheet: () => void;
   openEditExpenseSheet: (expenseRecord: ExpenseRecordWithIndex) => void;
   closeExpenseInputSheet: () => void;
-  setMonthView: (monthView: MonthViewValue) => void;
+  setDateView: (dateView: DateViewValue) => void;
+  setDateViewMode: (dateViewMode: DateViewMode) => void;
 }
 
 export const useViewStore = create<ViewState>()((set) => ({
   expenseSheetParams: initialExpenseSheetParams,
-  monthView: initialMonthView,
+  dateView: initialDateView,
+  dateViewMode: initialDateViewMode,
   openNewExpenseSheet: () =>
     set({ expenseSheetParams: { isOpen: true, isEdit: false } }),
   openEditExpenseSheet: (expenseRecord) =>
     set({ expenseSheetParams: { isOpen: true, isEdit: true, expenseRecord } }),
   closeExpenseInputSheet: () =>
     set({ expenseSheetParams: initialExpenseSheetParams }),
-  setMonthView: (monthView) => set({ monthView }),
+  setDateView: (dateView) => set({ dateView }),
+  setDateViewMode: (dateViewMode) => set({ dateViewMode }),
 }));

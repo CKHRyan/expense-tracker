@@ -16,7 +16,7 @@ export const LocaleMenuItem = () => {
           variant="text"
           disabled={currentLocale === locale}
           onClick={() => changeLocale(locale)}
-          className="text-xl"
+          className="opacity-50 disabled:opacity-100"
         >
           {t(`menu.locale.${locale}`)}
         </Button>

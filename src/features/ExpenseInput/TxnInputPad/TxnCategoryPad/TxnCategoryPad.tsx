@@ -37,11 +37,11 @@ export const TxnCategoryPad = ({
       case "Other":
         return categoryOptions.filter(
           ({ category, isOther }) =>
-            isOther || categoryGroupMap[category] === currentTab
+            isOther || categoryGroupMap[category] === currentTab,
         );
       default:
         return categoryOptions.filter(
-          ({ category }) => categoryGroupMap[category] === currentTab
+          ({ category }) => categoryGroupMap[category] === currentTab,
         );
     }
   }, [currentTab]);
@@ -50,7 +50,7 @@ export const TxnCategoryPad = ({
     if (!selectedCategory) return;
     if (
       filteredcategoryOptions.every(
-        ({ category }) => category !== selectedCategory
+        ({ category }) => category !== selectedCategory,
       )
     ) {
       setCurrentTab(categoryGroupMap[selectedCategory]);

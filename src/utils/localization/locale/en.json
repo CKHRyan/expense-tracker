@@ -65,6 +65,8 @@
 
   "expenseList": {
     "monthlyCumulativeExpense": "Monthly Cumulative Expense",
+    "yearlyCumulativeExpense": "Yearly Cumulative Expense",
+    "dailyCumulativeExpense": "Daily Cumulative Expense",
     "spendingRecords": "Spending Records",
     "emptyRecord": "NO EXPENSE FOR THIS MONTH",
     "addSpendingPrompt": "Begin adding your spending to keep track of your money!"
@@ -89,7 +91,9 @@
 
   "anaylsis": {
     "spendingAnalysis": "Spending Analysis",
-    "monthlyCumulativeExpense": "Monthly Cumulative Expense"
+    "monthlyCumulativeExpense": "Monthly Cumulative Expense",
+    "yearlyCumulativeExpense": "Yearly Cumulative Expense",
+    "dailyCumulativeExpense": "Daily Cumulative Expense"
   },
 
   "menu": {
@@ -103,7 +107,8 @@
     "login": "Login",
     "logout": "Logout",
     "logout.prompt": "Do you confirm to logout your account?",
-    "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet."
+    "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet.",
+    "authLockLabel": "Login"
   },
 
   "sheetConfig": {
