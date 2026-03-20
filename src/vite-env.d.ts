@@ -12,7 +12,9 @@ type ImportMetaEnvKey =
   | "VITE_POC_SHEET_ID"
   | "VITE_GOOGLE_OAUTH_CLIENT_ID"
   | "VITE_AUTH_SERVICE_HOST"
-  | "VITE_ENABLE_AUTH_SERVICE";
+  | "VITE_ENABLE_AUTH_SERVICE"
+  | "VITE_QUERY_STALE_TIME"
+  | "VITE_QUERY_GC_TIME";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ImportMetaEnv extends Record<ImportMetaEnvKey, string> {}

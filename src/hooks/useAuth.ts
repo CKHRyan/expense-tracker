@@ -13,11 +13,10 @@ import {
 } from "@utils/google/googleSheet/helpers/facade";
 import { getSheetRows } from "@utils/google/googleSheet/helpers/spreadsheet";
 import { isNil } from "lodash";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
+import { removeUserInfo } from "src/queries/helpers";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
-import { useGoogleUserInfoKey } from "src/queries/hooks/useGoogleUserInfo";
 import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
-import { queryClient } from "src/queries/utils";
 
 export const useAuth = () => {
   const { setStorageMode } = useAppStore();
@@ -69,6 +68,7 @@ export const useAuth = () => {
       if (params?.keepSyncTransactions && spreadsheetId && !isNil(sheetId)) {
         loadSyncRecords();
       }
+      removeUserInfo();
     },
     [clearAuth, loadSyncRecords, setStorageMode, sheetId, spreadsheetId],
   );
@@ -88,12 +88,6 @@ export const useAuth = () => {
       return false;
     }
   }, [checkGoogleAuth, logout, refreshToken, token]);
-
-  const onAuthChange = useCallback(() => {
-    queryClient.removeQueries({ queryKey: useGoogleUserInfoKey });
-  }, []);
-
-  useEffect(onAuthChange, [isAuth, onAuthChange]);
 
   return {
     token,

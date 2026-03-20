@@ -12,7 +12,7 @@ import { useGoogleUserInfo } from "src/queries/hooks/useGoogleUserInfo";
 export const MenuPage = () => {
   const items = useMenuItemOptions();
   const { isAuth } = useAuth();
-  const { data: userInfo } = useGoogleUserInfo();
+  const { data: userInfo } = useGoogleUserInfo({ skip: !isAuth });
   const { t } = useTranslation();
 
   return (

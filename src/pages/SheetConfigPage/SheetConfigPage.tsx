@@ -57,7 +57,9 @@ export const SheetConfigPage = () => {
   const canGoBack = useCanGoBack();
   const { isAuth, logout } = useAuth();
   const { token } = useAuthStore();
-  const { data: userInfo, isLoading: isUserInfoLoading } = useGoogleUserInfo();
+  const { data: userInfo, isLoading: isUserInfoLoading } = useGoogleUserInfo({
+    skip: !isAuth,
+  });
 
   const { confirm } = useConfirmModal();
 

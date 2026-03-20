@@ -1,6 +1,7 @@
 import { useAuth } from "@hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import type { QueryOptions } from "src/queries/types";
 
 export const useGoogleUserInfoKey = ["googleUserInfo"];
 
@@ -16,16 +17,18 @@ export type GoogleOauthUserInfo = {
   verified_email: boolean;
 };
 
-export const useGoogleUserInfo = () => {
+export const useGoogleUserInfo = (option?: QueryOptions) => {
   const { token } = useAuth();
 
   return useQuery({
-    queryKey: [...useGoogleUserInfoKey],
+    queryKey: [...useGoogleUserInfoKey, token],
     queryFn: async () =>
       (
         await axios.get<GoogleOauthUserInfo>(apiPath, {
           headers: { Authorization: `Bearer ${token}` },
         })
       ).data,
+    staleTime: 30000,
+    enabled: !option?.skip,
   });
 };
