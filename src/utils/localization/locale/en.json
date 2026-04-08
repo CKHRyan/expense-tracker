@@ -45,7 +45,7 @@
       "shoes": "Shoes",
       "gift": "Gift",
       "cook": "Cook",
-      "utensil": "Utensil",
+      "kitchenware": "Kitchenware",
       "fruit": "Fruit",
       "electron": "Electron",
       "daily": "Daily",
@@ -56,8 +56,10 @@
       "medic": "Medic",
       "travel": "Travel",
       "hostel": "Hostel",
+      "ticket": "Ticket",
       "snack": "Snack",
-      "skinCare": "Skin",
+      "hairStyling": "Hair",
+      "skinCare": "Facial",
       "sport": "Sport",
       "equipment": "Equip"
     }

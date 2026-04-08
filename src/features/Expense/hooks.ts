@@ -80,8 +80,8 @@ export const useCategoryAttributes = (): Record<
         title: t("expense.category.cook"),
         icon: "icon-[twemoji--carrot]",
       },
-      [CATEGORY.Utensil]: {
-        title: t("expense.category.utensil"),
+      [CATEGORY.Kitchenware]: {
+        title: t("expense.category.kitchenware"),
         icon: "icon-[streamline-ultimate-color--kitchenware-spatula-1]",
       },
       [CATEGORY.Fruit]: {
@@ -96,13 +96,13 @@ export const useCategoryAttributes = (): Record<
         title: t("expense.category.daily"),
         icon: "icon-[fluent-emoji-flat--toothbrush]",
       },
+      [CATEGORY.HairStyling]: {
+        title: t("expense.category.hairStyling"),
+        icon: "icon-[noto--scissors]",
+      },
       [CATEGORY.SkinCare]: {
         title: t("expense.category.skinCare"),
         icon: "icon-[streamline-ultimate-color--body-care-cream]",
-      },
-      [CATEGORY.Transport]: {
-        title: t("expense.category.transport"),
-        icon: "icon-[emojione-v1--train]",
       },
       [CATEGORY.Party]: {
         title: t("expense.category.party"),
@@ -132,6 +132,14 @@ export const useCategoryAttributes = (): Record<
         title: t("expense.category.hostel"),
         icon: "icon-[fxemoji--hotel]",
       },
+      [CATEGORY.Ticket]: {
+        title: t("expense.category.ticket"),
+        icon: "icon-[noto--ticket]",
+      },
+      [CATEGORY.Transport]: {
+        title: t("expense.category.transport"),
+        icon: "icon-[emojione-v1--train]",
+      },
       [CATEGORY.Equipment]: {
         title: t("expense.category.equipment"),
         icon: "icon-[solar--dumbbell-large-minimalistic-bold-duotone]",
@@ -141,7 +149,7 @@ export const useCategoryAttributes = (): Record<
         icon: "icon-[openmoji--roasted-coffee-bean]",
       },
     }),
-    [t]
+    [t],
   );
 };
 
@@ -178,7 +186,7 @@ export const useCategoryGroupAttributes = (): Record<
         icon: "icon-[emojione--shopping-cart]",
       },
     }),
-    [t]
+    [t],
   );
 };
 
@@ -194,8 +202,8 @@ export const useCategoryGroupOptionItems = () => {
           : {
               title: categoryGroupAttributes[option].title,
               value: option,
-            }
+            },
       ),
-    [categoryGroupAttributes, t]
+    [categoryGroupAttributes, t],
   );
 };

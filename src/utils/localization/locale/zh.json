@@ -45,7 +45,7 @@
       "shoes": "鞋子",
       "gift": "禮物",
       "cook": "烹飪",
-      "utensil": "廚房用具",
+      "kitchenware": "廚房用具",
       "fruit": "水果",
       "electron": "電子產品",
       "daily": "日常用品",
@@ -56,7 +56,9 @@
       "medic": "醫療",
       "travel": "旅行",
       "hostel": "住宿",
+      "ticket": "票券",
       "snack": "零食",
+      "hairStyling": "美髮",
       "skinCare": "護膚",
       "sport": "運動",
       "equipment": "裝備"
