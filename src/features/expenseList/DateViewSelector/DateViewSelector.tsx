@@ -60,16 +60,16 @@ export const DateViewSelector = ({
     };
     switch (dateViewMode) {
       case DateViewMode.MONTH_VIEW:
-        return <MonthSelector {..._selectorProps} />;
+        return <MonthSelector key="month-selector" {..._selectorProps} />;
       case DateViewMode.YEAR_VIEW:
-        return <YearSelector {..._selectorProps} />;
+        return <YearSelector key="year-selector" {..._selectorProps} />;
       case DateViewMode.DAY_VIEW:
-        return <DaySelector {..._selectorProps} />;
+        return <DaySelector key="day-selector" {..._selectorProps} />;
     }
   }, [dateViewMode, selectorProps]);
 
   const modePicker = (
-    <div className="flex gap-4">
+    <div key="date-view-mode-picker" className="flex gap-4">
       {dateViewSelectorOptions.map((option) => (
         <Icon
           key={`date-view-selector-option-${option.dateViewMode}`}
