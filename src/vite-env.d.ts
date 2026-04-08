@@ -20,3 +20,13 @@ interface ImportMetaEnv extends Record<ImportMetaEnvKey, string> {}
 interface ImportMeta {
   readonly env: Record<ImportMetaEnvKey, string>;
 }
+
+declare module "virtual:pwa-register" {
+  import type { RegisterSWOptions } from "vite-plugin-pwa/types";
+
+  export type { RegisterSWOptions };
+
+  export function registerSW(
+    options?: RegisterSWOptions,
+  ): (reloadPage?: boolean) => Promise<void>;
+}
