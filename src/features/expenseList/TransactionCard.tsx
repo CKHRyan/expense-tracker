@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const TransactionCard = ({ record, onClick }: Props) => {
-  const { date, category, item, amount, remark } = record;
+  const { date, category, item, amount, payer, remark } = record;
 
   const categoryAttributes = useCategoryAttributes();
   const categoryGroupAttributes = useCategoryGroupAttributes();
@@ -35,7 +35,15 @@ export const TransactionCard = ({ record, onClick }: Props) => {
           {remark}
         </Text>
       </div>
-      <Text>-${amount.toLocaleString()}</Text>
+
+      <div className="text-right">
+        <Text>-${amount.toLocaleString()}</Text>
+        {payer && (
+          <Text className="text-sm text-gray-400 truncate max-w-[5rem] sm:max-w-[8rem] md:max-w-[12rem] lg:max-w-[18rem]">
+            ({payer})
+          </Text>
+        )}
+      </div>
     </ListItemCard>
   );
 };
