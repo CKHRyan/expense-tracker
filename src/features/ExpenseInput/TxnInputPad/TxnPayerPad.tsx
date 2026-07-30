@@ -56,7 +56,7 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
           <PayerOptionPadButtonCard
             payer={null}
             onClick={() => selectPayer("")}
-            isSelected={payer === null}
+            isSelected={!payer}
           />
           {payerList.map((payerOption) => (
             <PayerOptionPadButtonCard
