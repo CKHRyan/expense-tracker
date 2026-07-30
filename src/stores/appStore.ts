@@ -18,6 +18,12 @@ export const useAppStore = create<AppState>()(
       storageMode: StorageMode.LOCAL,
       setStorageMode: (storageMode: StorageMode) => set({ storageMode }),
     }),
-    { name: "app-storage" }
-  )
+    {
+      name: "app-storage",
+      partialize: ({ locale, storageMode }) => ({
+        locale,
+        storageMode,
+      }),
+    },
+  ),
 );

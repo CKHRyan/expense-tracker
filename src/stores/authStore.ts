@@ -18,6 +18,12 @@ export const useAuthStore = create<AuthState>()(
       setRefreshToken: (refreshToken?: string) => set({ refreshToken }),
       clearAuth: () => set({ token: undefined, refreshToken: undefined }),
     }),
-    { name: "auth-storage" }
-  )
+    {
+      name: "auth-storage",
+      partialize: ({ token, refreshToken }) => ({
+        token,
+        refreshToken,
+      }),
+    },
+  ),
 );

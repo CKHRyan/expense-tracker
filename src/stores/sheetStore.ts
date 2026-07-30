@@ -19,6 +19,12 @@ export const useSheetStore = create<SheetState>()(
       resetSheetConfig: () =>
         set({ spreadsheetId: undefined, sheetId: undefined }),
     }),
-    { name: "sheet-storage" }
-  )
+    {
+      name: "sheet-storage",
+      partialize: ({ spreadsheetId, sheetId }) => ({
+        spreadsheetId,
+        sheetId,
+      }),
+    },
+  ),
 );
