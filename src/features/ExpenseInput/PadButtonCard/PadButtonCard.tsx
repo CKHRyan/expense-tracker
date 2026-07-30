@@ -9,7 +9,7 @@ export const PadButtonCard = ({
   <button
     className={twMerge(
       "bg-zinc-700 rounded-md p-4 flex-1 items-center justify-center text-center cursor-pointer disabled:opacity-30",
-      className
+      className,
     )}
     {...buttonProps}
   />

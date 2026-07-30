@@ -6,12 +6,15 @@ import { useLocale } from "@hooks/useLocale";
 import { useToggle } from "@hooks/useToggle";
 import type { Moment } from "moment";
 import moment from "moment";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type Ref } from "react";
 import { useTranslation } from "react-i18next";
 
-type Props = Pick<TransactionInputInterface, "date" | "setDate">;
+type Props = { ref?: Ref<HTMLButtonElement> } & Pick<
+  TransactionInputInterface,
+  "date" | "setDate"
+>;
 
-export const TxnDatePad = ({ date, setDate }: Props) => {
+export const TxnDatePad = ({ ref, date, setDate }: Props) => {
   const { t } = useTranslation();
   const { locale } = useLocale();
 
@@ -27,7 +30,7 @@ export const TxnDatePad = ({ date, setDate }: Props) => {
             second: value.second(),
           }
         : undefined,
-    [value]
+    [value],
   );
 
   const onDateChange = useCallback((date: Date) => {
@@ -64,7 +67,7 @@ export const TxnDatePad = ({ date, setDate }: Props) => {
 
   return (
     <>
-      <DatePadButtonCard date={date} onClick={toggleDateModal} />
+      <DatePadButtonCard ref={ref} date={date} onClick={toggleDateModal} />
       <Modal
         isOpen={openDateModal}
         onRequestClose={toggleDateModal}

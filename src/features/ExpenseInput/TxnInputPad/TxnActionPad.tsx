@@ -10,12 +10,21 @@ import type {
   CalculatorStatus,
   TransactionInputInterface,
 } from "@features/ExpenseInput/hooks";
+import { TxnPayerPad } from "./TxnPayerPad";
+import { useComponentSize } from "src/helpers/useComponentSize";
 
 type Props = { isEdit?: boolean } & CalculatorStatus &
   CalculatorFunc &
   Pick<
     TransactionInputInterface,
-    "date" | "setDate" | "create" | "edit" | "remove" | "disabledSubmit"
+    | "date"
+    | "setDate"
+    | "payer"
+    | "setPayer"
+    | "create"
+    | "edit"
+    | "remove"
+    | "disabledSubmit"
   >;
 
 export const TxnActionPad = ({
@@ -25,30 +34,42 @@ export const TxnActionPad = ({
   isCalculable,
   date,
   setDate,
+  payer,
+  setPayer,
   create,
   edit,
   remove,
   disabledSubmit,
-}: Props) => (
-  <div className="flex flex-col gap-2 min-w-[70px]">
-    {isEdit ? (
-      <RemovePadButtonCard onClick={remove} />
-    ) : (
-      <div className="flex items-center justify-center flex-1">
-        <Icon
-          name="icon-[streamline-stickies-color--money-briefcase]"
-          className="text-5xl"
-        />
-      </div>
-    )}
-    <TxnDatePad date={date} setDate={setDate} />
-    {isCalculable ? (
-      <CalcluatePadButtonCard onClick={calculate} />
-    ) : (
-      <ConfirmPadButtonCard
-        onClick={isEdit ? edit : create}
-        disabled={disabledSubmit || isError}
+}: Props) => {
+  const { width: datePadWidth, ref: datePadRef } = useComponentSize();
+
+  console.log("gg", datePadWidth, datePadRef, `w-[${datePadWidth}px]`);
+  return (
+    <div className="flex flex-col gap-2 min-w-[70px]">
+      {isEdit ? (
+        <RemovePadButtonCard onClick={remove} />
+      ) : (
+        <div className="flex items-center justify-center flex-1">
+          <Icon
+            name="icon-[streamline-stickies-color--money-briefcase]"
+            className="text-5xl"
+          />
+        </div>
+      )}
+      <TxnPayerPad
+        payer={payer}
+        setPayer={setPayer}
+        style={{ maxWidth: Math.max(datePadWidth, 50) }}
       />
-    )}
-  </div>
-);
+      <TxnDatePad ref={datePadRef} date={date} setDate={setDate} />
+      {isCalculable ? (
+        <CalcluatePadButtonCard onClick={calculate} />
+      ) : (
+        <ConfirmPadButtonCard
+          onClick={isEdit ? edit : create}
+          disabled={disabledSubmit || isError}
+        />
+      )}
+    </div>
+  );
+};
