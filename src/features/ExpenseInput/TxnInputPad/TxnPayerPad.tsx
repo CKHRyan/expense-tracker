@@ -21,7 +21,7 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
 
   const { payerList, setPayerList } = useTransactionStore();
 
-  const selectPayer = (payerOption: string | null) => {
+  const selectPayer = (payerOption: string) => {
     setPayer(payerOption);
     setOpenPayerModal(false);
   };
@@ -55,7 +55,7 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
         <div className="flex flex-wrap gap-4 items-center overflow-hidden w-full overflow-visible">
           <PayerOptionPadButtonCard
             payer={null}
-            onClick={() => selectPayer(null)}
+            onClick={() => selectPayer("")}
             isSelected={payer === null}
           />
           {payerList.map((payerOption) => (

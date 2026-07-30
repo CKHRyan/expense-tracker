@@ -43,7 +43,6 @@ export const TxnActionPad = ({
 }: Props) => {
   const { width: datePadWidth, ref: datePadRef } = useComponentSize();
 
-  console.log("gg", datePadWidth, datePadRef, `w-[${datePadWidth}px]`);
   return (
     <div className="flex flex-col gap-2 min-w-[70px]">
       {isEdit ? (

@@ -3,6 +3,7 @@ export const ExpenseAttribute = {
   category: "category",
   item: "item",
   amount: "amount",
+  payer: "payer",
   remark: "remark",
 } as const;
 
@@ -28,6 +29,10 @@ export const ExpenseSchema = {
   [ExpenseAttribute.amount]: {
     label: "Amount",
     type: ExpenseDataType.Number,
+  },
+  [ExpenseAttribute.payer]: {
+    label: "Payer",
+    type: ExpenseDataType.String,
   },
   [ExpenseAttribute.remark]: {
     label: "Remark",

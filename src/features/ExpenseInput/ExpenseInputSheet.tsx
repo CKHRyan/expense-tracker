@@ -33,6 +33,7 @@ export const ExpenseInputSheet = ({
     setDate,
     setCategory,
     setAmount,
+    setPayer,
     setDescription,
     clear: clearTransactionInput,
   } = transactionInputInterface;
@@ -51,6 +52,7 @@ export const ExpenseInputSheet = ({
         setDate(expenseRecord.date);
         setCategory(expenseRecord.item);
         setCalculatorValue(expenseRecord.amount);
+        setPayer(expenseRecord.payer);
         setDescription(expenseRecord.remark);
       } else {
         const dateViewMoment = moment()

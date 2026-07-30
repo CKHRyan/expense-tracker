@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 const initialAmount = 0;
 const initialCategory = CATEGORY.Other;
 const initialDate = null;
-const initialPayer = null;
+const initialPayer = "";
 const initialDescription = "";
 
 type Params = {
@@ -27,8 +27,8 @@ export type TransactionInputInterface = {
   setCategory: (value: Category) => void;
   date: Moment | null;
   setDate: (value: Moment | null) => void;
-  payer: string | null;
-  setPayer: (value: string | null) => void;
+  payer: string;
+  setPayer: (value: string) => void;
   description: string;
   setDescription: (value: string) => void;
   clear: () => void;
@@ -49,7 +49,7 @@ export const useTransactionInput = ({
   const [amount, setAmount] = useState<number>(initialAmount);
   const [category, setCategory] = useState<Category>(initialCategory);
   const [date, setDate] = useState<Moment | null>(initialDate);
-  const [payer, setPayer] = useState<string | null>(initialPayer);
+  const [payer, setPayer] = useState<string>(initialPayer);
   const [description, setDescription] = useState(initialDescription);
 
   const { t } = useTranslation();
@@ -79,6 +79,7 @@ export const useTransactionInput = ({
         category: categoryGroupMap[category],
         item: category,
         amount,
+        payer,
         remark: description,
       });
       onSubmit?.();
@@ -95,6 +96,7 @@ export const useTransactionInput = ({
     description,
     disabledSubmit,
     onSubmit,
+    payer,
     t,
   ]);
 
@@ -114,6 +116,7 @@ export const useTransactionInput = ({
         category: categoryGroupMap[category],
         item: category,
         amount,
+        payer,
         remark: description,
       });
       onSubmit?.();
@@ -130,6 +133,7 @@ export const useTransactionInput = ({
     date,
     category,
     amount,
+    payer,
     description,
     onSubmit,
   ]);

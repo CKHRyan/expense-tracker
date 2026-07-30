@@ -32,7 +32,7 @@ export const PayerPadButtonCard = ({
       style={style}
     >
       <Text className="overflow-hidden whitespace-nowrap text-ellipsis">
-        {payer ?? t("expenseInput.sharedTransaction")}
+        {payer || t("expenseInput.sharedTransaction")}
       </Text>
       {suffixComponent}
     </PadButtonCard>
