@@ -28,10 +28,16 @@ export const useExpenseData = (
     let filteredData = data;
 
     if (dateView) {
-      const dateViewMoment = moment()
+      const dateViewMonthMoment = moment()
         .year(dateView.year)
-        .month(dateView.month)
-        .date(dateView.date);
+        .month(dateView.month);
+
+      // Avoid setting date for month view / year view as the ending date
+      // in longer month can lead to shifting to next month
+      const dateViewMoment =
+        dateViewMode === DateViewMode.DAY_VIEW
+          ? dateViewMonthMoment.date(dateView.date)
+          : dateViewMonthMoment;
 
       const granularity: moment.unitOfTime.Base = {
         [DateViewMode.MONTH_VIEW]: "month" as const,
