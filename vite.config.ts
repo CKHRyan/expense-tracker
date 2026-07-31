@@ -1,13 +1,16 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import tsconfigPaths from "vite-tsconfig-paths";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+import babel from "@rolldown/plugin-babel";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    babel({
+      presets: [reactCompilerPreset()],
+    }),
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {
@@ -26,7 +29,9 @@ export default defineConfig({
         ],
       },
     }),
-    tsconfigPaths(),
     tailwindcss(),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
 });
