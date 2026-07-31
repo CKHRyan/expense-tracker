@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-google-drive-picker/dist/index.js b/node_modules/react-google-drive-picker/dist/index.js
+index 4e964cb..5cff2d4 100644
+--- a/node_modules/react-google-drive-picker/dist/index.js
++++ b/node_modules/react-google-drive-picker/dist/index.js
+@@ -22,7 +22,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+ var __importDefault = (this && this.__importDefault) || function (mod) {
+     return (mod && mod.__esModule) ? mod : { "default": mod };
+ };
+-Object.defineProperty(exports, "__esModule", { value: true });
++
+ var react_1 = require("react");
+ var typeDefs_1 = require("./typeDefs");
+ var useInjectScript_1 = __importDefault(require("./useInjectScript"));
+@@ -144,5 +144,5 @@ function useDrivePicker() {
+     };
+     return [openPicker, authRes];
+ }
+-exports.default = useDrivePicker;
++export default useDrivePicker;
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file
+diff --git a/node_modules/react-google-drive-picker/tsconfig.json b/node_modules/react-google-drive-picker/tsconfig.json
+index c4f02d4..6da2ad8 100644
+--- a/node_modules/react-google-drive-picker/tsconfig.json
++++ b/node_modules/react-google-drive-picker/tsconfig.json
+@@ -4,7 +4,7 @@
+ 
+     /* Basic Options */
+     // "incremental": true,                         /* Enable incremental compilation */
+-    "target": "es5",                                /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
++    "target": "es6",                                /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
+     "module": "commonjs",                           /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+     "lib": ["ES6", "dom", "ES2017"],                                   /* Specify library files to be included in the compilation. */
+     // "allowJs": true,                             /* Allow javascript files to be compiled. */
