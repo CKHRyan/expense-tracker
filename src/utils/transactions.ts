@@ -13,7 +13,7 @@ import {
   getSheetRows,
 } from "@utils/google/googleSheet/helpers/spreadsheet";
 import type { BaseExpenseRecord } from "@utils/google/googleSheet/types";
-import { isNil } from "lodash";
+import { compact, isNil, uniq } from "lodash";
 import { useMemo } from "react";
 import {
   facadeBaseExpenseRecordWithIndex,
@@ -124,8 +124,13 @@ const useSheetTransactionUtils = (
 
 export const useTransactionUtils = (storageMode: StorageMode) => {
   const { token } = useAuthStore();
-  const { transactions, setTransactions, clearTransactions } =
-    useTransactionStore();
+  const {
+    transactions,
+    setTransactions,
+    clearTransactions,
+    payerList,
+    setPayerList,
+  } = useTransactionStore();
 
   const localTransactionUtils = useLocalTransactionUtils();
   const sheetTransactionUtils = useSheetTransactionUtils({
@@ -150,6 +155,23 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
       return facadeSheetBaseExpenseRecord(rawSheetRecord);
     });
     setTransactions(baseExpenseRecords);
+    return baseExpenseRecords;
+  };
+
+  const loadPayers = async (
+    spreadsheetId: string,
+    sheetId: number,
+    isAppend?: boolean,
+  ) => {
+    const records = await load(spreadsheetId, sheetId);
+    const payers = compact(
+      uniq([
+        ...(isAppend ? payerList : []),
+        ...records.map(({ payer }) => payer),
+      ]),
+    );
+    setPayerList(payers);
+    return payers;
   };
 
   const upload = async (spreadsheetId: string, sheetId: number) => {
@@ -168,6 +190,7 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
   return {
     ...crudUtils,
     load,
+    loadPayers,
     upload,
     clearLocalTransactions: clearTransactions,
   };

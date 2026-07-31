@@ -30,6 +30,7 @@ export const SheetConfigPage = () => {
   const { storageMode, setStorageMode } = useAppStore();
   const {
     load: loadTransactions,
+    loadPayers: loadPayers,
     upload: uploadTransactions,
     clearLocalTransactions,
   } = useTransactionUtils(storageMode);
@@ -80,8 +81,12 @@ export const SheetConfigPage = () => {
       confirmLabel: t("sheetConfig.clearPayerList.prmopt.cta.clear"),
       cancelLabel: t("sheetConfig.clearPayerList.prmopt.cta.keep"),
     });
-    if (isClearPayerList) {
+    if (isNil(_spreadsheetId) || isNil(_sheetId)) {
       setPayerList([]);
+    } else if (isClearPayerList) {
+      await loadPayers(_spreadsheetId, _sheetId, false);
+    } else {
+      await loadPayers(_spreadsheetId, _sheetId, true);
     }
   };
 
@@ -102,6 +107,8 @@ export const SheetConfigPage = () => {
         (spreadsheetId !== _spreadsheetId || sheetId !== _sheetId)
       ) {
         promptClearPayerList();
+      } else {
+        await loadPayers(_spreadsheetId, _sheetId, true);
       }
 
       setSpreadsheetId(_spreadsheetId);
@@ -157,6 +164,8 @@ export const SheetConfigPage = () => {
         (spreadsheetId !== _spreadsheetId || sheetId !== _sheetId)
       ) {
         promptClearPayerList();
+      } else {
+        await loadPayers(_spreadsheetId, _sheetId, true);
       }
 
       setSpreadsheetId(_spreadsheetId);
