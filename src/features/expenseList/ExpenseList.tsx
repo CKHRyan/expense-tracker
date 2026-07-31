@@ -50,8 +50,6 @@ export const ExpenseList = ({
       </div>
     );
 
-  console.log(expenseFilter);
-
   return (
     <div className="flex flex-col gap-4">
       {transactionDates.map((date) => (

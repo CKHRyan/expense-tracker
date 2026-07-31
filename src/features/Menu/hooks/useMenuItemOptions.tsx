@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from "react";
 import type { MenuItemOption } from "../Menu";
 import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
@@ -18,7 +17,7 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
   const navigate = useNavigate();
   const { confirm } = useConfirmModal();
 
-  const onLogoutPress = useCallback(async () => {
+  const onLogoutPress = async () => {
     const isConfirmed = await confirm({
       title: t("menu.logout"),
       description:
@@ -30,30 +29,25 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
 
     logout({ keepSyncTransactions: true });
     resetSheetConfig();
-  }, [confirm, logout, resetSheetConfig, storageMode, t]);
+  };
 
-  const options = useMemo(
-    (): MenuItemOption[] => [
-      {
-        title: t("menu.sheetSync"),
-        icon: "icon-[bxs--spreadsheet]",
-        onClick: () => navigate(path.config),
-        isLocked: !isAuth,
-      },
-      isAuth
-        ? {
-            title: t("menu.logout"),
-            icon: "icon-[material-symbols--logout]",
-            onClick: onLogoutPress,
-          }
-        : {
-            title: t("menu.login"),
-            icon: "icon-[material-symbols--login]",
-            onClick: login,
-          },
-    ],
-    [isAuth, login, navigate, onLogoutPress, t],
-  );
-
-  return options;
+  return [
+    {
+      title: t("menu.sheetSync"),
+      icon: "icon-[bxs--spreadsheet]",
+      onClick: () => navigate(path.config),
+      isLocked: !isAuth,
+    },
+    isAuth
+      ? {
+          title: t("menu.logout"),
+          icon: "icon-[material-symbols--logout]",
+          onClick: onLogoutPress,
+        }
+      : {
+          title: t("menu.login"),
+          icon: "icon-[material-symbols--login]",
+          onClick: login,
+        },
+  ];
 };

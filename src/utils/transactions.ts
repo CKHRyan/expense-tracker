@@ -14,7 +14,7 @@ import {
 } from "@utils/google/googleSheet/helpers/spreadsheet";
 import type { BaseExpenseRecord } from "@utils/google/googleSheet/types";
 import { isNil } from "lodash";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import {
   facadeBaseExpenseRecordWithIndex,
   isValidExpenseWithIndex,
@@ -141,39 +141,34 @@ export const useTransactionUtils = (storageMode: StorageMode) => {
     }
   }, [localTransactionUtils, sheetTransactionUtils, storageMode]);
 
-  const load = useCallback(
-    async (spreadsheetId: string, sheetId: number) => {
-      const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
-        token: token ?? "",
-      });
-      const baseExpenseRecords = sheetRows.map((row) => {
-        const rawSheetRecord = facadeSheetExpenseRow(row);
-        return facadeSheetBaseExpenseRecord(rawSheetRecord);
-      });
-      setTransactions(baseExpenseRecords);
-    },
-    [setTransactions, token],
-  );
+  const load = async (spreadsheetId: string, sheetId: number) => {
+    const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
+      token: token ?? "",
+    });
+    const baseExpenseRecords = sheetRows.map((row) => {
+      const rawSheetRecord = facadeSheetExpenseRow(row);
+      return facadeSheetBaseExpenseRecord(rawSheetRecord);
+    });
+    setTransactions(baseExpenseRecords);
+  };
 
-  const upload = useCallback(
-    async (spreadsheetId: string, sheetId: number) => {
-      if (!transactions.every(isValidBaseExpenseRecord)) {
-        throw new Error("Invalid expense records");
-      }
+  const upload = async (spreadsheetId: string, sheetId: number) => {
+    if (!transactions.every(isValidBaseExpenseRecord)) {
+      throw new Error("Invalid expense records");
+    }
 
-      const doc = await getDoc({ token }, spreadsheetId);
-      const sheet = await getSheet(doc, sheetId);
+    const doc = await getDoc({ token }, spreadsheetId);
+    const sheet = await getSheet(doc, sheetId);
 
-      const rawRecords = transactions.map(facadeRawExpenseRowToSheetRecord);
-      await sheet.clearRows();
-      await sheet.addRows(rawRecords);
-    },
-    [token, transactions],
-  );
+    const rawRecords = transactions.map(facadeRawExpenseRowToSheetRecord);
+    await sheet.clearRows();
+    await sheet.addRows(rawRecords);
+  };
 
-  const clearLocalTransactions = useCallback(clearTransactions, [
-    clearTransactions,
-  ]);
-
-  return { ...crudUtils, load, upload, clearLocalTransactions };
+  return {
+    ...crudUtils,
+    load,
+    upload,
+    clearLocalTransactions: clearTransactions,
+  };
 };

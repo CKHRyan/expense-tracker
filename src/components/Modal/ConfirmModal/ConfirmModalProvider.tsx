@@ -1,11 +1,5 @@
 import { ConfirmModal, type ConfirmModalProps } from "./ConfirmModal";
-import {
-  createContext,
-  useCallback,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useState, type ReactNode } from "react";
 
 type ConfirmModalContextType = {
   openConfirmModal: (params: Omit<ConfirmModalProps, "isOpen">) => void;
@@ -24,29 +18,27 @@ export const ConfirmModalProvider = ({ children }: Props) => {
   const [confirmModalParams, setConfirmModalParams] =
     useState<ConfirmModalProps>({ isOpen: false });
 
-  const openConfirmModal: ConfirmModalContextType["openConfirmModal"] =
-    useCallback((params) => {
-      setConfirmModalParams({ isOpen: true, ...params });
-    }, []);
+  const openConfirmModal: ConfirmModalContextType["openConfirmModal"] = (
+    params,
+  ) => {
+    setConfirmModalParams({ isOpen: true, ...params });
+  };
 
-  const onClose = useCallback(() => {
+  const onClose = () => {
     setConfirmModalParams({ isOpen: false });
-  }, []);
+  };
 
-  const _onConfirm = useCallback(() => {
+  const _onConfirm = () => {
     confirmModalParams.onConfirm?.();
     onClose();
-  }, [confirmModalParams, onClose]);
+  };
 
-  const _onCancel = useCallback(() => {
+  const _onCancel = () => {
     confirmModalParams.onCancel?.();
     onClose();
-  }, [confirmModalParams, onClose]);
+  };
 
-  const contextValue = useMemo(
-    () => ({ openConfirmModal }),
-    [openConfirmModal],
-  );
+  const contextValue = { openConfirmModal };
 
   return (
     <ConfirmModalContext value={contextValue}>

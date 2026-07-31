@@ -13,7 +13,6 @@ import {
 } from "@utils/google/googleSheet/helpers/facade";
 import { getSheetRows } from "@utils/google/googleSheet/helpers/spreadsheet";
 import { isNil } from "lodash";
-import { useCallback } from "react";
 import { removeUserInfo } from "src/queries/helpers";
 import { useCheckGoogleAuth } from "src/queries/hooks/useCheckGoogleAuth";
 import { useRefreshToken } from "src/queries/hooks/useRefreshToken";
@@ -48,7 +47,7 @@ export const useAuth = () => {
 
   const googleLogin = useGoogleAuth();
 
-  const loadSyncRecords = useCallback(async () => {
+  const loadSyncRecords = async () => {
     if (!spreadsheetId || isNil(sheetId)) return;
 
     const sheetRows = await getSheetRows(spreadsheetId, sheetId, {
@@ -59,21 +58,18 @@ export const useAuth = () => {
       return facadeSheetBaseExpenseRecord(rawSheetRecord);
     });
     setTransactions(baseExpenseRecords);
-  }, [setTransactions, sheetId, spreadsheetId, token]);
+  };
 
-  const logout = useCallback(
-    (params?: { keepSyncTransactions: boolean }) => {
-      clearAuth();
-      setStorageMode(StorageMode.LOCAL);
-      if (params?.keepSyncTransactions && spreadsheetId && !isNil(sheetId)) {
-        loadSyncRecords();
-      }
-      removeUserInfo();
-    },
-    [clearAuth, loadSyncRecords, setStorageMode, sheetId, spreadsheetId],
-  );
+  const logout = (params?: { keepSyncTransactions: boolean }) => {
+    clearAuth();
+    setStorageMode(StorageMode.LOCAL);
+    if (params?.keepSyncTransactions && spreadsheetId && !isNil(sheetId)) {
+      loadSyncRecords();
+    }
+    removeUserInfo();
+  };
 
-  const verify = useCallback(async () => {
+  const verify = async () => {
     try {
       if (!token) return false;
       await checkGoogleAuth(token);
@@ -87,7 +83,7 @@ export const useAuth = () => {
       }
       return false;
     }
-  }, [checkGoogleAuth, logout, refreshToken, token]);
+  };
 
   return {
     token,

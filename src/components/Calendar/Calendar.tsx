@@ -1,6 +1,5 @@
 import ReactCalendar, { type CalendarProps } from "react-calendar";
 import "./style.css";
-import { useCallback } from "react";
 import type { Value } from "react-calendar/dist/shared/types.js";
 
 type Props = { onChange?: (date: Date) => void } & Omit<
@@ -9,12 +8,9 @@ type Props = { onChange?: (date: Date) => void } & Omit<
 >;
 
 export const Calendar = ({ onChange, ...otherProps }: Props) => {
-  const _onChange = useCallback(
-    (value: Value) => {
-      onChange?.(value as Date);
-    },
-    [onChange]
-  );
+  const _onChange = (value: Value) => {
+    onChange?.(value as Date);
+  };
 
   return <ReactCalendar locale="en" onChange={_onChange} {...otherProps} />;
 };

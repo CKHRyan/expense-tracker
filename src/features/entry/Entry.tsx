@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@hooks/useLocale";
 import { Button, Text } from "@components";
 import { StorageMode } from "@features/ExpenseInput/types";
-import { useCallback } from "react";
 import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
 import { useTransactionUtils } from "@utils/transactions";
 import { useAppStore } from "@stores";
@@ -22,7 +21,7 @@ export const Entry = () => {
   const { storageMode, setStorageMode } = useAppStore();
   const { clearLocalTransactions } = useTransactionUtils(storageMode);
 
-  const onUnsync = useCallback(async () => {
+  const onUnsync = async () => {
     try {
       const isConfirmed = await confirm({
         title: t("entry.unsync"),
@@ -38,7 +37,7 @@ export const Entry = () => {
     } catch (e) {
       alert(e);
     }
-  }, [confirm, t, clearLocalTransactions, setStorageMode, navigate]);
+  };
 
   return (
     <div className="p-8 w-full h-full flex flex-col items-center justify-center gap-16">

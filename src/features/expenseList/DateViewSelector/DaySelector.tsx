@@ -1,5 +1,4 @@
 import moment from "moment";
-import { useCallback } from "react";
 import type { GenericDateViewSelectorProps } from "./DateViewSelector";
 import { defaultDateViewValue } from "@features/ExpenseList/DateViewSelector/constants";
 import { ChevronSelector } from "@features/ExpenseList/DateViewSelector/ChevronSelector";
@@ -13,25 +12,22 @@ export const DaySelector = ({
     .toString()
     .padStart(2, "0")}-${value.date.toString().padStart(2, "0")}`;
 
-  const changeDay = useCallback(
-    (diff: number) => {
-      const newYearMonthMoment = moment()
-        .year(value.year)
-        .month(value.month)
-        .date(value.date + diff);
+  const changeDay = (diff: number) => {
+    const newYearMonthMoment = moment()
+      .year(value.year)
+      .month(value.month)
+      .date(value.date + diff);
 
-      onChange?.({
-        year: newYearMonthMoment.year(),
-        month: newYearMonthMoment.month(),
-        date: newYearMonthMoment.date(),
-      });
-    },
-    [onChange, value],
-  );
+    onChange?.({
+      year: newYearMonthMoment.year(),
+      month: newYearMonthMoment.month(),
+      date: newYearMonthMoment.date(),
+    });
+  };
 
-  const onBackClick = useCallback(() => changeDay(-1), [changeDay]);
+  const onBackClick = () => changeDay(-1);
 
-  const onNextClick = useCallback(() => changeDay(1), [changeDay]);
+  const onNextClick = () => changeDay(1);
 
   return (
     <ChevronSelector

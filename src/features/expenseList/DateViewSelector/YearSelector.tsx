@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import type { GenericDateViewSelectorProps } from "./DateViewSelector";
 import { defaultDateViewValue } from "@features/ExpenseList/DateViewSelector/constants";
 import { ChevronSelector } from "@features/ExpenseList/DateViewSelector/ChevronSelector";
@@ -8,20 +7,17 @@ export const YearSelector = ({
   onChange,
   className,
 }: GenericDateViewSelectorProps) => {
-  const changeYear = useCallback(
-    (diff: number) => {
-      onChange?.({
-        year: value.year + diff,
-        month: value.month,
-        date: value.date,
-      });
-    },
-    [onChange, value],
-  );
+  const changeYear = (diff: number) => {
+    onChange?.({
+      year: value.year + diff,
+      month: value.month,
+      date: value.date,
+    });
+  };
 
-  const onBackClick = useCallback(() => changeYear(-1), [changeYear]);
+  const onBackClick = () => changeYear(-1);
 
-  const onNextClick = useCallback(() => changeYear(1), [changeYear]);
+  const onNextClick = () => changeYear(1);
 
   return (
     <ChevronSelector

@@ -6,7 +6,7 @@ import { useLocale } from "@hooks/useLocale";
 import { useToggle } from "@hooks/useToggle";
 import type { Moment } from "moment";
 import moment from "moment";
-import { useCallback, useEffect, useMemo, useState, type Ref } from "react";
+import { useEffect, useMemo, useState, type Ref } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = { ref?: Ref<HTMLButtonElement> } & Pick<
@@ -33,7 +33,7 @@ export const TxnDatePad = ({ ref, date, setDate }: Props) => {
     [value],
   );
 
-  const onDateChange = useCallback((date: Date) => {
+  const onDateChange = (date: Date) => {
     setValue((_value) => {
       const updatedMoment = moment(date);
       return _value
@@ -43,21 +43,21 @@ export const TxnDatePad = ({ ref, date, setDate }: Props) => {
             .second(_value.seconds())
         : updatedMoment;
     });
-  }, []);
+  };
 
-  const onTimeChange = useCallback((time: TimeValue) => {
+  const onTimeChange = (time: TimeValue) => {
     setValue((_value) => {
       const updatedMoment = moment(_value);
       return _value
         ? updatedMoment.hour(time.hour).minute(time.minute).second(time.second)
         : updatedMoment;
     });
-  }, []);
+  };
 
-  const onDateConfirm = useCallback(() => {
+  const onDateConfirm = () => {
     setDate(value);
     toggleDateModal();
-  }, [setDate, toggleDateModal, value]);
+  };
 
   useEffect(() => {
     if (openDateModal) {

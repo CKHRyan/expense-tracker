@@ -3,7 +3,7 @@ import { useDeleteExpense } from "src/queries/hooks/useDeleteExpense";
 import { useUpdateExpense } from "src/queries/hooks/useUpdateExpense";
 import { isNil } from "lodash";
 import type { Moment } from "moment";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { CATEGORY, categoryGroupMap } from "src/constants/expense";
 import type { Category } from "@features/Expense/types";
 import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
@@ -57,14 +57,14 @@ export const useTransactionInput = ({
 
   const disabledSubmit = isNil(amount) || !category || !date;
 
-  const clear = useCallback(() => {
+  const clear = () => {
     setAmount(initialAmount);
     setCategory(initialCategory);
     setDate(initialDate);
     setDescription(initialDescription);
-  }, []);
+  };
 
-  const create = useCallback(async () => {
+  const create = async () => {
     try {
       if (disabledSubmit) throw new Error("Invalid input");
 
@@ -87,20 +87,9 @@ export const useTransactionInput = ({
       console.error(err);
       alert("Failed to create expense. Please try again.");
     }
-  }, [
-    amount,
-    category,
-    confirm,
-    createExpense,
-    date,
-    description,
-    disabledSubmit,
-    onSubmit,
-    payer,
-    t,
-  ]);
+  };
 
-  const edit = useCallback(async () => {
+  const edit = async () => {
     try {
       if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
 
@@ -124,21 +113,9 @@ export const useTransactionInput = ({
       console.error(err);
       alert("Failed to edit expense. Please try again.");
     }
-  }, [
-    disabledSubmit,
-    editIndex,
-    confirm,
-    t,
-    updateExpense,
-    date,
-    category,
-    amount,
-    payer,
-    description,
-    onSubmit,
-  ]);
+  };
 
-  const remove = useCallback(async () => {
+  const remove = async () => {
     try {
       if (disabledSubmit || isNil(editIndex)) throw new Error("Invalid input");
 
@@ -154,7 +131,7 @@ export const useTransactionInput = ({
       console.error(err);
       alert("Failed to remove expense. Please try again.");
     }
-  }, [confirm, deleteExpense, disabledSubmit, editIndex, onSubmit, t]);
+  };
 
   return {
     amount,

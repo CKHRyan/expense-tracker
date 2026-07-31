@@ -1,7 +1,7 @@
 import { Button, FormTextArea, Icon, Modal, Text } from "@components";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
 import { useToggle } from "@hooks/useToggle";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = Pick<TransactionInputInterface, "description" | "setDescription">;
@@ -11,10 +11,10 @@ export const TxnDescriptionPad = ({ description, setDescription }: Props) => {
   const [openDescModal, toggleDescModal] = useToggle(false);
   const [value, setValue] = useState(description ?? "");
 
-  const onDescriptionConfirm = useCallback(() => {
+  const onDescriptionConfirm = () => {
     setDescription(value);
     toggleDescModal();
-  }, [setDescription, toggleDescModal, value]);
+  };
 
   useEffect(() => {
     if (openDescModal) {

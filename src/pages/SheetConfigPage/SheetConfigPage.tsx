@@ -3,7 +3,7 @@ import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
 import { useAppStore, useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import useDrivePicker from "react-google-drive-picker";
@@ -70,7 +70,7 @@ export const SheetConfigPage = () => {
 
   const isFilled = !!_spreadsheetId && !isNil(_sheetId);
 
-  const onSync = useCallback(async () => {
+  const onSync = async () => {
     try {
       if (!isFilled) {
         throw new Error(t("error.missingSheetData"));
@@ -95,22 +95,9 @@ export const SheetConfigPage = () => {
     } catch (e) {
       alert(e);
     }
-  }, [
-    isFilled,
-    confirm,
-    t,
-    setSpreadsheetId,
-    _spreadsheetId,
-    setSheetId,
-    _sheetId,
-    clearLocalTransactions,
-    setStorageMode,
-    storageMode,
-    isSheetLoadedBefore,
-    navigate,
-  ]);
+  };
 
-  const onUnsync = useCallback(async () => {
+  const onUnsync = async () => {
     try {
       const isConfirmed = await confirm({
         title: t("sheetConfig.unsyncRecords.promptTitle"),
@@ -126,17 +113,9 @@ export const SheetConfigPage = () => {
     } catch (e) {
       alert(e);
     }
-  }, [
-    confirm,
-    t,
-    isSheetLoadedBefore,
-    setStorageMode,
-    loadTransactions,
-    spreadsheetId,
-    sheetId,
-  ]);
+  };
 
-  const onLoad = useCallback(async () => {
+  const onLoad = async () => {
     try {
       if (!isFilled) {
         throw new Error(t("error.missingSheetData"));
@@ -155,18 +134,9 @@ export const SheetConfigPage = () => {
     } catch (e) {
       alert(e);
     }
-  }, [
-    isFilled,
-    confirm,
-    t,
-    setSpreadsheetId,
-    _spreadsheetId,
-    setSheetId,
-    _sheetId,
-    loadTransactions,
-  ]);
+  };
 
-  const onUpload = useCallback(async () => {
+  const onUpload = async () => {
     if (!isFilled) {
       throw new Error(t("error.missingSheetData"));
     }
@@ -181,28 +151,19 @@ export const SheetConfigPage = () => {
     setSheetId(_sheetId);
 
     await uploadTransactions(_spreadsheetId, _sheetId);
-  }, [
-    _sheetId,
-    _spreadsheetId,
-    confirm,
-    isFilled,
-    setSheetId,
-    setSpreadsheetId,
-    t,
-    uploadTransactions,
-  ]);
+  };
 
-  const onBackClick = useCallback(() => {
+  const onBackClick = () => {
     if (canGoBack) {
       navigate(-1);
     } else {
       navigate(path.root);
     }
-  }, [canGoBack, navigate]);
+  };
 
   const [openPicker] = useDrivePicker();
 
-  const onSelectDoc = useCallback(() => {
+  const onSelectDoc = () => {
     const pickerConfig: PickerConfiguration = {
       clientId: config.googleOAuthClientId,
       developerKey: config.googleApiKey,
@@ -212,7 +173,7 @@ export const SheetConfigPage = () => {
       showUploadFolders: true,
       supportDrives: true,
       callbackFunction: ({ action, docs }) => {
-        if (action === "cancel" || (docs && docs.length === 0)) {
+        if (action === "cancel" || !docs || docs.length === 0) {
           return;
         }
         const spreadsheetId = docs[0].id;
@@ -222,7 +183,7 @@ export const SheetConfigPage = () => {
       locale,
     };
     openPicker(pickerConfig);
-  }, [locale, openPicker, token]);
+  };
 
   const onSelectSheet = ({ value }: { value: number }) => {
     _setSheetId(value);

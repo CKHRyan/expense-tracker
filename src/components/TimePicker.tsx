@@ -9,7 +9,6 @@ import {
   getHour24Period,
 } from "src/helpers/datetime";
 import { isNil } from "lodash";
-import { useCallback } from "react";
 import type { AppLocale } from "@utils/types";
 import { i18n } from "@utils/localization/i18n";
 
@@ -53,25 +52,22 @@ export const TimePicker = ({
 
   const meridiemOptions = getMeridiemOptions(locale);
 
-  const _onChange = useCallback(
-    ({
-      hour: updatedHour,
-      period: updatedPeriod,
-      ...updatedValue
-    }: Partial<TimeValue & { period: PeriodValue }>) => {
-      const updatedHour24 =
-        !isNil(updatedHour) || !isNil(updatedPeriod)
-          ? convertToHour24(updatedHour ?? hour12, updatedPeriod ?? period)
-          : undefined;
-      onChange?.({
-        hour: updatedHour24 ?? hour,
-        minute,
-        second,
-        ...updatedValue,
-      });
-    },
-    [hour, hour12, minute, onChange, period, second]
-  );
+  const _onChange = ({
+    hour: updatedHour,
+    period: updatedPeriod,
+    ...updatedValue
+  }: Partial<TimeValue & { period: PeriodValue }>) => {
+    const updatedHour24 =
+      !isNil(updatedHour) || !isNil(updatedPeriod)
+        ? convertToHour24(updatedHour ?? hour12, updatedPeriod ?? period)
+        : undefined;
+    onChange?.({
+      hour: updatedHour24 ?? hour,
+      minute,
+      second,
+      ...updatedValue,
+    });
+  };
 
   return (
     <div className={className}>

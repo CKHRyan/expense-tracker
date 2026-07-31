@@ -1,6 +1,5 @@
 import { Icon, type IconProps } from "@components/Icon";
 import { Text } from "@components/Text";
-import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 
@@ -23,10 +22,10 @@ export const BottomNavTabItem = ({
 }: BottomNavTabItemProps) => {
   const navigate = useNavigate();
 
-  const onClick = useCallback(() => {
+  const onClick = () => {
     if (!href) return;
     navigate(href);
-  }, [href, navigate]);
+  };
 
   return (
     <div
