@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 export type ConfirmModalProps = Pick<ModalProps, "isOpen"> & {
   title?: string;
   description?: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
 };
@@ -13,6 +15,8 @@ export type ConfirmModalProps = Pick<ModalProps, "isOpen"> & {
 export const ConfirmModal = ({
   title,
   description,
+  confirmLabel,
+  cancelLabel,
   onConfirm,
   onCancel,
   ...modalProps
@@ -29,9 +33,11 @@ export const ConfirmModal = ({
       <Text className="text-gray-400">{description}</Text>
       <div className="w-full flex gap-2 justify-end w-100">
         <Button onClick={onCancel} colorVariant="secondary">
-          {t("common.cta.cancel")}
+          {cancelLabel ?? t("common.cta.cancel")}
         </Button>
-        <Button onClick={onConfirm}>{t("common.cta.confirm")}</Button>
+        <Button onClick={onConfirm}>
+          {confirmLabel ?? t("common.cta.confirm")}
+        </Button>
       </div>
     </Modal>
   );

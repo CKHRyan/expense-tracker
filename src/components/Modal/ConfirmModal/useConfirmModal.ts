@@ -1,18 +1,31 @@
 import { ConfirmModalContext } from "@components/Modal/ConfirmModal/ConfirmModalProvider";
 import { useContext } from "react";
+import type { ConfirmModalProps } from "./ConfirmModal";
 
 type ConfirmFunc = (
-  params: Partial<Record<"title" | "description", string>>,
+  params: Partial<
+    Pick<
+      ConfirmModalProps,
+      "title" | "description" | "confirmLabel" | "cancelLabel"
+    >
+  >,
 ) => Promise<boolean>;
 
 export const useConfirmModal = () => {
   const { openConfirmModal } = useContext(ConfirmModalContext);
 
-  const confirm: ConfirmFunc = async ({ title, description }) => {
+  const confirm: ConfirmFunc = async ({
+    title,
+    description,
+    confirmLabel,
+    cancelLabel,
+  }) => {
     const promise = new Promise((resolve, reject) => {
       openConfirmModal({
         title,
         description,
+        confirmLabel,
+        cancelLabel,
         onConfirm: () => resolve("confirm"),
         onCancel: () => reject("cancel"),
       });

@@ -1,7 +1,12 @@
 import { Button, FormInput, Loading, Title } from "@components";
 import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
-import { useAppStore, useAuthStore, useSheetStore } from "@stores";
+import {
+  useAppStore,
+  useAuthStore,
+  useSheetStore,
+  useTransactionStore,
+} from "@stores";
 import { isNil } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -31,6 +36,7 @@ export const SheetConfigPage = () => {
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
+  const { payerList, setPayerList } = useTransactionStore();
   const [_spreadsheetId, _setSpreadsheetId] = useState(spreadsheetId ?? "");
   const [_sheetId, _setSheetId] = useState<number | undefined>(sheetId);
 
@@ -67,6 +73,18 @@ export const SheetConfigPage = () => {
 
   const isFilled = !!_spreadsheetId && !isNil(_sheetId);
 
+  const promptClearPayerList = async () => {
+    const isClearPayerList = await confirm({
+      title: t("sheetConfig.clearPayerList.promptTitle"),
+      description: t("sheetConfig.clearPayerList.prompt"),
+      confirmLabel: t("sheetConfig.clearPayerList.prmopt.cta.clear"),
+      cancelLabel: t("sheetConfig.clearPayerList.prmopt.cta.keep"),
+    });
+    if (isClearPayerList) {
+      setPayerList([]);
+    }
+  };
+
   const onSync = async () => {
     try {
       if (!isFilled) {
@@ -78,6 +96,13 @@ export const SheetConfigPage = () => {
         description: t("sheetConfig.syncRecords.prompt"),
       });
       if (!isConfirmed) return;
+
+      if (
+        payerList.length > 0 &&
+        (spreadsheetId !== _spreadsheetId || sheetId !== _sheetId)
+      ) {
+        promptClearPayerList();
+      }
 
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
@@ -126,6 +151,13 @@ export const SheetConfigPage = () => {
             : t("sheetConfig.loadRecords.sheet.prompt"),
       });
       if (!isConfirmed) return;
+
+      if (
+        payerList.length > 0 &&
+        (spreadsheetId !== _spreadsheetId || sheetId !== _sheetId)
+      ) {
+        promptClearPayerList();
+      }
 
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
