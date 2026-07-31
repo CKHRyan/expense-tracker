@@ -3,7 +3,7 @@ import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
 import { useAppStore, useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import useDrivePicker from "react-google-drive-picker";
@@ -46,10 +46,9 @@ export const SheetConfigPage = () => {
       label: `${index + 1} - ${a1SheetName}`,
     })) ?? [];
 
-  const selectedSheetOption = useMemo(() => {
-    if (isNil(_sheetId)) return undefined;
-    return sheetOptions.find(({ value }) => value === _sheetId);
-  }, [_sheetId, sheetOptions]);
+  const selectedSheetOption = !isNil(_sheetId)
+    ? sheetOptions.find(({ value }) => value === _sheetId)
+    : undefined;
 
   const navigate = useNavigate();
   const canGoBack = useCanGoBack();
@@ -121,14 +120,19 @@ export const SheetConfigPage = () => {
 
       const isConfirmed = await confirm({
         title: t("sheetConfig.loadRecords.promptTitle"),
-        description: t("sheetConfig.loadRecords.prompt"),
+        description:
+          storageMode === StorageMode.LOCAL
+            ? t("sheetConfig.loadRecords.local.prompt")
+            : t("sheetConfig.loadRecords.sheet.prompt"),
       });
       if (!isConfirmed) return;
 
       setSpreadsheetId(_spreadsheetId);
       setSheetId(_sheetId);
 
-      await loadTransactions(_spreadsheetId, _sheetId);
+      if (storageMode === StorageMode.LOCAL) {
+        await loadTransactions(_spreadsheetId, _sheetId);
+      }
     } catch (e) {
       alert(e);
     }
@@ -223,6 +227,9 @@ export const SheetConfigPage = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
+        <Button onClick={onLoad} disabled={!isFilled}>
+          {t("sheetConfig.loadRecords")}
+        </Button>
         {storageMode === StorageMode.SHEET && (
           <Button
             onClick={onUnsync}
@@ -234,9 +241,6 @@ export const SheetConfigPage = () => {
         )}
         {storageMode === StorageMode.LOCAL && (
           <>
-            <Button onClick={onLoad} disabled={!isFilled}>
-              {t("sheetConfig.loadRecords")}
-            </Button>
             <Button onClick={onUpload} disabled={!isFilled}>
               {t("sheetConfig.uploadRecords")}
             </Button>
