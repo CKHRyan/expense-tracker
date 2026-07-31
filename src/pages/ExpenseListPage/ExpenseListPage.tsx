@@ -25,13 +25,8 @@ export const ExpenseListPage = () => {
 
   const { data = [], isLoading } = useGetExpenses();
 
-  const expenseFilter = useMemo(
-    () => ({ dateView, dateViewMode }),
-    [dateView, dateViewMode],
-  );
-
   const { totalExpense } = useExpenseData(data, {
-    filter: expenseFilter,
+    filter: { dateView, dateViewMode },
   });
 
   const cumulativeExpenseTitle = useMemo(() => {

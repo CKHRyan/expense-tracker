@@ -5,7 +5,6 @@ import type {
   DateViewValue,
   DateViewMode,
 } from "@features/Expense/types";
-import { useMemo } from "react";
 
 type Props = {
   data: ExpenseRecordWithIndex[];
@@ -18,13 +17,8 @@ export const CategoryExpenseList = ({
   dateView,
   dateViewMode,
 }: Props) => {
-  const expenseFilter = useMemo(
-    () => ({ dateView, dateViewMode }),
-    [dateView, dateViewMode],
-  );
-
   const { groupsInExpenseOrder, totalExpenseByGroup } = useExpenseData(data, {
-    filter: expenseFilter,
+    filter: { dateView, dateViewMode },
   });
 
   return (

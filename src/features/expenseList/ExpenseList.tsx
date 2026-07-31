@@ -7,7 +7,6 @@ import { Icon, Text } from "@components";
 import { TransactionCard } from "./TransactionCard";
 import { useExpenseData } from "./hooks/useExpenseData";
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
 
 type Props = {
   data: ExpenseRecordWithIndex[];
@@ -24,13 +23,8 @@ export const ExpenseList = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const expenseFilter = useMemo(
-    () => ({ dateView, dateViewMode }),
-    [dateView, dateViewMode],
-  );
-
   const { recordsByDay, transactionDates } = useExpenseData(data, {
-    filter: expenseFilter,
+    filter: { dateView, dateViewMode },
   });
 
   const isEmpty = transactionDates.length === 0;

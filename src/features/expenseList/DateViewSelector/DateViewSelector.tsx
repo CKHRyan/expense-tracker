@@ -34,24 +34,21 @@ export const DateViewSelector = ({
   const { dateView, setDateView, dateViewMode, setDateViewMode } =
     useViewStore();
 
-  const dateViewSelectorOptions = useMemo(
-    (): DateViewSelectorOption[] => [
-      {
-        dateViewMode: DateViewMode.DAY_VIEW,
-        icon: "icon-[bi--calendar-day]",
-        onClick: () => setDateView(clampDateViewValue(dateView)),
-      },
-      {
-        dateViewMode: DateViewMode.MONTH_VIEW,
-        icon: "icon-[fluent-mdl2:calendar]",
-      },
-      {
-        dateViewMode: DateViewMode.YEAR_VIEW,
-        icon: "icon-[fluent-mdl2:calendar-year]",
-      },
-    ],
-    [dateView, setDateView],
-  );
+  const dateViewSelectorOptions: DateViewSelectorOption[] = [
+    {
+      dateViewMode: DateViewMode.DAY_VIEW,
+      icon: "icon-[bi--calendar-day]",
+      onClick: () => setDateView(clampDateViewValue(dateView)),
+    },
+    {
+      dateViewMode: DateViewMode.MONTH_VIEW,
+      icon: "icon-[fluent-mdl2:calendar]",
+    },
+    {
+      dateViewMode: DateViewMode.YEAR_VIEW,
+      icon: "icon-[fluent-mdl2:calendar-year]",
+    },
+  ];
 
   const selector = useMemo(() => {
     const _selectorProps = {

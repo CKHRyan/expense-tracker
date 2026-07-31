@@ -40,14 +40,12 @@ export const SheetConfigPage = () => {
       skip: !_spreadsheetId,
     },
   );
-  const sheetOptions = useMemo(
-    () =>
-      doc?.sheetsByIndex.map(({ a1SheetName, sheetId }, index) => ({
-        value: sheetId,
-        label: `${index + 1} - ${a1SheetName}`,
-      })) ?? [],
-    [doc?.sheetsByIndex],
-  );
+  const sheetOptions =
+    doc?.sheetsByIndex.map(({ a1SheetName, sheetId }, index) => ({
+      value: sheetId,
+      label: `${index + 1} - ${a1SheetName}`,
+    })) ?? [];
+
   const selectedSheetOption = useMemo(() => {
     if (isNil(_sheetId)) return undefined;
     return sheetOptions.find(({ value }) => value === _sheetId);

@@ -6,7 +6,7 @@ import { useLocale } from "@hooks/useLocale";
 import { useToggle } from "@hooks/useToggle";
 import type { Moment } from "moment";
 import moment from "moment";
-import { useEffect, useMemo, useState, type Ref } from "react";
+import { useEffect, useState, type Ref } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = { ref?: Ref<HTMLButtonElement> } & Pick<
@@ -21,17 +21,13 @@ export const TxnDatePad = ({ ref, date, setDate }: Props) => {
   const [openDateModal, toggleDateModal] = useToggle(false);
   const [value, setValue] = useState<Moment | null>(date ?? null);
 
-  const timeValue: TimeValue | undefined = useMemo(
-    () =>
-      value
-        ? {
-            hour: value.hour(),
-            minute: value.minute(),
-            second: value.second(),
-          }
-        : undefined,
-    [value],
-  );
+  const timeValue = value
+    ? ({
+        hour: value.hour(),
+        minute: value.minute(),
+        second: value.second(),
+      } as TimeValue)
+    : undefined;
 
   const onDateChange = (date: Date) => {
     setValue((_value) => {
