@@ -10,6 +10,7 @@ Track daily expenses, categorize spending, view summaries — all synced to your
 
 - ➕ Add / edit / delete expenses
 - 🏷️ Categories (Food, Transport, Bills, Entertainment, …)
+- 🤑 Track on the payer of the expense
 - 📅 Daily / monthly / yearly view with summaries
 - 💻 **Local mode** — store all records in browser localStorage
   - No login required
