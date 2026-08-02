@@ -10,6 +10,7 @@ Track daily expenses, categorize spending, view summaries — all synced to your
 
 - ➕ Add / edit / delete expenses
 - 🏷️ Categories (Food, Transport, Bills, Entertainment, …)
+- 🤑 Track on the payer of the expense
 - 📅 Daily / monthly / yearly view with summaries
 - 💻 **Local mode** — store all records in browser localStorage
   - No login required
@@ -56,6 +57,10 @@ yarn dev
 
 # 5. Build project
 yarn build
+
+# 6. Deploy to firebase hosting (opional)
+cp .firebaserc.example .firebaserc
+yarn deploy
 ```
 
 ## Google Sheet Integration Setup
@@ -72,6 +77,13 @@ yarn build
 2. Create a new Google Sheet with format according to the [template](https://github.com/CKHRyan/expense-tracker/blob/main/public/expense-tracker-sheet-template.xlsx)
 3. Login to the Google account with allowed Google Sheet access
 4. Created Google Sheet shall be found in the Google Sheet Sync config
+
+## Firebase Hosting Setup
+
+1. Install the Firebase CLI
+2. Set up the project directory by running `firebase init`
+3. Copy your Firebase project Id to .firebaserc
+4. Run `yarn deploy` to build the project and deploy the build files to Firebase Hosting
 
 ## License
 
