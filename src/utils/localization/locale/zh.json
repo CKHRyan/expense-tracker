@@ -116,7 +116,8 @@
     "logout.prompt": "你是否確定登出你的帳戶？",
     "logout.prompt.unsync": "你是否確定登出你的帳戶？你將不能再與Google試算表同步支出記錄。",
     "authLockLabel": "需登入",
-    "payerSettings": "付款人設定"
+    "payerSettings": "付款人設定",
+    "currencySettings": "貨幣設定"
   },
 
   "sheetConfig": {
@@ -150,6 +151,12 @@
     "payerSettings": "付款人設定",
     "defaultPayer": "預設付款人",
     "payers": "付款人"
+  },
+
+  "currencyConfig": {
+    "currencySettings": "貨幣設定",
+    "baseCurrency": "基礎貨幣",
+    "currencies": "貨幣"
   },
 
   "error": {

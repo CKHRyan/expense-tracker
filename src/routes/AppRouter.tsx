@@ -4,6 +4,7 @@ import { ExpenseListPage } from "@pages/ExpenseListPage";
 import { MenuPage } from "@pages/MenuPage";
 import { SheetConfigPage } from "@pages/SheetConfigPage";
 import { Routes, Route, Navigate } from "react-router";
+import { CurrencyConfigPage } from "src/pages/CurrencyConfigPage";
 import { PayerConfigPage } from "src/pages/PayerConfigPage";
 import { path } from "src/routes/constants/path";
 import { AuthGuard } from "src/routes/guards/AuthGuard";
@@ -25,6 +26,7 @@ export const AppRouter = () => (
         </Route>
 
         <Route path={path.payerConfig} element={<PayerConfigPage />} />
+        <Route path={path.currencyConfig} element={<CurrencyConfigPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to={path.expenseList} />} />

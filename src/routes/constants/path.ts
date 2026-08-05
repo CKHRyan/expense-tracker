@@ -6,4 +6,5 @@ export const path = {
   menu: "/menu",
   sheetConfig: "/config/sheet",
   payerConfig: "/config/payer",
+  currencyConfig: "/config/currency",
 };

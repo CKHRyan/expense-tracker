@@ -54,5 +54,10 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
       icon: "icon-[tabler--user-dollar]",
       onClick: () => navigate(path.payerConfig),
     },
+    {
+      title: t("menu.currencySettings"),
+      icon: "icon-[meteor-icons--dollar]",
+      onClick: () => navigate(path.currencyConfig),
+    },
   ];
 };

@@ -116,7 +116,8 @@
     "logout.prompt": "Do you confirm to logout your account?",
     "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet.",
     "authLockLabel": "Login",
-    "payerSettings": "Payer Settings"
+    "payerSettings": "Payer Settings",
+    "currencySettings": "Currency Settings"
   },
 
   "sheetConfig": {
@@ -150,6 +151,12 @@
     "payerSettings": "Payer Settings",
     "defaultPayer": "Default Payer",
     "payers": "Payers"
+  },
+
+  "currencyConfig": {
+    "currencySettings": "Currency Settings",
+    "baseCurrency": "Base Currency",
+    "currencies": "Currencies"
   },
 
   "error": {
