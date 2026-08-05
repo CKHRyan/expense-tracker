@@ -14,7 +14,7 @@ export const AppRouter = () => (
     <Route element={<AuthGuard />}>
       <Route path={path.login} element={<Entry />} />
 
-      <Route path={path.config} element={<SheetConfigPage />} />
+      <Route path={path.sheetConfig} element={<SheetConfigPage />} />
 
       <Route element={<ConfigGuard />}>
         <Route element={<MainLayout />}>

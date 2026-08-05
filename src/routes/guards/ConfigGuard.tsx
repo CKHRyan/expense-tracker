@@ -14,9 +14,9 @@ export const ConfigGuard = () => {
   if (
     storageMode === StorageMode.SHEET &&
     !isConfigured &&
-    pathname !== path.config
+    pathname !== path.sheetConfig
   ) {
-    return <Navigate to={path.config} />;
+    return <Navigate to={path.sheetConfig} />;
   }
 
   return <Outlet />;

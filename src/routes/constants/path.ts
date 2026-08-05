@@ -1,7 +1,7 @@
 export const path = {
   root: "/",
   login: "/login",
-  config: "/config",
+  sheetConfig: "/config/sheet",
   expenseList: "/",
   analysis: "/analysis",
   menu: "/menu",

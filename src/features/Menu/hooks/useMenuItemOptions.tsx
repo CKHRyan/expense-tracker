@@ -35,7 +35,7 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
     {
       title: t("menu.sheetSync"),
       icon: "icon-[bxs--spreadsheet]",
-      onClick: () => navigate(path.config),
+      onClick: () => navigate(path.sheetConfig),
       isLocked: !isAuth,
     },
     isAuth
