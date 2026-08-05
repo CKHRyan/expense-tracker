@@ -51,7 +51,7 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
         },
     {
       title: t("menu.payerSettings"),
-      icon: "icon-[fluent--people-money-20-regular]",
+      icon: "icon-[tabler--user-dollar]",
       onClick: () => navigate(path.payerConfig),
     },
   ];
