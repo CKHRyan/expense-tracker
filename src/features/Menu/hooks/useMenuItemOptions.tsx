@@ -49,5 +49,10 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
           icon: "icon-[material-symbols--login]",
           onClick: login,
         },
+    {
+      title: t("menu.payerSettings"),
+      icon: "icon-[fluent--people-money-20-regular]",
+      onClick: () => navigate(path.payerConfig),
+    },
   ];
 };

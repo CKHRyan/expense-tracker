@@ -37,6 +37,8 @@ export const PayerOptionPadButtonCard = ({
     className={twMerge(
       "flex-0 shrink max-w-full",
       !isSelected && "bg-zinc-700",
+      !onClick && "cursor-default",
     )}
+    titleClassName="flex-1"
   />
 );

@@ -7,6 +7,7 @@ import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { AddPayerPadButtonCard } from "../PadButtonCard/AddPayerPadButtonCard";
 import { useConfigStore } from "src/stores/configStore";
+import { SHARED_PAYER_KEY } from "src/features/Payer/constants";
 
 type Props = { className?: string; style?: CSSProperties } & Pick<
   TransactionInputInterface,
@@ -54,8 +55,8 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
 
         <div className="flex flex-wrap gap-4 items-center overflow-hidden w-full overflow-visible">
           <PayerOptionPadButtonCard
-            payer={null}
-            onClick={() => selectPayer("")}
+            payer={SHARED_PAYER_KEY}
+            onClick={() => selectPayer(SHARED_PAYER_KEY)}
             isSelected={!payer}
           />
           {payerList.map((payerOption) => (

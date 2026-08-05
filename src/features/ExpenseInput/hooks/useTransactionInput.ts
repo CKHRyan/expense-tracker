@@ -8,11 +8,12 @@ import { CATEGORY, categoryGroupMap } from "src/constants/expense";
 import type { Category } from "@features/Expense/types";
 import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
 import { useTranslation } from "react-i18next";
+import { SHARED_PAYER_KEY } from "src/features/Payer/constants";
 
 const initialAmount = 0;
 const initialCategory = CATEGORY.Other;
 const initialDate = null;
-const initialPayer = "";
+const initialPayer = SHARED_PAYER_KEY;
 const initialDescription = "";
 
 type Params = {

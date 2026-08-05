@@ -8,6 +8,7 @@ type Props = {
   payer: string | null;
   onClick?: () => void;
   className?: string;
+  titleClassName?: string;
   suffixComponent?: ReactNode;
   style?: CSSProperties;
 };
@@ -17,6 +18,7 @@ export const PayerPadButtonCard = ({
   onClick,
   suffixComponent,
   className,
+  titleClassName,
   style,
 }: Props) => {
   const { t } = useTranslation();
@@ -31,7 +33,12 @@ export const PayerPadButtonCard = ({
       onClick={onClick}
       style={style}
     >
-      <Text className="overflow-hidden whitespace-nowrap text-ellipsis">
+      <Text
+        className={twMerge(
+          "overflow-hidden whitespace-nowrap text-ellipsis",
+          titleClassName,
+        )}
+      >
         {payer || t("expenseInput.sharedTransaction")}
       </Text>
       {suffixComponent}

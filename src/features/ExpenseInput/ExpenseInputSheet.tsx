@@ -9,6 +9,7 @@ import moment from "moment";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Sheet, type SheetRef } from "react-modal-sheet";
+import { useConfigStore } from "src/stores/configStore";
 
 const snapPoints = [1, 0];
 
@@ -45,6 +46,8 @@ export const ExpenseInputSheet = ({
 
   const { dateView } = useViewStore();
 
+  const { defaultPayer } = useConfigStore();
+
   useEffect(() => {
     if (isOpen) {
       if (isEdit) {
@@ -63,6 +66,7 @@ export const ExpenseInputSheet = ({
           ? moment()
           : dateViewMoment.startOf("month");
         setDate(initialDate);
+        setPayer(defaultPayer);
       }
     } else {
       clearCalculator();

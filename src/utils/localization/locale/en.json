@@ -115,7 +115,8 @@
     "logout": "Logout",
     "logout.prompt": "Do you confirm to logout your account?",
     "logout.prompt.unsync": "Do you confirm to logout your account? You will no longer get sync with the Google sheet.",
-    "authLockLabel": "Login"
+    "authLockLabel": "Login",
+    "payerSettings": "Payer Settings"
   },
 
   "sheetConfig": {
@@ -143,6 +144,12 @@
     "uploadRecords.prompt": "Do you confirm to upload your spending records to the selected Google sheet? All your existing spending records in the selected Google sheet will be replaced.",
     "goBack": "GO BACK",
     "switchToAnotherAccount": "SWITCH TO ANOTHER ACCOUNT"
+  },
+
+  "payerConfig": {
+    "payerSettings": "Payer Settings",
+    "defaultPayer": "Default Payer",
+    "payers": "Payers"
   },
 
   "error": {
