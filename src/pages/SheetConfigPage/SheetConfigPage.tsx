@@ -1,12 +1,7 @@
 import { Button, FormInput, Loading, Title } from "@components";
 import { useAuth } from "@hooks/useAuth";
 import { useCanGoBack } from "@hooks/useCanGoBack";
-import {
-  useAppStore,
-  useAuthStore,
-  useSheetStore,
-  useTransactionStore,
-} from "@stores";
+import { useAppStore, useAuthStore, useSheetStore } from "@stores";
 import { isNil } from "lodash";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -22,6 +17,7 @@ import { config } from "@utils/config";
 import { useTransactionUtils } from "@utils/transactions";
 import { StorageMode } from "@features/ExpenseInput/types";
 import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
+import { useConfigStore } from "src/stores/configStore";
 
 export const SheetConfigPage = () => {
   const { locale } = useLocale();
@@ -37,7 +33,7 @@ export const SheetConfigPage = () => {
 
   const { spreadsheetId, sheetId, setSpreadsheetId, setSheetId } =
     useSheetStore();
-  const { payerList, setPayerList } = useTransactionStore();
+  const { payerList, clearPayerList } = useConfigStore();
   const [_spreadsheetId, _setSpreadsheetId] = useState(spreadsheetId ?? "");
   const [_sheetId, _setSheetId] = useState<number | undefined>(sheetId);
 
@@ -82,7 +78,7 @@ export const SheetConfigPage = () => {
       cancelLabel: t("sheetConfig.clearPayerList.prmopt.cta.keep"),
     });
     if (isNil(_spreadsheetId) || isNil(_sheetId)) {
-      setPayerList([]);
+      clearPayerList();
     } else if (isClearPayerList) {
       await loadPayers(_spreadsheetId, _sheetId, false);
     } else {

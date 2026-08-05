@@ -3,12 +3,12 @@ import { useToggle } from "@hooks/useToggle";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PadButtonCard } from "./PadButtonCard";
-import { useTransactionStore } from "src/stores";
+import { useConfigStore } from "src/stores/configStore";
 
 export const AddPayerPadButtonCard = () => {
   const { t } = useTranslation();
 
-  const { payerList, setPayerList } = useTransactionStore();
+  const { payerList, setPayerList } = useConfigStore();
 
   const [openAddPayerModal, toggleAddPayerModal, setOpenAddPayerModal] =
     useToggle(false);

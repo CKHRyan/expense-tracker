@@ -2,11 +2,11 @@ import { Modal, Text } from "@components";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
 import { useToggle } from "@hooks/useToggle";
 import { PayerPadButtonCard } from "../PadButtonCard/PayerPadButtonCard";
-import { useTransactionStore } from "src/stores";
 import { PayerOptionPadButtonCard } from "../PadButtonCard/PayerOptionPadButtonCard";
 import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { AddPayerPadButtonCard } from "../PadButtonCard/AddPayerPadButtonCard";
+import { useConfigStore } from "src/stores/configStore";
 
 type Props = { className?: string; style?: CSSProperties } & Pick<
   TransactionInputInterface,
@@ -19,7 +19,7 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
   const [openPayerModal, togglePayerModal, setOpenPayerModal] =
     useToggle(false);
 
-  const { payerList, setPayerList } = useTransactionStore();
+  const { payerList, setPayerList } = useConfigStore();
 
   const selectPayer = (payerOption: string) => {
     setPayer(payerOption);

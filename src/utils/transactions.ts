@@ -21,6 +21,7 @@ import {
 } from "src/helpers/expense";
 import { useGetSheet, useGetSheetRows } from "src/queries/hooks/useGetSheet";
 import type { QueryOptions } from "src/queries/types";
+import { useConfigStore } from "src/stores/configStore";
 
 interface TransactionUtils {
   get: () => ExpenseRecordWithIndex[] | Promise<ExpenseRecordWithIndex[]>;
@@ -124,13 +125,9 @@ const useSheetTransactionUtils = (
 
 export const useTransactionUtils = (storageMode: StorageMode) => {
   const { token } = useAuthStore();
-  const {
-    transactions,
-    setTransactions,
-    clearTransactions,
-    payerList,
-    setPayerList,
-  } = useTransactionStore();
+  const { transactions, setTransactions, clearTransactions } =
+    useTransactionStore();
+  const { payerList, setPayerList } = useConfigStore();
 
   const localTransactionUtils = useLocalTransactionUtils();
   const sheetTransactionUtils = useSheetTransactionUtils({
