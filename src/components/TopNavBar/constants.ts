@@ -1,4 +1,4 @@
-import type { TopNavBarButtonProps } from "./type";
+import type { TopNavBarButtonProps } from "./types";
 
 export const INITIAL_NAVBAR_BUTTON_WIDTH = 40;
 

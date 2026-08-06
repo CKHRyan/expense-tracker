@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AppState {
-  locale?: AppLocale;
+  locale: AppLocale;
   setLocale: (locale: AppLocale) => void;
   storageMode: StorageMode;
   setStorageMode: (storageMode: StorageMode) => void;
@@ -13,7 +13,7 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
-      locale: undefined,
+      locale: "en",
       setLocale: (locale: AppLocale) => set({ locale }),
       storageMode: StorageMode.LOCAL,
       setStorageMode: (storageMode: StorageMode) => set({ storageMode }),

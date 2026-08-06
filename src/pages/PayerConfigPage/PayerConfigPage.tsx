@@ -40,7 +40,7 @@ export const PayerConfigPage = () => {
         title={t("payerConfig.payerSettings")}
         leftButtonProps={{ ...BackButtonProps, onClick: navigateBackToMenu }}
       />
-      <div className="px-6 py-8 flex flex-col gap-6">
+      <div className="px-6 py-8 flex flex-col gap-6  overflow-scroll">
         <div className="w-full flex flex-col gap-4">
           <Title className="text-xl">{t("payerConfig.defaultPayer")}</Title>
           <PayerOptionPadButtonCard payer={defaultPayer} isSelected />

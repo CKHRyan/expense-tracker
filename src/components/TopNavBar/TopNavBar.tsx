@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { Title } from "../Title";
 import { Icon } from "../Icon";
-import type { TopNavBarButtonProps } from "./type";
+import type { TopNavBarButtonProps } from "./types";
 import { twMerge } from "tailwind-merge";
 import { useComponentSize } from "src/helpers/useComponentSize";
 import { INITIAL_NAVBAR_BUTTON_WIDTH } from "./constants";
