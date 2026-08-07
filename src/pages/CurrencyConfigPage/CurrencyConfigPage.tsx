@@ -60,9 +60,9 @@ export const CurrencyConfigPage = () => {
     closeCurrencyRateInputModal();
   };
 
-  const displayedCurrencyRateList = currencyRateList
-    .filter((currencyRate) => currencyRate.currency.unit !== baseCurrency.unit)
-    .sort((a, b) => a.currency.unit.localeCompare(b.currency.unit));
+  const sortedCurrencyRateList = currencyRateList.sort((a, b) =>
+    a.currency.unit.localeCompare(b.currency.unit),
+  );
 
   const currencyRateAction: CurrencyRateAction = {
     setBaseCurrency: selectBaseCurrency,
@@ -111,11 +111,14 @@ export const CurrencyConfigPage = () => {
           <Title className="text-xl">{t("currencyConfig.currencies")}</Title>
 
           <CurrencyRateList
-            currencyRates={displayedCurrencyRateList}
+            currencyRates={sortedCurrencyRateList}
+            baseCurrency={baseCurrency}
             defaultCurrency={defaultCurrency}
             action={currencyRateAction}
             footerComponent={
-              <AddCurrencyRateListItem onClick={openCurrencyRateInputModal} />
+              <AddCurrencyRateListItem
+                onClick={() => openCurrencyRateInputModal()}
+              />
             }
           />
         </div>

@@ -83,6 +83,7 @@
     "removeSpending": "Remove Spending Record",
     "removeSpending.prompt": "Do you confirm to remove the spending record?",
     "remove": "Remove",
+    "currency": "Currency",
     "payer": "Payer",
     "sharedTransaction": "Shared",
     "addPayer": "Add payer",

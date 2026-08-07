@@ -34,6 +34,7 @@ export const ExpenseInputSheet = ({
     setDate,
     setCategory,
     setAmount,
+    setCurrency,
     setPayer,
     setDescription,
     clear: clearTransactionInput,
@@ -46,7 +47,7 @@ export const ExpenseInputSheet = ({
 
   const { dateView } = useViewStore();
 
-  const { defaultPayer } = useConfigStore();
+  const { defaultCurrency, defaultPayer } = useConfigStore();
 
   useEffect(() => {
     if (isOpen) {
@@ -55,6 +56,7 @@ export const ExpenseInputSheet = ({
         setDate(expenseRecord.date);
         setCategory(expenseRecord.item);
         setCalculatorValue(expenseRecord.amount);
+        setCurrency(expenseRecord.currency || defaultCurrency.unit);
         setPayer(expenseRecord.payer);
         setDescription(expenseRecord.remark);
       } else {
@@ -66,6 +68,7 @@ export const ExpenseInputSheet = ({
           ? moment()
           : dateViewMoment.startOf("month");
         setDate(initialDate);
+        setCurrency(defaultCurrency.unit);
         setPayer(defaultPayer);
       }
     } else {

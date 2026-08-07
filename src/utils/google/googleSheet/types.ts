@@ -33,6 +33,9 @@ export type BaseExpenseRecord = DefinedExpenseRecord<{
   [ExpenseAttribute.amount]: ExpenseAttributeDataType<
     typeof ExpenseAttribute.amount
   >;
+  [ExpenseAttribute.currency]: ExpenseAttributeDataType<
+    typeof ExpenseAttribute.currency
+  >;
   [ExpenseAttribute.payer]: ExpenseAttributeDataType<
     typeof ExpenseAttribute.payer
   >;

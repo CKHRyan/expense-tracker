@@ -83,6 +83,7 @@
     "removeSpending": "移除支出記錄",
     "removeSpending.prompt": "你是否確定移除此支出記錄？",
     "remove": "移除",
+    "currency": "貨幣",
     "payer": "付款人",
     "sharedTransaction": "共付",
     "addPayer": "新增付款人",

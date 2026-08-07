@@ -8,6 +8,7 @@ import type {
 } from "@features/ExpenseInput/hooks";
 import { twMerge } from "tailwind-merge";
 import { TxnCategoryPad } from "@features/ExpenseInput/TxnInputPad/TxnCategoryPad";
+import { TxnCurrency } from "./TxnCurrency";
 
 type Props = {
   calculatorProps: CalculatorInterface;
@@ -39,7 +40,12 @@ export const TxnInputPad = ({
         setDescription={setDescription}
       />
       <div className="flex flex-col gap-4 px-4 pb-4 pt-3">
-        <Text className="font-bold text-xl">$ {amount.toLocaleString()}</Text>
+        <div className="flex gap-2 items-center">
+          <TxnCurrency {...transactionInputProps} />
+          <Text className="flex-1 font-bold text-xl">
+            {amount.toLocaleString()}
+          </Text>
+        </div>
         <div className="flex gap-2">
           <TxnAmountPad {...calculatorProps} className="flex-1" />
           <TxnActionPad

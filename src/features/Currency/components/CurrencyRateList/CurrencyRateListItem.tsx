@@ -6,15 +6,19 @@ import type { Currency, CurrencyRate } from "../../types";
 import { useLocale } from "src/hooks/useLocale";
 import { useTranslation } from "node_modules/react-i18next";
 import type { CurrencyRateAction } from "./types";
+import { compact } from "lodash";
+import { DEFAULT_CURRENCY } from "../../constants";
 
 export type CurrencyRateListItemProps = {
   currencyRate: CurrencyRate;
+  baseCurrency: Currency;
   defaultCurrency: Currency;
   action: CurrencyRateAction;
 };
 
 export const CurrencyRateListItem = ({
   currencyRate,
+  baseCurrency,
   defaultCurrency,
   action: {
     setBaseCurrency,
@@ -26,25 +30,27 @@ export const CurrencyRateListItem = ({
   const { t } = useTranslation();
   const { locale } = useLocale();
 
-  const dropdownOptions = [
-    {
+  const dropdownOptions = compact([
+    currencyRate.currency.unit !== baseCurrency.unit && {
       label: t("currencyConfig.currency.cta.setBase"),
       onClick: () => setBaseCurrency(currencyRate),
     },
-    {
+    currencyRate.currency.unit !== defaultCurrency.unit && {
       label: t("currencyConfig.currency.cta.setDefault"),
       onClick: () => setDefaultCurrency(currencyRate),
     },
-    {
+    currencyRate.currency.unit !== baseCurrency.unit && {
       label: t("currencyConfig.currency.cta.setRate"),
       onClick: () => setCurrencyRate(currencyRate),
     },
-    {
+    currencyRate.currency.unit !== DEFAULT_CURRENCY.unit && {
       label: t("currencyConfig.currency.cta.remove"),
       onClick: () => removeCurrencyRate(currencyRate),
       danger: true,
     },
-  ];
+  ]);
+
+  const isShowDropdown = !!dropdownOptions.length;
 
   return (
     <ListItemCard
@@ -61,15 +67,17 @@ export const CurrencyRateListItem = ({
         </Text>
       </div>
 
-      <Dropdown
-        buttonComponent={
-          <Icon
-            name="icon-[mage--dots]"
-            className="w-[32px] h-[24px] text-white"
-          />
-        }
-        options={dropdownOptions}
-      />
+      {isShowDropdown && (
+        <Dropdown
+          buttonComponent={
+            <Icon
+              name="icon-[mage--dots]"
+              className="w-[32px] h-[24px] text-white"
+            />
+          }
+          options={dropdownOptions}
+        />
+      )}
     </ListItemCard>
   );
 };

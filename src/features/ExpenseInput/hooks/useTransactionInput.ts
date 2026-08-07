@@ -9,8 +9,10 @@ import type { Category } from "@features/Expense/types";
 import { useConfirmModal } from "@components/Modal/ConfirmModal/useConfirmModal";
 import { useTranslation } from "react-i18next";
 import { SHARED_PAYER_KEY } from "src/features/Payer/constants";
+import { DEFAULT_CURRENCY } from "src/features/Currency/constants";
 
 const initialAmount = 0;
+const initialCurrency = DEFAULT_CURRENCY.unit;
 const initialCategory = CATEGORY.Other;
 const initialDate = null;
 const initialPayer = SHARED_PAYER_KEY;
@@ -24,6 +26,8 @@ type Params = {
 export type TransactionInputInterface = {
   amount: number;
   setAmount: (value: number) => void;
+  currency: string;
+  setCurrency: (value: string) => void;
   category: Category | null;
   setCategory: (value: Category) => void;
   date: Moment | null;
@@ -48,6 +52,7 @@ export const useTransactionInput = ({
   const { mutateAsync: deleteExpense } = useDeleteExpense();
 
   const [amount, setAmount] = useState<number>(initialAmount);
+  const [currency, setCurrency] = useState<string>(initialCurrency);
   const [category, setCategory] = useState<Category>(initialCategory);
   const [date, setDate] = useState<Moment | null>(initialDate);
   const [payer, setPayer] = useState<string>(initialPayer);
@@ -80,6 +85,7 @@ export const useTransactionInput = ({
         category: categoryGroupMap[category],
         item: category,
         amount,
+        currency,
         payer,
         remark: description,
       });
@@ -106,6 +112,7 @@ export const useTransactionInput = ({
         category: categoryGroupMap[category],
         item: category,
         amount,
+        currency,
         payer,
         remark: description,
       });
@@ -137,6 +144,8 @@ export const useTransactionInput = ({
   return {
     amount,
     setAmount,
+    currency,
+    setCurrency,
     category,
     setCategory,
     date,

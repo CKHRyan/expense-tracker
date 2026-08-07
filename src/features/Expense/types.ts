@@ -9,6 +9,7 @@ export type ExpenseRecord = DefinedExpenseRecord<{
   category: CategoryGroup;
   item: Category;
   amount: number;
+  currency: string;
   payer: string;
   remark: string;
 }>;
