@@ -33,6 +33,16 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
 
   return [
     {
+      title: t("menu.payerSettings"),
+      icon: "icon-[tabler--user-dollar]",
+      onClick: () => navigate(path.payerConfig),
+    },
+    {
+      title: t("menu.currencySettings"),
+      icon: "icon-[meteor-icons--dollar]",
+      onClick: () => navigate(path.currencyConfig),
+    },
+    {
       title: t("menu.sheetSync"),
       icon: "icon-[bxs--spreadsheet]",
       onClick: () => navigate(path.sheetConfig),
@@ -49,15 +59,5 @@ export const useMenuItemOptions = (): MenuItemOption[] => {
           icon: "icon-[material-symbols--login]",
           onClick: login,
         },
-    {
-      title: t("menu.payerSettings"),
-      icon: "icon-[tabler--user-dollar]",
-      onClick: () => navigate(path.payerConfig),
-    },
-    {
-      title: t("menu.currencySettings"),
-      icon: "icon-[meteor-icons--dollar]",
-      onClick: () => navigate(path.currencyConfig),
-    },
   ];
 };
