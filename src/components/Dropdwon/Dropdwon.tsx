@@ -4,10 +4,12 @@ import React, {
   useEffect,
   useLayoutEffect,
   type JSX,
+  Fragment,
 } from "react";
 import { createPortal } from "react-dom";
 import { Text } from "../Text";
 import { twMerge } from "tailwind-merge";
+import { Divider } from "../Divider";
 
 export interface DropdownOption {
   label: string;
@@ -227,27 +229,32 @@ export const Dropdown = ({
               top: `${coords.top}px`,
               left: `${coords.left}px`,
             }}
-            className="w-48 bg-[#242424] rounded-lg shadow-lg/2 shadow-white focus:outline-none z-5"
+            className="bg-[#242424] rounded-lg shadow-lg/2 shadow-white focus:outline-none z-5"
           >
             <div className="py-1" role="none">
               {options.map((action, index) => (
-                <button
-                  key={index}
-                  role="menuitem"
-                  onClick={() => {
-                    action.onClick();
-                    setIsOpen(false);
-                  }}
-                  className={twMerge(
-                    "w-full text-left px-4 py-2 text-sm flex items-center space-x-2 transition-colors duration-100 hover:bg-zinc-700 cursor-pointer",
-                    action.danger ? "text-red-300" : "text-white",
-                  )}
-                >
-                  {action.icon && (
-                    <span className="shrink-0 text-inherit">{action.icon}</span>
-                  )}
-                  <Text className="text-sm text-inherit">{action.label}</Text>
-                </button>
+                <Fragment key={`dropdown-option-${index}-${action.label}`}>
+                  {index > 0 && <Divider className="bg-zinc-700" />}
+                  <button
+                    key={index}
+                    role="menuitem"
+                    onClick={() => {
+                      action.onClick();
+                      setIsOpen(false);
+                    }}
+                    className={twMerge(
+                      "w-full text-left px-4 py-2 text-right flex items-center space-x-2 transition-colors duration-100 hover:bg-zinc-700 cursor-pointer",
+                      action.danger ? "text-red-300" : "text-white",
+                    )}
+                  >
+                    {action.icon && (
+                      <span className="shrink-0 text-inherit">
+                        {action.icon}
+                      </span>
+                    )}
+                    <Text className="text-inherit">{action.label}</Text>
+                  </button>
+                </Fragment>
               ))}
             </div>
           </div>,
