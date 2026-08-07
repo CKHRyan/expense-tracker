@@ -156,9 +156,12 @@
   "currencyConfig": {
     "currencySettings": "Currency Settings",
     "baseCurrency": "Base Currency",
+    "defaultCurrency": "Default Currency",
     "currencies": "Currencies",
-    "currency.cta.setDefault": "Set Default",
+    "currency.cta.setBase": "Set As Base",
+    "currency.cta.setDefault": "Set As Default",
     "currency.cta.setRate": "Set Rate",
+    "currency.cta.remove": "Remove",
     "currency.cta.add": "Add",
     "currency.input.addCurrency": "Add Currency",
     "currency.input.setRate": "Set Rate",

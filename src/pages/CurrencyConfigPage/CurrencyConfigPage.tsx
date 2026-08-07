@@ -12,6 +12,7 @@ import { DEFAULT_CURRENCY } from "src/features/Currency/constants";
 import { useState } from "react";
 import { formatCurrencyRate } from "src/features/Currency/helpers";
 import { CurrencyRateInputModal } from "src/features/Currency/components/CurrencyRateInputModal";
+import { Dropdown } from "src/components/Dropdwon/Dropdwon";
 
 export const CurrencyConfigPage = () => {
   const { t } = useTranslation();
@@ -22,6 +23,8 @@ export const CurrencyConfigPage = () => {
   const navigateBackToMenu = () => navigate(path.menu, { replace: true });
 
   const {
+    baseCurrency,
+    setBaseCurrency,
     defaultCurrency,
     setDefaultCurrency,
     currencyRateList,
@@ -93,14 +96,14 @@ export const CurrencyConfigPage = () => {
         ),
       );
       if (removedCurrencyRate.currency.unit === defaultCurrency.unit) {
-        setDefaultCurrency(DEFAULT_CURRENCY);
+        setBaseCurrency(DEFAULT_CURRENCY);
       }
     } catch (e) {
       alert(e);
     }
   };
 
-  const selectDefaultCurrency = (selectedCurrencyRate: CurrencyRate) => {
+  const selectBaseCurrency = (selectedCurrencyRate: CurrencyRate) => {
     try {
       setCurrencyRateList(
         currencyRateList.map((currencyRate) => {
@@ -120,7 +123,7 @@ export const CurrencyConfigPage = () => {
           };
         }),
       );
-      setDefaultCurrency(selectedCurrencyRate.currency);
+      setBaseCurrency(selectedCurrencyRate.currency);
     } catch (e) {
       alert(e);
     }
@@ -141,9 +144,7 @@ export const CurrencyConfigPage = () => {
   const isEditCurrencyRate = !!selectedUpdateCurrencyRate;
 
   const displayedCurrencyRateList = currencyRateList
-    .filter(
-      (currencyRate) => currencyRate.currency.unit !== defaultCurrency.unit,
-    )
+    .filter((currencyRate) => currencyRate.currency.unit !== baseCurrency.unit)
     .sort((a, b) => a.currency.unit.localeCompare(b.currency.unit));
 
   return (
@@ -166,6 +167,17 @@ export const CurrencyConfigPage = () => {
           <Title className="text-xl">{t("currencyConfig.baseCurrency")}</Title>
           <ListItemCard className="p-4">
             <Text className="text-center w-full">
+              {baseCurrency.name[locale]} ({baseCurrency.unit})
+            </Text>
+          </ListItemCard>
+        </div>
+
+        <div className="w-full flex flex-col gap-4">
+          <Title className="text-xl">
+            {t("currencyConfig.defaultCurrency")}
+          </Title>
+          <ListItemCard className="p-4">
+            <Text className="text-center w-full">
               {defaultCurrency.name[locale]} ({defaultCurrency.unit})
             </Text>
           </ListItemCard>
@@ -176,48 +188,46 @@ export const CurrencyConfigPage = () => {
           {displayedCurrencyRateList.map((currencyRate) => (
             <ListItemCard
               key={`currency-item-${currencyRate.currency.unit}`}
-              className="p-0 overflow-hidden gap-0 sm:gap-1"
+              className="flex-1 flex gap-4 px-3 py-2"
             >
-              <div className="flex-1 flex gap-4 px-3 py-2">
-                <div>
-                  <Text className="w-full flex-1">
-                    {currencyRate.currency.name[locale]} (
-                    {currencyRate.currency.unit})
-                  </Text>
-                  <Text className="text-left text-gray-400">
-                    1 {currencyRate.currency.unit} ={" "}
-                    {formatCurrencyRate(currencyRate.rate)}{" "}
-                    {defaultCurrency.unit}
-                  </Text>
-                </div>
-
-                <div className="flex-1 flex flex-col justify-end">
-                  <Button
-                    onClick={() => selectDefaultCurrency(currencyRate)}
-                    variant="text"
-                    className="text-right text-yellow-600 p-0"
-                  >
-                    {t("currencyConfig.currency.cta.setDefault")}{" "}
-                    <Icon name="icon-[material-symbols--move-up-rounded]" />
-                  </Button>
-                  <Button
-                    onClick={() => openCurrencyRateInputModal(currencyRate)}
-                    variant="text"
-                    className="text-right text-blue-500 p-0"
-                  >
-                    {t("currencyConfig.currency.cta.setRate")}{" "}
-                    <Icon name="icon-[ix--pen]" />
-                  </Button>
-                </div>
+              <div className="flex-1">
+                <Text className="w-full flex-1">
+                  {currencyRate.currency.name[locale]} (
+                  {currencyRate.currency.unit})
+                </Text>
+                <Text className="text-left text-gray-400">
+                  1 {currencyRate.currency.unit} ={" "}
+                  {formatCurrencyRate(currencyRate.rate)} {defaultCurrency.unit}
+                </Text>
               </div>
 
-              <div className="bg-zinc-600 h-full px-2 py-2 items-center flex">
-                <Icon
-                  name="icon-[famicons--trash-bin-outline]"
-                  onClick={() => removeCurrencyRate(currencyRate)}
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
+              <Dropdown
+                buttonComponent={
+                  <Icon
+                    name="icon-[mage--dots]"
+                    className="w-[32px] h-[24px] text-white"
+                  />
+                }
+                options={[
+                  {
+                    label: t("currencyConfig.currency.cta.setBase"),
+                    onClick: () => selectBaseCurrency(currencyRate),
+                  },
+                  {
+                    label: t("currencyConfig.currency.cta.setDefault"),
+                    onClick: () => setDefaultCurrency(currencyRate.currency),
+                  },
+                  {
+                    label: t("currencyConfig.currency.cta.setRate"),
+                    onClick: () => openCurrencyRateInputModal(currencyRate),
+                  },
+                  {
+                    label: t("currencyConfig.currency.cta.remove"),
+                    onClick: () => removeCurrencyRate(currencyRate),
+                    danger: true,
+                  },
+                ]}
+              />
             </ListItemCard>
           ))}
 

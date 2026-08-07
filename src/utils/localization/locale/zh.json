@@ -156,9 +156,12 @@
   "currencyConfig": {
     "currencySettings": "貨幣設定",
     "baseCurrency": "基礎貨幣",
+    "defaultCurrency": "預設貨幣",
     "currencies": "貨幣",
-    "currency.cta.setDefault": "預設貨幣",
+    "currency.cta.setBase": "設為基本貨幣",
+    "currency.cta.setDefault": "設為預設貨幣",
     "currency.cta.setRate": "設定匯率",
+    "currency.cta.remove": "移除貨幣",
     "currency.cta.add": "新增",
     "currency.input.addCurrency": "新增貨幣",
     "currency.input.setRate": "設定匯率",

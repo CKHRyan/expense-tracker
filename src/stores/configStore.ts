@@ -10,6 +10,8 @@ interface ConfigState {
   payerList: string[];
   setPayerList: (payerList: string[]) => void;
   clearPayerList: () => void;
+  baseCurrency: Currency;
+  setBaseCurrency: (baseCurrency: Currency) => void;
   defaultCurrency: Currency;
   setDefaultCurrency: (defaultCurrency: Currency) => void;
   currencyRateList: CurrencyRate[];
@@ -24,6 +26,8 @@ export const useConfigStore = create<ConfigState>()(
       payerList: [],
       setPayerList: (payerList: string[]) => set({ payerList }),
       clearPayerList: () => set({ payerList: [] }),
+      baseCurrency: DEFAULT_CURRENCY,
+      setBaseCurrency: (baseCurrency: Currency) => set({ baseCurrency }),
       defaultCurrency: DEFAULT_CURRENCY,
       setDefaultCurrency: (defaultCurrency: Currency) =>
         set({ defaultCurrency }),
@@ -36,11 +40,13 @@ export const useConfigStore = create<ConfigState>()(
       partialize: ({
         defaultPayer,
         payerList,
+        baseCurrency,
         defaultCurrency,
         currencyRateList,
       }) => ({
         defaultPayer,
         payerList,
+        baseCurrency,
         defaultCurrency,
         currencyRateList,
       }),

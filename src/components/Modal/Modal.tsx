@@ -15,7 +15,7 @@ export const Modal = ({ contentClassname, ...otherProps }: ModalProps) => (
     }}
     className={{
       base: twMerge(
-        "content-base w-full max-w-9/10 p-4 flex flex-col",
+        "content-base w-full max-w-9/10 p-4 flex flex-col focus:outline-none",
         contentClassname,
       ),
       afterOpen: "content-after",
