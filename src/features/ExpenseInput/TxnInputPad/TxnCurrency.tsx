@@ -55,7 +55,7 @@ export const TxnCurrency = ({ currency, setCurrency }: Props) => {
       <Modal
         isOpen={isCurrencyModalOpen}
         onRequestClose={toggleCurrencyModal}
-        contentClassname="gap-6 items-center"
+        contentClassname="gap-6 items-center pb-6"
       >
         <Text className="text-lg font-semibold">
           {t("expenseInput.currency")}
