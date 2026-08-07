@@ -1,7 +1,7 @@
 import { useConfigStore } from "src/stores/configStore";
 import { useTranslation } from "react-i18next";
 import { BackButtonProps, TopNavBar } from "src/components/TopNavBar";
-import { useNavigate } from "node_modules/react-router/dist/development/index.mjs";
+import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import { Text, Title } from "src/components";
 import { ListItemCard } from "src/components/ListItemCard";

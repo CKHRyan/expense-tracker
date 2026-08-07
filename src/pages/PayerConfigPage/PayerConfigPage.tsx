@@ -3,10 +3,11 @@ import { PayerOptionPadButtonCard } from "src/features/ExpenseInput/PadButtonCar
 import { AddPayerPadButtonCard } from "src/features/ExpenseInput/PadButtonCard/AddPayerPadButtonCard";
 import { useTranslation } from "react-i18next";
 import { BackButtonProps, TopNavBar } from "src/components/TopNavBar";
-import { useNavigate } from "node_modules/react-router/dist/development/index.mjs";
+import { useNavigate } from "react-router";
 import { path } from "src/routes/constants/path";
 import { Title } from "src/components";
 import { SHARED_PAYER_KEY } from "src/features/Payer/constants";
+import { PayerList } from "src/features/Payer/components/PayerList";
 
 export const PayerConfigPage = () => {
   const { t } = useTranslation();
@@ -48,19 +49,13 @@ export const PayerConfigPage = () => {
 
         <div className="w-full flex flex-col gap-4">
           <Title className="text-xl">{t("payerConfig.payers")}</Title>
-          <div className="flex flex-wrap gap-4 items-center overflow-hidden w-full overflow-visible">
-            {payerOptions.map((option) => (
-              <PayerOptionPadButtonCard
-                key={`payer-option-${option}`}
-                payer={option}
-                onClick={() => setDefaultPayer(option)}
-                isSelected={option === defaultPayer}
-                enableRemoveButton={option !== SHARED_PAYER_KEY}
-                onRemoveClick={() => removePayerOption(option)}
-              />
-            ))}
-            <AddPayerPadButtonCard />
-          </div>
+          <PayerList
+            payers={payerOptions}
+            selectedPayer={defaultPayer}
+            onPayerSelect={setDefaultPayer}
+            onPayerRemove={removePayerOption}
+            suffixComponent={<AddPayerPadButtonCard />}
+          />
         </div>
       </div>
     </>

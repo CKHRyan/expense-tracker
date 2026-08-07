@@ -2,12 +2,12 @@ import { Modal, Text } from "@components";
 import type { TransactionInputInterface } from "@features/ExpenseInput/hooks";
 import { useToggle } from "@hooks/useToggle";
 import { PayerPadButtonCard } from "../PadButtonCard/PayerPadButtonCard";
-import { PayerOptionPadButtonCard } from "../PadButtonCard/PayerOptionPadButtonCard";
 import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { AddPayerPadButtonCard } from "../PadButtonCard/AddPayerPadButtonCard";
 import { useConfigStore } from "src/stores/configStore";
 import { SHARED_PAYER_KEY } from "src/features/Payer/constants";
+import { PayerList } from "src/features/Payer/components/PayerList";
 
 type Props = { className?: string; style?: CSSProperties } & Pick<
   TransactionInputInterface,
@@ -38,6 +38,8 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
     }
   };
 
+  const payerOptions = [SHARED_PAYER_KEY, ...payerList];
+
   return (
     <>
       <PayerPadButtonCard
@@ -53,24 +55,13 @@ export const TxnPayerPad = ({ payer, setPayer, className, style }: Props) => {
       >
         <Text className="text-lg font-semibold">{t("expenseInput.payer")}</Text>
 
-        <div className="flex flex-wrap gap-4 items-center overflow-hidden w-full overflow-visible">
-          <PayerOptionPadButtonCard
-            payer={SHARED_PAYER_KEY}
-            onClick={() => selectPayer(SHARED_PAYER_KEY)}
-            isSelected={!payer}
-          />
-          {payerList.map((payerOption) => (
-            <PayerOptionPadButtonCard
-              key={`payer-option-${payerOption}`}
-              payer={payerOption}
-              onClick={() => selectPayer(payerOption)}
-              isSelected={payer === payerOption}
-              enableRemoveButton
-              onRemoveClick={() => removePayerOption(payerOption)}
-            />
-          ))}
-          <AddPayerPadButtonCard />
-        </div>
+        <PayerList
+          payers={payerOptions}
+          selectedPayer={payer}
+          onPayerSelect={selectPayer}
+          onPayerRemove={removePayerOption}
+          suffixComponent={<AddPayerPadButtonCard />}
+        />
       </Modal>
     </>
   );
