@@ -37,6 +37,7 @@ export const FormSelect = ({
           menuPortal: () => "!z-10002",
           ...classNames,
         }}
+        isSearchable={false}
         placeholder={t("common.selectPlaceHolder")}
         {...selectProps}
       />
