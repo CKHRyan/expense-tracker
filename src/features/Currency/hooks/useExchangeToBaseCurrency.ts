@@ -1,17 +1,10 @@
-import { useConfigStore } from "src/stores/configStore";
+import { useCurrencyRateMap } from "./useCurrencyRate";
 
 export const useExchangeToBaseCurrency = () => {
-  const { currencyRateList } = useConfigStore();
-
-  const currencyRateMap = new Map<string, number>(
-    currencyRateList.map((currencyRate) => [
-      currencyRate.currency.unit,
-      currencyRate.rate,
-    ]),
-  );
+  const currencyRateMap = useCurrencyRateMap();
 
   return (amount: number, fromCurrency: string) => {
-    const currencyRate = currencyRateMap.get(fromCurrency);
-    return currencyRate !== undefined ? amount * currencyRate : undefined;
+    const { rate } = currencyRateMap.get(fromCurrency) ?? {};
+    return rate !== undefined ? amount * rate : undefined;
   };
 };

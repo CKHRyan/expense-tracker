@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Button, FormInput, Modal, Text } from "src/components";
-import { CURRENCY_LIST } from "src/features/Currency/constants";
+import { CURRENCY_LIST, CURRENCY_MAP } from "src/features/Currency/constants";
 import { FormSelect } from "src/components/FormSelect";
 import { useConfigStore } from "src/stores/configStore";
 import { useLocale } from "src/hooks/useLocale";
@@ -91,9 +91,7 @@ export const CurrencyRateInputModal = ({
         options={currencyOptions}
         value={value}
         onChange={(option: any) => {
-          const currency = CURRENCY_LIST.find(
-            (currency) => currency.unit === option?.value,
-          );
+          const currency = CURRENCY_MAP.get(option.value);
           if (currency) {
             setInputCurrency(currency);
           }

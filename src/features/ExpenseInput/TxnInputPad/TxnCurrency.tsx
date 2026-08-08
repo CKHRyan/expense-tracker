@@ -5,6 +5,7 @@ import { useToggle } from "src/hooks/useToggle";
 import { FormSelect } from "src/components/FormSelect";
 import { useConfigStore } from "src/stores/configStore";
 import { useLocale } from "src/hooks/useLocale";
+import { useCurrencyRateMap } from "src/features/Currency/hooks/useCurrencyRate";
 
 type Props = Pick<TransactionInputInterface, "currency" | "setCurrency">;
 
@@ -14,15 +15,15 @@ export const TxnCurrency = ({ currency, setCurrency }: Props) => {
 
   const { currencyRateList } = useConfigStore();
 
+  const currencyRateMap = useCurrencyRateMap();
+
   const [isCurrencyModalOpen, toggleCurrencyModal, setOpenCurrencyModal] =
     useToggle(false);
 
   const selectCurrencyOption = (option: { label: string; value: string }) => {
-    const selectedCurrencyRate = currencyRateList.find(
-      (currencyRate) => currencyRate.currency.unit === option?.value,
-    );
-    if (selectedCurrencyRate) {
-      setCurrency(selectedCurrencyRate.currency.unit);
+    const newSelectedCurrencyRate = currencyRateMap.get(option.value);
+    if (newSelectedCurrencyRate) {
+      setCurrency(newSelectedCurrencyRate.currency.unit);
     }
     setOpenCurrencyModal(false);
   };
@@ -32,9 +33,7 @@ export const TxnCurrency = ({ currency, setCurrency }: Props) => {
     value: currencyRate.currency.unit,
   }));
 
-  const selectedCurrencyRate = currencyRateList.find(
-    (currencyRate) => currencyRate.currency.unit === currency,
-  );
+  const selectedCurrencyRate = currencyRateMap.get(currency);
 
   const selectedCurrencyOption = selectedCurrencyRate
     ? {
