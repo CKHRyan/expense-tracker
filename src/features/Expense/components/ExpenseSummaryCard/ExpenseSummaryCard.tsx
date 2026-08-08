@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import {
   DateViewMode,
   type DateViewValue,
-  type ExpenseRecord,
+  type ExpenseRecordWithIndex,
 } from "../../types";
 import type { TFunction } from "i18next";
 import { Icon, ValueCard } from "src/components";
@@ -26,7 +26,7 @@ const getTitle = (t: TFunction, dateViewMode: DateViewMode) => {
 type Props = {
   dateView: DateViewValue;
   dateViewMode: DateViewMode;
-  expenses: ExpenseRecord[];
+  expenses: ExpenseRecordWithIndex[];
 };
 
 export const ExpenseSummaryCard = ({

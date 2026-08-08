@@ -3,11 +3,14 @@ import {
   serverDateFormat,
   displayDateFormat,
 } from "@utils/google/googleSheet/constants";
-import { compact, groupBy, isNil } from "lodash";
+import { compact, groupBy } from "lodash";
 import moment from "moment";
 import { useMemo } from "react";
 import { CATEGORY_GROUP } from "src/constants/expense";
-import type { CategoryGroup, ExpenseRecord } from "@features/Expense/types";
+import type {
+  CategoryGroup,
+  ExpenseRecordWithIndex,
+} from "@features/Expense/types";
 import { useExchangeToBaseCurrency } from "src/features/Currency/hooks/useExchangeToBaseCurrency";
 
 export type ExpenseDisplayOptions = {
@@ -15,7 +18,7 @@ export type ExpenseDisplayOptions = {
 };
 
 export const useExpenseData = (
-  data: ExpenseRecord[],
+  data: ExpenseRecordWithIndex[],
   options?: ExpenseDisplayOptions,
 ) => {
   const { filter } = options ?? {};
@@ -61,7 +64,7 @@ export const useExpenseData = (
       ...obj,
       [key]: value.sort((a, b) => (a.date.isBefore(b.date) ? 1 : -1)),
     }),
-    {} as Record<string, ExpenseRecord[]>,
+    {} as Record<string, ExpenseRecordWithIndex[]>,
   );
 
   const transactionDates = Object.keys(recordsByDay).sort((a, b) =>

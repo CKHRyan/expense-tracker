@@ -1,4 +1,4 @@
-import { Loading, Text, Title } from "@components";
+import { Loading, Text } from "@components";
 import { CategoryExpenseList } from "@features/ExpenseList";
 import { DateViewSelector } from "@features/ExpenseList/DateViewSelector";
 import { useViewStore } from "@stores";
