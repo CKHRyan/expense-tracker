@@ -5,6 +5,7 @@ import { CURRENCY_MAP } from "src/features/Currency/constants";
 import { useLocale } from "src/hooks/useLocale";
 import type { ModalProps } from "src/components/Modal/Modal";
 import { twMerge } from "tailwind-merge";
+import { formatCurrencyAmount } from "src/features/Currency/helpers";
 
 type Props = {
   totalExpense: number;
@@ -78,10 +79,14 @@ export const ExpenseSummaryModal = ({
                     : t("analysis.expenseSummary.unknown")}
                 </td>
                 <td className="py-3.5 px-2 text-right tabular-nums">
-                  {totalExpenseByCurrency[currencyUnit].toLocaleString()}
+                  {formatCurrencyAmount(totalExpenseByCurrency[currencyUnit])}
                 </td>
                 <td className="py-3.5 px-2 text-right tabular-nums">
-                  {totalBaseExpenseByCurrency[currencyUnit] ?? "-"}
+                  {totalBaseExpenseByCurrency[currencyUnit]
+                    ? formatCurrencyAmount(
+                        totalBaseExpenseByCurrency[currencyUnit],
+                      )
+                    : "-"}
                 </td>
               </tr>
             );
@@ -97,7 +102,7 @@ export const ExpenseSummaryModal = ({
               {t("analysis.expenseSummary.totalExpenses")}
             </td>
             <td className="py-4 px-2 text-right font-bold tabular-nums">
-              {totalExpense.toLocaleString()}
+              {formatCurrencyAmount(totalExpense)}
             </td>
           </tr>
         </tfoot>
