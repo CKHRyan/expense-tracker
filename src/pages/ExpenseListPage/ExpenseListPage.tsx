@@ -27,7 +27,7 @@ export const ExpenseListPage = () => {
 
   return (
     <>
-      <div className="p-6 w-full h-full flex flex-col gap-4">
+      <div className="p-6 w-full h-full flex flex-col gap-6">
         <ExpenseSummaryCard
           expenses={data}
           dateView={dateView}
