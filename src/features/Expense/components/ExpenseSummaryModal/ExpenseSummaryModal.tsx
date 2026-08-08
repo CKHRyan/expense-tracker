@@ -24,6 +24,22 @@ export const ExpenseSummaryModal = ({
 
   const { baseCurrency } = useConfigStore();
 
+  const expenseCurrencies = Object.keys(totalExpenseByCurrency).sort((a, b) => {
+    // Compare base amount
+    if (
+      (totalBaseExpenseByCurrency[a] ?? 0) >
+      (totalBaseExpenseByCurrency[b] ?? 0)
+    )
+      return -1;
+
+    // Compare amount
+    if ((totalExpenseByCurrency[a] ?? 0) > (totalExpenseByCurrency[b] ?? 0))
+      return -1;
+
+    // Compare unit
+    return a.localeCompare(b);
+  });
+
   return (
     <Modal
       {...modalProps}
@@ -52,26 +68,24 @@ export const ExpenseSummaryModal = ({
         </thead>
 
         <tbody className="divide-y divide-slate-400/30">
-          {Object.entries(totalExpenseByCurrency).map(
-            ([currencyUnit, currencyTotalExpense]) => {
-              const currency = CURRENCY_MAP.get(currencyUnit);
-              return (
-                <tr key={`expense-summary-table-row-${currencyUnit}`}>
-                  <td className="py-3.5 px-2">
-                    {currency
-                      ? `${currency.name[locale]} (${currency.unit})`
-                      : t("analysis.expenseSummary.unknown")}
-                  </td>
-                  <td className="py-3.5 px-2 text-right tabular-nums">
-                    {currencyTotalExpense.toLocaleString()}
-                  </td>
-                  <td className="py-3.5 px-2 text-right tabular-nums">
-                    {totalBaseExpenseByCurrency[currencyUnit] ?? "-"}
-                  </td>
-                </tr>
-              );
-            },
-          )}
+          {expenseCurrencies.map((currencyUnit) => {
+            const currency = CURRENCY_MAP.get(currencyUnit);
+            return (
+              <tr key={`expense-summary-table-row-${currencyUnit}`}>
+                <td className="py-3.5 px-2">
+                  {currency
+                    ? `${currency.name[locale]} (${currency.unit})`
+                    : t("analysis.expenseSummary.unknown")}
+                </td>
+                <td className="py-3.5 px-2 text-right tabular-nums">
+                  {totalExpenseByCurrency[currencyUnit].toLocaleString()}
+                </td>
+                <td className="py-3.5 px-2 text-right tabular-nums">
+                  {totalBaseExpenseByCurrency[currencyUnit] ?? "-"}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
 
         <tfoot>
