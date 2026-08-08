@@ -229,7 +229,7 @@ export const Dropdown = ({
               top: `${coords.top}px`,
               left: `${coords.left}px`,
             }}
-            className="bg-[#242424] rounded-lg shadow-lg/2 shadow-white focus:outline-none z-5"
+            className="bg-[var(--background-color)] rounded-lg shadow-lg/2 shadow-white focus:outline-none z-5"
           >
             <div className="py-1" role="none">
               {options.map((action, index) => (

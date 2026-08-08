@@ -1,4 +1,5 @@
 import { Text } from "@components";
+import type { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
   titleClassName?: string;
   valueClassName?: string;
   bgColor?: string;
+  suffixComponent?: ReactNode;
 };
 
 export const ValueCard = ({
@@ -17,14 +19,18 @@ export const ValueCard = ({
   titleClassName,
   valueClassName,
   bgColor = "#2c2c2c",
+  suffixComponent,
 }: Props) => (
   <div
-    className={twMerge("p-4 rounded-md", className)}
+    className={twMerge("flex flex-row items-center p-4 rounded-md", className)}
     style={{ backgroundColor: bgColor }}
   >
-    <Text className={titleClassName}>{title}</Text>
-    <Text className={twMerge("text-lg font-extrabold", valueClassName)}>
-      {value}
-    </Text>
+    <div className="flex-1">
+      <Text className={titleClassName}>{title}</Text>
+      <Text className={twMerge("text-lg font-extrabold", valueClassName)}>
+        {value}
+      </Text>
+    </div>
+    {suffixComponent}
   </div>
 );

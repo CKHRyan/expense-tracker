@@ -1,7 +1,7 @@
 :root {
   --transition: 200ms;
   --content-bg-color: rgba(0, 0, 0, 0.4);
-  --overlay-bg-color: #242424;
+  --overlay-bg-color: var(--background-color);
 }
 
 .overlay-base {

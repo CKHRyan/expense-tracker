@@ -41,10 +41,12 @@ export const CURRENCY_LIST: Currency[] = [
   { unit: "ZAR", name: { en: "South African Rand", zh: "南非蘭特" } },
 ];
 
+export const CURRENCY_MAP = new Map<string, Currency>(
+  CURRENCY_LIST.map((currency) => [currency.unit, currency]),
+);
+
 const DEFAULT_CURRENCY_UNIT = "HKD";
 
-export const DEFAULT_CURRENCY = CURRENCY_LIST.find(
-  ({ unit }) => unit === DEFAULT_CURRENCY_UNIT,
-)!;
+export const DEFAULT_CURRENCY = CURRENCY_MAP.get(DEFAULT_CURRENCY_UNIT)!;
 
 export const RATE_PRICISION = 4;

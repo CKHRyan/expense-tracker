@@ -3,24 +3,24 @@ import {
   serverDateFormat,
   displayDateFormat,
 } from "@utils/google/googleSheet/constants";
-import { groupBy } from "lodash";
+import { compact, groupBy, isNil } from "lodash";
 import moment from "moment";
 import { useMemo } from "react";
 import { CATEGORY_GROUP } from "src/constants/expense";
-import type {
-  CategoryGroup,
-  ExpenseRecordWithIndex,
-} from "@features/Expense/types";
+import type { CategoryGroup, ExpenseRecord } from "@features/Expense/types";
+import { useExchangeToBaseCurrency } from "src/features/Currency/hooks/useExchangeToBaseCurrency";
 
 export type ExpenseDisplayOptions = {
   filter?: { dateView?: DateViewValue; dateViewMode?: DateViewMode };
 };
 
 export const useExpenseData = (
-  data: ExpenseRecordWithIndex[],
+  data: ExpenseRecord[],
   options?: ExpenseDisplayOptions,
 ) => {
   const { filter } = options ?? {};
+
+  const exchange = useExchangeToBaseCurrency();
 
   const expenseData = useMemo(() => {
     const { dateView, dateViewMode } = filter ?? {};
@@ -61,7 +61,7 @@ export const useExpenseData = (
       ...obj,
       [key]: value.sort((a, b) => (a.date.isBefore(b.date) ? 1 : -1)),
     }),
-    {} as Record<string, ExpenseRecordWithIndex[]>,
+    {} as Record<string, ExpenseRecord[]>,
   );
 
   const transactionDates = Object.keys(recordsByDay).sort((a, b) =>
@@ -84,12 +84,31 @@ export const useExpenseData = (
     Object.keys(totalExpenseByGroup) as CategoryGroup[]
   ).sort((a, b) => totalExpenseByGroup[b] - totalExpenseByGroup[a]);
 
-  const totalExpense = expenseData.reduce((sum, { amount }) => amount + sum, 0);
+  const totalExpenseByCurrency = expenseData.reduce(
+    (prev, { amount, currency }) => ({
+      ...prev,
+      [currency]: (prev[currency] ?? 0) + amount,
+    }),
+    {} as Record<string, number>,
+  );
+
+  const totalBaseExpenseByCurrency = Object.fromEntries(
+    Object.entries(totalExpenseByCurrency).map(([currency, totalExpense]) => [
+      currency,
+      exchange(totalExpense, currency),
+    ]),
+  );
+
+  const totalExpense = compact(
+    Object.values(totalBaseExpenseByCurrency),
+  ).reduce((sum, baseAmount): number => baseAmount + sum, 0);
 
   return {
     recordsByDay,
     transactionDates,
     totalExpenseByGroup,
+    totalExpenseByCurrency,
+    totalBaseExpenseByCurrency,
     totalExpense,
     groupsInExpenseOrder,
   };

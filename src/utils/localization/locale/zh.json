@@ -18,7 +18,7 @@
 
   "navTab": {
     "expenses": "支出",
-    "anaylsis": "分析",
+    "analysis": "分析",
     "menu": "選單"
   },
 
@@ -66,9 +66,6 @@
   },
 
   "expenseList": {
-    "monthlyCumulativeExpense": "本月累計支出",
-    "yearlyCumulativeExpense": "本年累計支出",
-    "dailyCumulativeExpense": "本日累計支出",
     "spendingRecords": "支出記錄",
     "emptyRecord": "本月沒有支出",
     "addSpendingPrompt": "立即記錄支出以掌握你的金錢！"
@@ -96,12 +93,16 @@
     "confirm": "確認"
   },
 
-  "anaylsis": {
-    "spendingAnalysis": "支出分析",
+  "analysis": {
     "spendingCategory": "支出分類",
     "monthlyCumulativeExpense": "本月累計支出",
     "yearlyCumulativeExpense": "本年累計支出",
-    "dailyCumulativeExpense": "本日累計支出"
+    "dailyCumulativeExpense": "本日累計支出",
+    "expenseSummary.title": "支出摘要",
+    "expenseSummary.currency": "貨幣",
+    "expenseSummary.unknown": "未知",
+    "expenseSummary.amount": "支出",
+    "expenseSummary.totalExpenses": "總支出"
   },
 
   "menu": {

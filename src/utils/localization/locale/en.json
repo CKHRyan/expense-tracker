@@ -18,7 +18,7 @@
 
   "navTab": {
     "expenses": "EXPENSES",
-    "anaylsis": "ANALYSIS",
+    "analysis": "ANALYSIS",
     "menu": "MENU"
   },
 
@@ -66,9 +66,6 @@
   },
 
   "expenseList": {
-    "monthlyCumulativeExpense": "Monthly Cumulative Expense",
-    "yearlyCumulativeExpense": "Yearly Cumulative Expense",
-    "dailyCumulativeExpense": "Daily Cumulative Expense",
     "spendingRecords": "Spending Records",
     "emptyRecord": "NO EXPENSE FOR THIS MONTH",
     "addSpendingPrompt": "Begin adding your spending to keep track of your money!"
@@ -96,12 +93,16 @@
     "confirm": "Confirm"
   },
 
-  "anaylsis": {
-    "spendingAnalysis": "Spending Analysis",
+  "analysis": {
     "spendingCategory": "Spending Category",
     "monthlyCumulativeExpense": "Monthly Cumulative Expense",
     "yearlyCumulativeExpense": "Yearly Cumulative Expense",
-    "dailyCumulativeExpense": "Daily Cumulative Expense"
+    "dailyCumulativeExpense": "Daily Cumulative Expense",
+    "expenseSummary.title": "Expense Summary",
+    "expenseSummary.currency": "Currency",
+    "expenseSummary.unknown": "Unknown",
+    "expenseSummary.amount": "Amount",
+    "expenseSummary.totalExpenses": "Total Expenses"
   },
 
   "menu": {

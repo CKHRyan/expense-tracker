@@ -12,7 +12,7 @@ export const useBottomNavTabItemOptions = (): BottomNavTabItemOption[] => {
       href: path.expenseList,
     },
     {
-      title: t("navTab.anaylsis"),
+      title: t("navTab.analysis"),
       icon: "icon-[twemoji--bar-chart]",
       href: path.analysis,
     },
