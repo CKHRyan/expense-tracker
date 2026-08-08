@@ -68,7 +68,8 @@
   "expenseList": {
     "spendingRecords": "支出記錄",
     "emptyRecord": "本月沒有支出",
-    "addSpendingPrompt": "立即記錄支出以掌握你的金錢！"
+    "addSpendingPrompt": "立即記錄支出以掌握你的金錢！",
+    "paid": "{{payer}} 付費"
   },
 
   "expenseInput": {

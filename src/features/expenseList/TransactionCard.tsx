@@ -6,6 +6,7 @@ import {
 } from "@features/Expense/hooks";
 import moment from "moment";
 import type { ExpenseRecordWithIndex } from "@features/Expense/types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   record: ExpenseRecordWithIndex;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export const TransactionCard = ({ record, onClick }: Props) => {
+  const { t } = useTranslation();
   const { date, category, item, amount, currency, payer, remark } = record;
 
   const categoryAttributes = useCategoryAttributes();
@@ -36,13 +38,13 @@ export const TransactionCard = ({ record, onClick }: Props) => {
         </Text>
       </div>
 
-      <div className="text-right">
+      <div className="flex flex-col items-end text-right">
         <Text>
           -{amount.toLocaleString()} {currency}
         </Text>
         {payer && (
-          <Text className="text-sm text-gray-400 truncate max-w-[5rem] sm:max-w-[8rem] md:max-w-[12rem] lg:max-w-[18rem]">
-            ({payer})
+          <Text className="text-sm text-gray-400 truncate max-w-[7rem] sm:max-w-[10rem] md:max-w-[14rem] lg:max-w-[20rem]">
+            {t("expenseList.paid", { payer })}
           </Text>
         )}
       </div>

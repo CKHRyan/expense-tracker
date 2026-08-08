@@ -68,7 +68,8 @@
   "expenseList": {
     "spendingRecords": "Spending Records",
     "emptyRecord": "NO EXPENSE FOR THIS MONTH",
-    "addSpendingPrompt": "Begin adding your spending to keep track of your money!"
+    "addSpendingPrompt": "Begin adding your spending to keep track of your money!",
+    "paid": "{{payer}} paid"
   },
 
   "expenseInput": {
