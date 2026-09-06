@@ -1,4 +1,4 @@
-import GoogleButton from "react-google-button";
+import { GoogleButton } from "react-google-button";
 import { useAuth } from "@hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@hooks/useLocale";
